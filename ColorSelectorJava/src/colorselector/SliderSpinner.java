@@ -30,8 +30,8 @@ public class SliderSpinner extends JPanel {
 	private JSpinner spnValue = null;
 	private int value = 0;
 
-	private static int MIN_VALUE = 0;
-	private static int MAX_VALUE = 255;
+	public static int MIN_VALUE = 0;
+	public static int MAX_VALUE = 255;
 
 	public static final String PROP_VALUE = "value";
 

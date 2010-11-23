@@ -29,6 +29,12 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
+import java.awt.GridBagLayout;
+import javax.swing.JCheckBox;
+import javax.swing.JTextField;
+import java.awt.Dimension;
+import javax.swing.JList;
+import java.awt.Insets;
 
 /**
  * @author rafael
@@ -65,6 +71,12 @@ public class ColorSelector {
         }
     };
     private SliderSpinner slspAlpha = null;
+    private JTextField txfColorValue = null;
+    private JCheckBox chbEnableAlpha = null;
+    private JPanel pnlControlColor = null;
+    private JPanel pnlControlOthers = null;
+    private JList lstEqualizeType = null;
+    private JList lstColorFormat = null;
 
     /**
      * This method initializes frmColorSelector
@@ -76,7 +88,7 @@ public class ColorSelector {
             frmColorSelector = new JFrame();
             frmColorSelector.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frmColorSelector.setJMenuBar(getJJMenuBar());
-            frmColorSelector.setSize(543, 300);
+            frmColorSelector.setSize(543, 341);
             frmColorSelector.setContentPane(getJContentPane());
             frmColorSelector.setTitle("Color Selector");
         }
@@ -91,8 +103,8 @@ public class ColorSelector {
     private JPanel getJContentPane() {
         if (jContentPane == null) {
             GridLayout gridLayout = new GridLayout();
-            gridLayout.setRows(1);
-            gridLayout.setColumns(2);
+            gridLayout.setRows(2);
+            gridLayout.setColumns(1);
             GridBagConstraints gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 0;
             gridBagConstraints.gridy = 0;
@@ -323,7 +335,7 @@ public class ColorSelector {
             pnlColor.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent e) {
                     if (e.getClickCount() == 2) {
-                        ColorSelector.this.getnerateRandomColor();
+                        ColorSelector.this.generateRandomColor();
                     }
                 }
             });
@@ -331,13 +343,18 @@ public class ColorSelector {
         return pnlColor;
     }
 
-    protected void getnerateRandomColor() {
+    protected void generateRandomColor() {
         Random random = new Random();
         int max = SliderSpinner.MAX_VALUE + 1;
         this.getSlspRed().setValue(random.nextInt(max));
         this.getSlspGreen().setValue(random.nextInt(max));
         this.getSlspBlue().setValue(random.nextInt(max));
         this.getSlspAlpha().setValue(random.nextInt(max));
+    }
+
+    private void enableAlpha(boolean enable) {
+        this.slspAlpha.setEnabled(enable);
+        this.changeColor();
     }
 
     /**
@@ -390,25 +407,28 @@ public class ColorSelector {
     private JPanel getPnlControls() {
         if (pnlControls == null) {
             GridLayout gridLayout1 = new GridLayout();
-            gridLayout1.setRows(4);
+            gridLayout1.setRows(1);
             gridLayout1.setHgap(5);
             gridLayout1.setVgap(5);
-            gridLayout1.setColumns(1);
+            gridLayout1.setColumns(2);
             pnlControls = new JPanel();
             pnlControls.setLayout(gridLayout1);
-            pnlControls.add(getSlspRed(), null);
-            pnlControls.add(getSlspGreen(), null);
-            pnlControls.add(getSlspBlue(), null);
-            pnlControls.add(getSlspAlpha(), null);
+            pnlControls.add(getPnlControlColor(), null);
+            pnlControls.add(getPnlControlOthers(), null);
         }
         return pnlControls;
     }
 
     private void changeColor() {
-        Color c = new Color(this.getSlspRed().getValue(), //
+        Color c = chbEnableAlpha.isSelected() ? //
+        new Color(this.getSlspRed().getValue(), //
                 this.getSlspGreen().getValue(), //
                 this.getSlspBlue().getValue(), //
-                this.getSlspAlpha().getValue());
+                this.getSlspAlpha().getValue())
+                : //
+                new Color(this.getSlspRed().getValue(), //
+                        this.getSlspGreen().getValue(), //
+                        this.getSlspBlue().getValue());
 
         this.getPnlColor().setBackground(c);
     }
@@ -422,8 +442,141 @@ public class ColorSelector {
         if (slspAlpha == null) {
             slspAlpha = new SliderSpinner();
             slspAlpha.setTitle("A");
+            slspAlpha.addPropertyChangeListener(this.changeListener);
+            slspAlpha.setEnabled(false);
         }
         return slspAlpha;
+    }
+
+    /**
+     * This method initializes txfColorValue
+     * 
+     * @return javax.swing.JTextField
+     */
+    private JTextField getTxfColorValue() {
+        if (txfColorValue == null) {
+            txfColorValue = new JTextField();
+            txfColorValue.setPreferredSize(new Dimension(100, 20));
+            txfColorValue.setEditable(false);
+        }
+        return txfColorValue;
+    }
+
+    /**
+     * This method initializes chbEnableAlpha
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getChbEnableAlpha() {
+        if (chbEnableAlpha == null) {
+            chbEnableAlpha = new JCheckBox();
+            chbEnableAlpha.setText("Enable Alpha");
+            chbEnableAlpha
+                    .addChangeListener(new javax.swing.event.ChangeListener() {
+                        public void stateChanged(javax.swing.event.ChangeEvent e) {
+                            enableAlpha(chbEnableAlpha.isSelected());
+                        }
+                    });
+        }
+        return chbEnableAlpha;
+    }
+
+    /**
+     * This method initializes pnlControlColor
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getPnlControlColor() {
+        if (pnlControlColor == null) {
+            GridLayout gridLayout2 = new GridLayout();
+            gridLayout2.setRows(4);
+            gridLayout2.setHgap(5);
+            gridLayout2.setVgap(5);
+            gridLayout2.setColumns(1);
+            pnlControlColor = new JPanel();
+            pnlControlColor.setLayout(gridLayout2);
+            pnlControlColor.add(getSlspRed(), null);
+            pnlControlColor.add(getSlspGreen(), null);
+            pnlControlColor.add(getSlspBlue(), null);
+            pnlControlColor.add(getSlspAlpha(), null);
+        }
+        return pnlControlColor;
+    }
+
+    /**
+     * This method initializes pnlControlOthers
+     * 
+     * @return javax.swing.JPanel
+     */
+    private JPanel getPnlControlOthers() {
+        if (pnlControlOthers == null) {
+            GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
+            gridBagConstraints5.insets = new Insets(5, 5, 5, 5);
+            gridBagConstraints5.gridy = 3;
+            gridBagConstraints5.ipadx = 0;
+            gridBagConstraints5.ipady = 3;
+            gridBagConstraints5.gridwidth = 2;
+            gridBagConstraints5.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints5.gridx = 0;
+            GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
+            gridBagConstraints4.fill = GridBagConstraints.BOTH;
+            gridBagConstraints4.gridx = 0;
+            gridBagConstraints4.gridy = 2;
+            gridBagConstraints4.ipadx = 0;
+            gridBagConstraints4.ipady = 2;
+            gridBagConstraints4.weightx = 1.0;
+            gridBagConstraints4.weighty = 1.0;
+            gridBagConstraints4.insets = new Insets(5, 5, 5, 5);
+            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+            gridBagConstraints3.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints3.gridx = 0;
+            gridBagConstraints3.gridy = 1;
+            gridBagConstraints3.ipadx = 0;
+            gridBagConstraints3.ipady = 1;
+            gridBagConstraints3.weightx = 1.0;
+            gridBagConstraints3.weighty = 1.0;
+            gridBagConstraints3.insets = new Insets(5, 5, 5, 5);
+            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+            gridBagConstraints2.fill = GridBagConstraints.BOTH;
+            gridBagConstraints2.gridx = 0;
+            gridBagConstraints2.gridy = 0;
+            gridBagConstraints2.ipadx = 0;
+            gridBagConstraints2.ipady = 0;
+            gridBagConstraints2.weightx = 1.0;
+            gridBagConstraints2.weighty = 1.0;
+            gridBagConstraints2.insets = new Insets(5, 5, 5, 5);
+            pnlControlOthers = new JPanel();
+            pnlControlOthers.setLayout(new GridBagLayout());
+            pnlControlOthers.add(getLstEqualizeType(), gridBagConstraints2);
+            pnlControlOthers.add(getTxfColorValue(), gridBagConstraints3);
+            pnlControlOthers.add(getLstColorFormat(), gridBagConstraints4);
+            pnlControlOthers.add(getChbEnableAlpha(), gridBagConstraints5);
+        }
+        return pnlControlOthers;
+    }
+
+    /**
+     * This method initializes lstEqualizeType
+     * 
+     * @return javax.swing.JList
+     */
+    private JList getLstEqualizeType() {
+        if (lstEqualizeType == null) {
+            lstEqualizeType = new JList();
+        }
+        return lstEqualizeType;
+    }
+
+    /**
+     * This method initializes lstColorFormat
+     * 
+     * @return javax.swing.JList
+     */
+    private JList getLstColorFormat() {
+        if (lstColorFormat == null) {
+            lstColorFormat = new JList();
+        }
+        return lstColorFormat;
     }
 
     /**

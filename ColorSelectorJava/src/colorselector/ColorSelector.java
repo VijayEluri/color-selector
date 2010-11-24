@@ -5,10 +5,13 @@ package colorselector;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +21,8 @@ import java.beans.PropertyChangeListener;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,16 +30,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
-import java.awt.GridBagLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JTextField;
-import java.awt.Dimension;
-import javax.swing.JList;
-import java.awt.Insets;
+import java.awt.Font;
 
 /**
  * @author rafael
@@ -73,10 +74,8 @@ public class ColorSelector {
     private SliderSpinner slspAlpha = null;
     private JTextField txfColorValue = null;
     private JCheckBox chbEnableAlpha = null;
-    private JPanel pnlControlColor = null;
-    private JPanel pnlControlOthers = null;
-    private JList lstEqualizeType = null;
-    private JList lstColorFormat = null;
+    private JComboBox chbFormat = null;
+    private JComboBox chbEqualizer = null;
 
     /**
      * This method initializes frmColorSelector
@@ -343,7 +342,7 @@ public class ColorSelector {
         return pnlColor;
     }
 
-    protected void generateRandomColor() {
+    private void generateRandomColor() {
         Random random = new Random();
         int max = SliderSpinner.MAX_VALUE + 1;
         this.getSlspRed().setValue(random.nextInt(max));
@@ -378,6 +377,14 @@ public class ColorSelector {
      */
     private SliderSpinner getSlspGreen() {
         if (slspGreen == null) {
+            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+            gridBagConstraints3.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints3.gridx = 0;
+            gridBagConstraints3.gridy = 2;
+            gridBagConstraints3.ipadx = 0;
+            gridBagConstraints3.ipady = 2;
+            gridBagConstraints3.weightx = 1.0;
+            gridBagConstraints3.insets = new Insets(5, 5, 5, 5);
             slspGreen = new SliderSpinner();
             slspGreen.setTitle("G");
             slspGreen.addPropertyChangeListener(this.changeListener);
@@ -406,15 +413,78 @@ public class ColorSelector {
      */
     private JPanel getPnlControls() {
         if (pnlControls == null) {
-            GridLayout gridLayout1 = new GridLayout();
-            gridLayout1.setRows(1);
-            gridLayout1.setHgap(5);
-            gridLayout1.setVgap(5);
-            gridLayout1.setColumns(2);
+            GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
+            gridBagConstraints5.fill = GridBagConstraints.NONE;
+            gridBagConstraints5.gridy = 0;
+            gridBagConstraints5.weightx = 1.0;
+            gridBagConstraints5.anchor = GridBagConstraints.WEST;
+            gridBagConstraints5.insets = new Insets(5, 5, 5, 5);
+            gridBagConstraints5.gridx = 1;
+            GridBagConstraints gridBagConstraints7 = new GridBagConstraints();
+            gridBagConstraints7.fill = GridBagConstraints.NONE;
+            gridBagConstraints7.gridy = 2;
+            gridBagConstraints7.weightx = 1.0;
+            gridBagConstraints7.insets = new Insets(5, 5, 5, 5);
+            gridBagConstraints7.anchor = GridBagConstraints.WEST;
+            gridBagConstraints7.gridx = 1;
+            GridBagConstraints gridBagConstraints9 = new GridBagConstraints();
+            gridBagConstraints9.gridx = 0;
+            gridBagConstraints9.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints9.insets = new Insets(5, 5, 5, 5);
+            gridBagConstraints9.weightx = 4.0;
+            gridBagConstraints9.gridy = 2;
+            GridBagConstraints gridBagConstraints8 = new GridBagConstraints();
+            gridBagConstraints8.insets = new Insets(5, 5, 5, 5);
+            gridBagConstraints8.gridy = 3;
+            gridBagConstraints8.ipadx = 0;
+            gridBagConstraints8.ipady = 0;
+            gridBagConstraints8.anchor = GridBagConstraints.WEST;
+            gridBagConstraints8.gridx = 1;
+            GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
+            gridBagConstraints6.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints6.gridx = 1;
+            gridBagConstraints6.gridy = 1;
+            gridBagConstraints6.ipadx = 0;
+            gridBagConstraints6.ipady = 0;
+            gridBagConstraints6.weightx = 1.0;
+            gridBagConstraints6.anchor = GridBagConstraints.WEST;
+            gridBagConstraints6.insets = new Insets(5, 5, 5, 5);
+            GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
+            gridBagConstraints4.insets = new Insets(5, 5, 5, 5);
+            gridBagConstraints4.gridy = 3;
+            gridBagConstraints4.ipadx = 0;
+            gridBagConstraints4.ipady = 0;
+            gridBagConstraints4.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints4.weightx = 4.0;
+            gridBagConstraints4.weighty = 0.0;
+            gridBagConstraints4.gridx = 0;
+            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+            gridBagConstraints2.insets = new Insets(5, 5, 5, 5);
+            gridBagConstraints2.gridy = 1;
+            gridBagConstraints2.ipadx = 0;
+            gridBagConstraints2.ipady = 0;
+            gridBagConstraints2.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints2.weightx = 4.0;
+            gridBagConstraints2.gridx = 0;
+            GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
+            gridBagConstraints1.insets = new Insets(5, 5, 5, 5);
+            gridBagConstraints1.gridy = 0;
+            gridBagConstraints1.ipadx = 0;
+            gridBagConstraints1.ipady = 0;
+            gridBagConstraints1.fill = GridBagConstraints.HORIZONTAL;
+            gridBagConstraints1.weightx = 4.0;
+            gridBagConstraints1.weighty = 0.0;
+            gridBagConstraints1.gridx = 0;
             pnlControls = new JPanel();
-            pnlControls.setLayout(gridLayout1);
-            pnlControls.add(getPnlControlColor(), null);
-            pnlControls.add(getPnlControlOthers(), null);
+            pnlControls.setLayout(new GridBagLayout());
+            pnlControls.add(getSlspRed(), gridBagConstraints1);
+            pnlControls.add(getSlspGreen(), gridBagConstraints2);
+            pnlControls.add(getSlspBlue(), gridBagConstraints9);
+            pnlControls.add(getSlspAlpha(), gridBagConstraints4);
+            pnlControls.add(getTxfColorValue(), gridBagConstraints6);
+            pnlControls.add(getChbFormat(), gridBagConstraints7);
+            pnlControls.add(getChbEnableAlpha(), gridBagConstraints8);
+            pnlControls.add(getChbEqualizer(), gridBagConstraints5);
         }
         return pnlControls;
     }
@@ -431,6 +501,10 @@ public class ColorSelector {
                         this.getSlspBlue().getValue());
 
         this.getPnlColor().setBackground(c);
+        this.getTxfColorValue().setText(
+                (((Formatter) this.getChbFormat().getSelectedItem()).format(c,
+                        this.chbEnableAlpha.isSelected())));
+
     }
 
     /**
@@ -457,6 +531,8 @@ public class ColorSelector {
         if (txfColorValue == null) {
             txfColorValue = new JTextField();
             txfColorValue.setPreferredSize(new Dimension(100, 20));
+            txfColorValue.setMinimumSize(new Dimension(100, 20));
+            txfColorValue.setFont(new Font("Monospaced", Font.PLAIN, 12));
             txfColorValue.setEditable(false);
         }
         return txfColorValue;
@@ -482,101 +558,33 @@ public class ColorSelector {
     }
 
     /**
-     * This method initializes pnlControlColor
+     * This method initializes chbFormat
      * 
-     * @return javax.swing.JPanel
+     * @return javax.swing.JComboBox
      */
-    private JPanel getPnlControlColor() {
-        if (pnlControlColor == null) {
-            GridLayout gridLayout2 = new GridLayout();
-            gridLayout2.setRows(4);
-            gridLayout2.setHgap(5);
-            gridLayout2.setVgap(5);
-            gridLayout2.setColumns(1);
-            pnlControlColor = new JPanel();
-            pnlControlColor.setLayout(gridLayout2);
-            pnlControlColor.add(getSlspRed(), null);
-            pnlControlColor.add(getSlspGreen(), null);
-            pnlControlColor.add(getSlspBlue(), null);
-            pnlControlColor.add(getSlspAlpha(), null);
+    private JComboBox getChbFormat() {
+        if (chbFormat == null) {
+            chbFormat = new JComboBox(Formatter.values());
+            chbFormat.setRenderer(new FormatterRenderer());
+            chbFormat.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent e) {
+                    ColorSelector.this.changeColor();
+                }
+            });
         }
-        return pnlControlColor;
+        return chbFormat;
     }
 
     /**
-     * This method initializes pnlControlOthers
+     * This method initializes chbEqualizer
      * 
-     * @return javax.swing.JPanel
+     * @return javax.swing.JComboBox
      */
-    private JPanel getPnlControlOthers() {
-        if (pnlControlOthers == null) {
-            GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
-            gridBagConstraints5.insets = new Insets(5, 5, 5, 5);
-            gridBagConstraints5.gridy = 3;
-            gridBagConstraints5.ipadx = 0;
-            gridBagConstraints5.ipady = 3;
-            gridBagConstraints5.gridwidth = 2;
-            gridBagConstraints5.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints5.gridx = 0;
-            GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
-            gridBagConstraints4.fill = GridBagConstraints.BOTH;
-            gridBagConstraints4.gridx = 0;
-            gridBagConstraints4.gridy = 2;
-            gridBagConstraints4.ipadx = 0;
-            gridBagConstraints4.ipady = 2;
-            gridBagConstraints4.weightx = 1.0;
-            gridBagConstraints4.weighty = 1.0;
-            gridBagConstraints4.insets = new Insets(5, 5, 5, 5);
-            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
-            gridBagConstraints3.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints3.gridx = 0;
-            gridBagConstraints3.gridy = 1;
-            gridBagConstraints3.ipadx = 0;
-            gridBagConstraints3.ipady = 1;
-            gridBagConstraints3.weightx = 1.0;
-            gridBagConstraints3.weighty = 1.0;
-            gridBagConstraints3.insets = new Insets(5, 5, 5, 5);
-            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
-            gridBagConstraints2.fill = GridBagConstraints.BOTH;
-            gridBagConstraints2.gridx = 0;
-            gridBagConstraints2.gridy = 0;
-            gridBagConstraints2.ipadx = 0;
-            gridBagConstraints2.ipady = 0;
-            gridBagConstraints2.weightx = 1.0;
-            gridBagConstraints2.weighty = 1.0;
-            gridBagConstraints2.insets = new Insets(5, 5, 5, 5);
-            pnlControlOthers = new JPanel();
-            pnlControlOthers.setLayout(new GridBagLayout());
-            pnlControlOthers.add(getLstEqualizeType(), gridBagConstraints2);
-            pnlControlOthers.add(getTxfColorValue(), gridBagConstraints3);
-            pnlControlOthers.add(getLstColorFormat(), gridBagConstraints4);
-            pnlControlOthers.add(getChbEnableAlpha(), gridBagConstraints5);
+    private JComboBox getChbEqualizer() {
+        if (chbEqualizer == null) {
+            chbEqualizer = new JComboBox(new Object[] { "ONE" });
         }
-        return pnlControlOthers;
-    }
-
-    /**
-     * This method initializes lstEqualizeType
-     * 
-     * @return javax.swing.JList
-     */
-    private JList getLstEqualizeType() {
-        if (lstEqualizeType == null) {
-            lstEqualizeType = new JList();
-        }
-        return lstEqualizeType;
-    }
-
-    /**
-     * This method initializes lstColorFormat
-     * 
-     * @return javax.swing.JList
-     */
-    private JList getLstColorFormat() {
-        if (lstColorFormat == null) {
-            lstColorFormat = new JList();
-        }
-        return lstColorFormat;
+        return chbEqualizer;
     }
 
     /**

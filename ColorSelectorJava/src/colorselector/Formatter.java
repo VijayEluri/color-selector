@@ -20,7 +20,7 @@ public enum Formatter {
         @Override
         public String format(Color c, boolean hasAlpha) {
             return String.format("#%02x%02x%02x", c.getRed(), c.getGreen(),
-                    c.getBlue());
+                    c.getBlue()).toUpperCase();
         }
     },
     RGB("RGB") {

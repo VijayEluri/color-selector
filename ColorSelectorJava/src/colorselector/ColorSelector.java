@@ -5,9 +5,10 @@ package colorselector;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Event;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -15,13 +16,14 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -30,12 +32,11 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
-import java.awt.Font;
 
 /**
  * @author rafael
@@ -47,14 +48,11 @@ public class ColorSelector {
     private JPanel jContentPane = null;
     private JMenuBar jJMenuBar = null;
     private JMenu fileMenu = null;
-    private JMenu editMenu = null;
+    private JMenu mnuOptions = null;
     private JMenu helpMenu = null;
-    private JMenuItem exitMenuItem = null;
+    private JMenuItem mniExit = null;
     private JMenuItem aboutMenuItem = null;
-    private JMenuItem cutMenuItem = null;
-    private JMenuItem copyMenuItem = null;
-    private JMenuItem pasteMenuItem = null;
-    private JMenuItem saveMenuItem = null;
+    private JMenuItem mniRandomColor = null;
     private JDialog aboutDialog = null; // @jve:decl-index=0:visual-constraint="557,34"
     private JPanel aboutContentPane = null;
     private JLabel aboutVersionLabel = null;
@@ -67,15 +65,17 @@ public class ColorSelector {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if (evt.getPropertyName().equals(SliderSpinner.PROP_VALUE)) {
-                changeColor();
+                changeColor();  //  @jve:decl-index=0:
             }
         }
     };
     private SliderSpinner slspAlpha = null;
     private JTextField txfColorValue = null;
     private JCheckBox chbEnableAlpha = null;
-    private JComboBox chbFormat = null;
+    private JComboBox cmbFormat = null;
     private JComboBox chbEqualizer = null;
+    private JMenu mnuFormat = null;
+    private JCheckBoxMenuItem mniEnableAlpha = null;
 
     /**
      * This method initializes frmColorSelector
@@ -124,7 +124,7 @@ public class ColorSelector {
         if (jJMenuBar == null) {
             jJMenuBar = new JMenuBar();
             jJMenuBar.add(getFileMenu());
-            jJMenuBar.add(getEditMenu());
+            jJMenuBar.add(getMnuOptions());
             jJMenuBar.add(getHelpMenu());
         }
         return jJMenuBar;
@@ -139,8 +139,8 @@ public class ColorSelector {
         if (fileMenu == null) {
             fileMenu = new JMenu();
             fileMenu.setText("File");
-            fileMenu.add(getSaveMenuItem());
-            fileMenu.add(getExitMenuItem());
+            fileMenu.add(getMniRandomColor());
+            fileMenu.add(getMniExit());
         }
         return fileMenu;
     }
@@ -150,15 +150,14 @@ public class ColorSelector {
      * 
      * @return javax.swing.JMenu
      */
-    private JMenu getEditMenu() {
-        if (editMenu == null) {
-            editMenu = new JMenu();
-            editMenu.setText("Edit");
-            editMenu.add(getCutMenuItem());
-            editMenu.add(getCopyMenuItem());
-            editMenu.add(getPasteMenuItem());
+    private JMenu getMnuOptions() {
+        if (mnuOptions == null) {
+            mnuOptions = new JMenu();
+            mnuOptions.setText("Options");
+            mnuOptions.add(getMnuFormat());
+            mnuOptions.add(getMniEnableAlpha());
         }
-        return editMenu;
+        return mnuOptions;
     }
 
     /**
@@ -180,17 +179,17 @@ public class ColorSelector {
      * 
      * @return javax.swing.JMenuItem
      */
-    private JMenuItem getExitMenuItem() {
-        if (exitMenuItem == null) {
-            exitMenuItem = new JMenuItem();
-            exitMenuItem.setText("Exit");
-            exitMenuItem.addActionListener(new ActionListener() {
+    private JMenuItem getMniExit() {
+        if (mniExit == null) {
+            mniExit = new JMenuItem();
+            mniExit.setText("Exit");
+            mniExit.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     System.exit(0);
                 }
             });
         }
-        return exitMenuItem;
+        return mniExit;
     }
 
     /**
@@ -263,59 +262,18 @@ public class ColorSelector {
      * 
      * @return javax.swing.JMenuItem
      */
-    private JMenuItem getCutMenuItem() {
-        if (cutMenuItem == null) {
-            cutMenuItem = new JMenuItem();
-            cutMenuItem.setText("Cut");
-            cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X,
-                    Event.CTRL_MASK, true));
+    private JMenuItem getMniRandomColor() {
+        if (mniRandomColor == null) {
+            mniRandomColor = new JMenuItem();
+            mniRandomColor.setText("Random Color");
+            mniRandomColor.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent e) {
+                    generateRandomColor();
+                }
+            });
+            
         }
-        return cutMenuItem;
-    }
-
-    /**
-     * This method initializes jMenuItem
-     * 
-     * @return javax.swing.JMenuItem
-     */
-    private JMenuItem getCopyMenuItem() {
-        if (copyMenuItem == null) {
-            copyMenuItem = new JMenuItem();
-            copyMenuItem.setText("Copy");
-            copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,
-                    Event.CTRL_MASK, true));
-        }
-        return copyMenuItem;
-    }
-
-    /**
-     * This method initializes jMenuItem
-     * 
-     * @return javax.swing.JMenuItem
-     */
-    private JMenuItem getPasteMenuItem() {
-        if (pasteMenuItem == null) {
-            pasteMenuItem = new JMenuItem();
-            pasteMenuItem.setText("Paste");
-            pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V,
-                    Event.CTRL_MASK, true));
-        }
-        return pasteMenuItem;
-    }
-
-    /**
-     * This method initializes jMenuItem
-     * 
-     * @return javax.swing.JMenuItem
-     */
-    private JMenuItem getSaveMenuItem() {
-        if (saveMenuItem == null) {
-            saveMenuItem = new JMenuItem();
-            saveMenuItem.setText("Save");
-            saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-                    Event.CTRL_MASK, true));
-        }
-        return saveMenuItem;
+        return mniRandomColor;
     }
 
     /**
@@ -351,8 +309,31 @@ public class ColorSelector {
         this.getSlspAlpha().setValue(random.nextInt(max));
     }
 
-    private void enableAlpha(boolean enable) {
+    private void enableAlpha(boolean enable, Object source) {
         this.slspAlpha.setEnabled(enable);
+        
+        if(source == chbEnableAlpha) {
+            mniEnableAlpha.setSelected(enable);
+        } else {
+            chbEnableAlpha.setSelected(enable);
+        }
+        
+        this.changeColor();
+    }
+
+    private void formaterChosen(Formatter formatter, Object source) {
+        if (source == this.cmbFormat) {
+            for (Component component : this.getMnuFormat().getMenuComponents()) {
+                JRadioButtonMenuItem jRadioButtonMenuItem = (JRadioButtonMenuItem) component;
+                if(jRadioButtonMenuItem.getText().equals(formatter.getDescription())) {
+                    jRadioButtonMenuItem.setSelected(true);
+                    break;
+                }
+            }
+        } else {
+            this.cmbFormat.setSelectedItem(formatter);
+        }
+        
         this.changeColor();
     }
 
@@ -482,7 +463,7 @@ public class ColorSelector {
             pnlControls.add(getSlspBlue(), gridBagConstraints9);
             pnlControls.add(getSlspAlpha(), gridBagConstraints4);
             pnlControls.add(getTxfColorValue(), gridBagConstraints6);
-            pnlControls.add(getChbFormat(), gridBagConstraints7);
+            pnlControls.add(getCmbFormat(), gridBagConstraints7);
             pnlControls.add(getChbEnableAlpha(), gridBagConstraints8);
             pnlControls.add(getChbEqualizer(), gridBagConstraints5);
         }
@@ -502,7 +483,7 @@ public class ColorSelector {
 
         this.getPnlColor().setBackground(c);
         this.getTxfColorValue().setText(
-                (((Formatter) this.getChbFormat().getSelectedItem()).format(c,
+                (((Formatter) this.getCmbFormat().getSelectedItem()).format(c,
                         this.chbEnableAlpha.isSelected())));
 
     }
@@ -550,7 +531,7 @@ public class ColorSelector {
             chbEnableAlpha
                     .addChangeListener(new javax.swing.event.ChangeListener() {
                         public void stateChanged(javax.swing.event.ChangeEvent e) {
-                            enableAlpha(chbEnableAlpha.isSelected());
+                            enableAlpha(chbEnableAlpha.isSelected(), e.getSource());
                         }
                     });
         }
@@ -558,21 +539,21 @@ public class ColorSelector {
     }
 
     /**
-     * This method initializes chbFormat
+     * This method initializes cmbFormat
      * 
      * @return javax.swing.JComboBox
      */
-    private JComboBox getChbFormat() {
-        if (chbFormat == null) {
-            chbFormat = new JComboBox(Formatter.values());
-            chbFormat.setRenderer(new FormatterRenderer());
-            chbFormat.addItemListener(new java.awt.event.ItemListener() {
+    private JComboBox getCmbFormat() {
+        if (cmbFormat == null) {
+            cmbFormat = new JComboBox(Formatter.values());
+            cmbFormat.setRenderer(new FormatterRenderer());
+            cmbFormat.addItemListener(new java.awt.event.ItemListener() {
                 public void itemStateChanged(java.awt.event.ItemEvent e) {
-                    ColorSelector.this.changeColor();
+                    formaterChosen((Formatter) e.getItem(), e.getSource());
                 }
             });
         }
-        return chbFormat;
+        return cmbFormat;
     }
 
     /**
@@ -585,6 +566,52 @@ public class ColorSelector {
             chbEqualizer = new JComboBox(new Object[] { "ONE" });
         }
         return chbEqualizer;
+    }
+
+    /**
+     * This method initializes mnuFormat
+     * 
+     * @return javax.swing.JMenu
+     */
+    private JMenu getMnuFormat() {
+        if (mnuFormat == null) {
+            mnuFormat = new JMenu();
+            mnuFormat.setText("Color Format");
+
+            // Formats
+            ButtonGroup group = new ButtonGroup();
+            for (final Formatter formatter : Formatter.values()) {
+                final JRadioButtonMenuItem mniFormat = new JRadioButtonMenuItem(
+                        formatter.getDescription());
+                group.add(mniFormat);
+                mniFormat.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent event) {
+                        formaterChosen(formatter, mniFormat);
+                    }
+                });
+                
+                mnuFormat.add(mniFormat);
+            }
+        }
+        return mnuFormat;
+    }
+
+    /**
+     * This method initializes mniEnableAlpha	
+     * 	
+     * @return javax.swing.JCheckBoxMenuItem	
+     */
+    private JCheckBoxMenuItem getMniEnableAlpha() {
+        if (mniEnableAlpha == null) {
+            mniEnableAlpha = new JCheckBoxMenuItem("Enable Alpha");
+            mniEnableAlpha.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent e) {
+                    enableAlpha(mniEnableAlpha.isSelected(), e.getSource());
+                }
+            });
+        }
+        return mniEnableAlpha;
     }
 
     /**

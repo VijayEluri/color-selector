@@ -5,6 +5,7 @@ package colorselector;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ItemEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -17,6 +18,7 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JSpinner.NumberEditor;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.JCheckBox;
 
 /**
  * @author rafael
@@ -33,7 +35,11 @@ public class SliderSpinner extends JPanel {
     public static int MIN_VALUE = 0;
     public static int MAX_VALUE = 255;
 
-    public static final String PROP_VALUE = "value";
+    public static final String PROP_VALUE = "value"; // @jve:decl-index=0:
+
+    public static final String PROP_SELECTED = "selected"; // @jve:decl-index=0:
+
+    private JCheckBox chbSelected = null;
 
     /**
      * This is the default constructor
@@ -82,7 +88,7 @@ public class SliderSpinner extends JPanel {
      */
     private void initialize() {
         GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
-        gridBagConstraints2.gridx = 2;
+        gridBagConstraints2.gridx = 3;
         gridBagConstraints2.ipady = 0;
         gridBagConstraints2.gridy = 0;
 
@@ -92,10 +98,10 @@ public class SliderSpinner extends JPanel {
         gridBagConstraints1.ipadx = 0;
         gridBagConstraints1.ipady = 0;
         gridBagConstraints1.weightx = 1.0;
-        gridBagConstraints1.gridx = 1;
+        gridBagConstraints1.gridx = 2;
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.ipady = 0;
         gridBagConstraints.gridy = 0;
 
@@ -103,10 +109,10 @@ public class SliderSpinner extends JPanel {
         lblTitle.setText("000");
         this.setSize(300, 53);
         this.setLayout(new GridBagLayout());
+        this.add(getChbSelected(), new GridBagConstraints());
         this.add(lblTitle, gridBagConstraints);
         this.add(getSldValue(), gridBagConstraints1);
         this.add(getSpnValue(), gridBagConstraints2);
-
         this.addMouseWheelListener(new MouseWheelListener() {
 
             @Override
@@ -192,13 +198,11 @@ public class SliderSpinner extends JPanel {
 
         return spnValue;
     }
-    
-    
 
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        
+
         this.lblTitle.setEnabled(enabled);
         this.sldValue.setEnabled(enabled);
         this.spnValue.setEnabled(enabled);
@@ -223,6 +227,36 @@ public class SliderSpinner extends JPanel {
 
     public void setTitle(String title) {
         this.lblTitle.setText(title);
+    }
+
+    public boolean isSelected() {
+        return this.getChbSelected().isSelected();
+    }
+
+    public void setSelected(boolean s) {
+        boolean oldValue = this.getChbSelected().isSelected();
+        this.getChbSelected().setSelected(s);
+
+        super.firePropertyChange(PROP_SELECTED, oldValue, s);
+    }
+
+    /**
+     * This method initializes chbSelected
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getChbSelected() {
+        if (chbSelected == null) {
+            chbSelected = new JCheckBox();
+            chbSelected.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent e) {
+                    boolean selected = (e.getStateChange() == ItemEvent.SELECTED);
+                    SliderSpinner.this.firePropertyChange(PROP_SELECTED,
+                            !selected, selected);
+                }
+            });
+        }
+        return chbSelected;
     }
 
 } // @jve:decl-index=0:visual-constraint="40,45"

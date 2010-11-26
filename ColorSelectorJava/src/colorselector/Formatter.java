@@ -39,13 +39,13 @@ public enum Formatter {
         private String formatWithAlpha(Color c) {
             float percenteAlpha = (float) c.getAlpha() / 255;
 
-            return String.format("RGB(%3.1f, %3.1f, %3.1f, %.2f)",
+            return String.format("RGB(%#3.1f, %#3.1f, %#3.1f, %.2f)",
                     toHexPercent(c.getRed()), toHexPercent(c.getGreen()),
                     toHexPercent(c.getBlue()), percenteAlpha);
         }
 
         private String formatWithOutAlpha(Color c) {
-            return String.format("RGB(%3.1f, %3.1f, %3.1f)",
+            return String.format("RGB(%#3.1f, %#3.1f, %#3.1f)",
                     toHexPercent(c.getRed()), toHexPercent(c.getGreen()),
                     toHexPercent(c.getBlue()));
         }

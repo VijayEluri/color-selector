@@ -18,7 +18,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -65,7 +67,10 @@ public class ColorSelector {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if (evt.getPropertyName().equals(SliderSpinner.PROP_VALUE)) {
-                changeColor();  //  @jve:decl-index=0:
+                sliderChanged((SliderSpinner) evt.getSource()); // @jve:decl-index=0:
+            } else if (evt.getPropertyName()
+                    .equals(SliderSpinner.PROP_SELECTED)) {
+                sliderSelected((SliderSpinner) evt.getSource()); // @jve:decl-index=0:
             }
         }
     };
@@ -76,6 +81,121 @@ public class ColorSelector {
     private JComboBox chbEqualizer = null;
     private JMenu mnuFormat = null;
     private JCheckBoxMenuItem mniEnableAlpha = null;
+
+    private Set<SliderSpinner> syncronizedSliders = new HashSet<SliderSpinner>(); // @jve:decl-index=0:
+
+    private void changeSliderSpinnerValue(SliderSpinner sliderSpinner, int value) {
+        sliderSpinner.removePropertyChangeListener(this.changeListener);
+        sliderSpinner.setValue(value);
+        sliderSpinner.addPropertyChangeListener(this.changeListener);
+    }
+
+    private void generateRandomColor() {
+        Random random = new Random();
+        int max = SliderSpinner.MAX_VALUE + 1;
+        int syncronizedValue = random.nextInt(max);
+
+        this.changeSliderSpinnerValue(
+                this.getSlspRed(),
+                this.syncronizedSliders.contains(this.getSlspRed()) ? syncronizedValue
+                        : random.nextInt(max));
+        this.changeSliderSpinnerValue(
+                this.getSlspGreen(),
+                this.syncronizedSliders.contains(this.getSlspGreen()) ? syncronizedValue
+                        : random.nextInt(max));
+        this.changeSliderSpinnerValue(
+                this.getSlspBlue(),
+                this.syncronizedSliders.contains(this.getSlspBlue()) ? syncronizedValue
+                        : random.nextInt(max));
+        this.changeSliderSpinnerValue(
+                this.getSlspAlpha(),
+                this.syncronizedSliders.contains(this.getSlspAlpha()) ? syncronizedValue
+                        : random.nextInt(max));
+
+        this.changeColor();
+    }
+
+    private void sliderChanged(SliderSpinner source) {
+        if (this.syncronizedSliders.contains(source)) {
+            for (SliderSpinner sliderSpinner : this.syncronizedSliders) {
+                if (!sliderSpinner.equals(source)) {
+                    this.changeSliderSpinnerValue(sliderSpinner,
+                            source.getValue());
+                }
+            }
+        }
+
+        this.changeColor();
+    }
+
+    private void sliderSelected(SliderSpinner source) {
+        if (source.isSelected()) {
+            this.syncronizedSliders.add(source);
+            System.out.println(this.syncronizedSliders);
+
+            int sum = 0;
+            for (SliderSpinner sliderSpinner : this.syncronizedSliders) {
+                sum += sliderSpinner.getValue();
+            }
+            int media = sum / this.syncronizedSliders.size();
+            System.out.println(media);
+
+            for (SliderSpinner sliderSpinner : this.syncronizedSliders) {
+                this.changeSliderSpinnerValue(sliderSpinner, media);
+            }
+
+            this.changeColor();
+        } else {
+            this.syncronizedSliders.remove(source);
+        }
+    }
+
+    private void changeColor() {
+        Color c = chbEnableAlpha.isSelected() ? //
+        new Color(this.getSlspRed().getValue(), //
+                this.getSlspGreen().getValue(), //
+                this.getSlspBlue().getValue(), //
+                this.getSlspAlpha().getValue())
+                : //
+                new Color(this.getSlspRed().getValue(), //
+                        this.getSlspGreen().getValue(), //
+                        this.getSlspBlue().getValue());
+
+        this.getPnlColor().setBackground(c);
+        this.getTxfColorValue().setText(
+                (((Formatter) this.getCmbFormat().getSelectedItem()).format(c,
+                        this.chbEnableAlpha.isSelected())));
+
+    }
+
+    private void enableAlpha(boolean enable, Object source) {
+        this.slspAlpha.setEnabled(enable);
+
+        if (source == chbEnableAlpha) {
+            mniEnableAlpha.setSelected(enable);
+        } else {
+            chbEnableAlpha.setSelected(enable);
+        }
+
+        this.changeColor();
+    }
+
+    private void formaterChosen(Formatter formatter, Object source) {
+        if (source == this.cmbFormat) {
+            for (Component component : this.getMnuFormat().getMenuComponents()) {
+                JRadioButtonMenuItem jRadioButtonMenuItem = (JRadioButtonMenuItem) component;
+                if (jRadioButtonMenuItem.getText().equals(
+                        formatter.getDescription())) {
+                    jRadioButtonMenuItem.setSelected(true);
+                    break;
+                }
+            }
+        } else {
+            this.cmbFormat.setSelectedItem(formatter);
+        }
+
+        this.changeColor();
+    }
 
     /**
      * This method initializes frmColorSelector
@@ -266,12 +386,13 @@ public class ColorSelector {
         if (mniRandomColor == null) {
             mniRandomColor = new JMenuItem();
             mniRandomColor.setText("Random Color");
-            mniRandomColor.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent e) {
-                    generateRandomColor();
-                }
-            });
-            
+            mniRandomColor
+                    .addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent e) {
+                            generateRandomColor();
+                        }
+                    });
+
         }
         return mniRandomColor;
     }
@@ -298,43 +419,6 @@ public class ColorSelector {
             });
         }
         return pnlColor;
-    }
-
-    private void generateRandomColor() {
-        Random random = new Random();
-        int max = SliderSpinner.MAX_VALUE + 1;
-        this.getSlspRed().setValue(random.nextInt(max));
-        this.getSlspGreen().setValue(random.nextInt(max));
-        this.getSlspBlue().setValue(random.nextInt(max));
-        this.getSlspAlpha().setValue(random.nextInt(max));
-    }
-
-    private void enableAlpha(boolean enable, Object source) {
-        this.slspAlpha.setEnabled(enable);
-        
-        if(source == chbEnableAlpha) {
-            mniEnableAlpha.setSelected(enable);
-        } else {
-            chbEnableAlpha.setSelected(enable);
-        }
-        
-        this.changeColor();
-    }
-
-    private void formaterChosen(Formatter formatter, Object source) {
-        if (source == this.cmbFormat) {
-            for (Component component : this.getMnuFormat().getMenuComponents()) {
-                JRadioButtonMenuItem jRadioButtonMenuItem = (JRadioButtonMenuItem) component;
-                if(jRadioButtonMenuItem.getText().equals(formatter.getDescription())) {
-                    jRadioButtonMenuItem.setSelected(true);
-                    break;
-                }
-            }
-        } else {
-            this.cmbFormat.setSelectedItem(formatter);
-        }
-        
-        this.changeColor();
     }
 
     /**
@@ -394,98 +478,83 @@ public class ColorSelector {
      */
     private JPanel getPnlControls() {
         if (pnlControls == null) {
-            GridBagConstraints gridBagConstraints5 = new GridBagConstraints();
-            gridBagConstraints5.fill = GridBagConstraints.NONE;
-            gridBagConstraints5.gridy = 0;
-            gridBagConstraints5.weightx = 1.0;
-            gridBagConstraints5.anchor = GridBagConstraints.WEST;
-            gridBagConstraints5.insets = new Insets(5, 5, 5, 5);
-            gridBagConstraints5.gridx = 1;
-            GridBagConstraints gridBagConstraints7 = new GridBagConstraints();
-            gridBagConstraints7.fill = GridBagConstraints.NONE;
-            gridBagConstraints7.gridy = 2;
-            gridBagConstraints7.weightx = 1.0;
-            gridBagConstraints7.insets = new Insets(5, 5, 5, 5);
-            gridBagConstraints7.anchor = GridBagConstraints.WEST;
-            gridBagConstraints7.gridx = 1;
-            GridBagConstraints gridBagConstraints9 = new GridBagConstraints();
-            gridBagConstraints9.gridx = 0;
-            gridBagConstraints9.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints9.insets = new Insets(5, 5, 5, 5);
-            gridBagConstraints9.weightx = 4.0;
-            gridBagConstraints9.gridy = 2;
-            GridBagConstraints gridBagConstraints8 = new GridBagConstraints();
-            gridBagConstraints8.insets = new Insets(5, 5, 5, 5);
-            gridBagConstraints8.gridy = 3;
-            gridBagConstraints8.ipadx = 0;
-            gridBagConstraints8.ipady = 0;
-            gridBagConstraints8.anchor = GridBagConstraints.WEST;
-            gridBagConstraints8.gridx = 1;
-            GridBagConstraints gridBagConstraints6 = new GridBagConstraints();
-            gridBagConstraints6.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints6.gridx = 1;
-            gridBagConstraints6.gridy = 1;
-            gridBagConstraints6.ipadx = 0;
-            gridBagConstraints6.ipady = 0;
-            gridBagConstraints6.weightx = 1.0;
-            gridBagConstraints6.anchor = GridBagConstraints.WEST;
-            gridBagConstraints6.insets = new Insets(5, 5, 5, 5);
-            GridBagConstraints gridBagConstraints4 = new GridBagConstraints();
-            gridBagConstraints4.insets = new Insets(5, 5, 5, 5);
-            gridBagConstraints4.gridy = 3;
-            gridBagConstraints4.ipadx = 0;
-            gridBagConstraints4.ipady = 0;
-            gridBagConstraints4.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints4.weightx = 4.0;
-            gridBagConstraints4.weighty = 0.0;
-            gridBagConstraints4.gridx = 0;
-            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
-            gridBagConstraints2.insets = new Insets(5, 5, 5, 5);
-            gridBagConstraints2.gridy = 1;
-            gridBagConstraints2.ipadx = 0;
-            gridBagConstraints2.ipady = 0;
-            gridBagConstraints2.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints2.weightx = 4.0;
-            gridBagConstraints2.gridx = 0;
-            GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
-            gridBagConstraints1.insets = new Insets(5, 5, 5, 5);
-            gridBagConstraints1.gridy = 0;
-            gridBagConstraints1.ipadx = 0;
-            gridBagConstraints1.ipady = 0;
-            gridBagConstraints1.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints1.weightx = 4.0;
-            gridBagConstraints1.weighty = 0.0;
-            gridBagConstraints1.gridx = 0;
+            GridBagConstraints gridBagChbEqualizer = new GridBagConstraints();
+            gridBagChbEqualizer.fill = GridBagConstraints.NONE;
+            gridBagChbEqualizer.gridy = 0;
+            gridBagChbEqualizer.weightx = 1.0;
+            gridBagChbEqualizer.anchor = GridBagConstraints.WEST;
+            gridBagChbEqualizer.insets = new Insets(5, 5, 5, 5);
+            gridBagChbEqualizer.gridx = 1;
+
+            GridBagConstraints gridBagCmbFormat = new GridBagConstraints();
+            gridBagCmbFormat.fill = GridBagConstraints.NONE;
+            gridBagCmbFormat.gridy = 2;
+            gridBagCmbFormat.weightx = 1.0;
+            gridBagCmbFormat.insets = new Insets(5, 5, 5, 5);
+            gridBagCmbFormat.anchor = GridBagConstraints.WEST;
+            gridBagCmbFormat.gridx = 1;
+
+            GridBagConstraints gridBagSlspBlue = new GridBagConstraints();
+            gridBagSlspBlue.gridx = 0;
+            gridBagSlspBlue.fill = GridBagConstraints.HORIZONTAL;
+            gridBagSlspBlue.insets = new Insets(5, 5, 5, 5);
+            gridBagSlspBlue.weightx = 4.0;
+            gridBagSlspBlue.gridy = 2;
+            GridBagConstraints gridBagEnableAlpha = new GridBagConstraints();
+            gridBagEnableAlpha.insets = new Insets(5, 5, 5, 5);
+            gridBagEnableAlpha.gridy = 3;
+            gridBagEnableAlpha.ipadx = 0;
+            gridBagEnableAlpha.ipady = 0;
+            gridBagEnableAlpha.anchor = GridBagConstraints.WEST;
+            gridBagEnableAlpha.gridx = 1;
+            GridBagConstraints gridBagTxfColorValue = new GridBagConstraints();
+            gridBagTxfColorValue.fill = GridBagConstraints.HORIZONTAL;
+            gridBagTxfColorValue.gridx = 1;
+            gridBagTxfColorValue.gridy = 1;
+            gridBagTxfColorValue.ipadx = 0;
+            gridBagTxfColorValue.ipady = 0;
+            gridBagTxfColorValue.weightx = 1.0;
+            gridBagTxfColorValue.anchor = GridBagConstraints.WEST;
+            gridBagTxfColorValue.insets = new Insets(5, 5, 5, 5);
+            GridBagConstraints gridBagSlspAlpha = new GridBagConstraints();
+            gridBagSlspAlpha.insets = new Insets(5, 5, 5, 5);
+            gridBagSlspAlpha.gridy = 3;
+            gridBagSlspAlpha.ipadx = 0;
+            gridBagSlspAlpha.ipady = 0;
+            gridBagSlspAlpha.fill = GridBagConstraints.HORIZONTAL;
+            gridBagSlspAlpha.weightx = 4.0;
+            gridBagSlspAlpha.weighty = 0.0;
+            gridBagSlspAlpha.gridx = 0;
+            GridBagConstraints gridBagSlspGreen = new GridBagConstraints();
+            gridBagSlspGreen.insets = new Insets(5, 5, 5, 5);
+            gridBagSlspGreen.gridy = 1;
+            gridBagSlspGreen.ipadx = 0;
+            gridBagSlspGreen.ipady = 0;
+            gridBagSlspGreen.fill = GridBagConstraints.HORIZONTAL;
+            gridBagSlspGreen.weightx = 4.0;
+            gridBagSlspGreen.gridx = 0;
+            GridBagConstraints gridBagSlspRed = new GridBagConstraints();
+            gridBagSlspRed.insets = new Insets(5, 5, 5, 5);
+            gridBagSlspRed.gridy = 0;
+            gridBagSlspRed.ipadx = 0;
+            gridBagSlspRed.ipady = 0;
+            gridBagSlspRed.fill = GridBagConstraints.HORIZONTAL;
+            gridBagSlspRed.weightx = 4.0;
+            gridBagSlspRed.weighty = 0.0;
+            gridBagSlspRed.gridx = 0;
+
             pnlControls = new JPanel();
             pnlControls.setLayout(new GridBagLayout());
-            pnlControls.add(getSlspRed(), gridBagConstraints1);
-            pnlControls.add(getSlspGreen(), gridBagConstraints2);
-            pnlControls.add(getSlspBlue(), gridBagConstraints9);
-            pnlControls.add(getSlspAlpha(), gridBagConstraints4);
-            pnlControls.add(getTxfColorValue(), gridBagConstraints6);
-            pnlControls.add(getCmbFormat(), gridBagConstraints7);
-            pnlControls.add(getChbEnableAlpha(), gridBagConstraints8);
-            pnlControls.add(getChbEqualizer(), gridBagConstraints5);
+            pnlControls.add(getSlspRed(), gridBagSlspRed);
+            pnlControls.add(getSlspGreen(), gridBagSlspGreen);
+            pnlControls.add(getSlspBlue(), gridBagSlspBlue);
+            pnlControls.add(getSlspAlpha(), gridBagSlspAlpha);
+            pnlControls.add(getTxfColorValue(), gridBagTxfColorValue);
+            pnlControls.add(getCmbFormat(), gridBagCmbFormat);
+            pnlControls.add(getChbEnableAlpha(), gridBagEnableAlpha);
+            pnlControls.add(getChbEqualizer(), gridBagChbEqualizer);
         }
         return pnlControls;
-    }
-
-    private void changeColor() {
-        Color c = chbEnableAlpha.isSelected() ? //
-        new Color(this.getSlspRed().getValue(), //
-                this.getSlspGreen().getValue(), //
-                this.getSlspBlue().getValue(), //
-                this.getSlspAlpha().getValue())
-                : //
-                new Color(this.getSlspRed().getValue(), //
-                        this.getSlspGreen().getValue(), //
-                        this.getSlspBlue().getValue());
-
-        this.getPnlColor().setBackground(c);
-        this.getTxfColorValue().setText(
-                (((Formatter) this.getCmbFormat().getSelectedItem()).format(c,
-                        this.chbEnableAlpha.isSelected())));
-
     }
 
     /**
@@ -531,7 +600,8 @@ public class ColorSelector {
             chbEnableAlpha
                     .addChangeListener(new javax.swing.event.ChangeListener() {
                         public void stateChanged(javax.swing.event.ChangeEvent e) {
-                            enableAlpha(chbEnableAlpha.isSelected(), e.getSource());
+                            enableAlpha(chbEnableAlpha.isSelected(),
+                                    e.getSource());
                         }
                     });
         }
@@ -590,7 +660,7 @@ public class ColorSelector {
                         formaterChosen(formatter, mniFormat);
                     }
                 });
-                
+
                 mnuFormat.add(mniFormat);
             }
         }
@@ -598,9 +668,9 @@ public class ColorSelector {
     }
 
     /**
-     * This method initializes mniEnableAlpha	
-     * 	
-     * @return javax.swing.JCheckBoxMenuItem	
+     * This method initializes mniEnableAlpha
+     * 
+     * @return javax.swing.JCheckBoxMenuItem
      */
     private JCheckBoxMenuItem getMniEnableAlpha() {
         if (mniEnableAlpha == null) {
@@ -622,7 +692,10 @@ public class ColorSelector {
             public void run() {
                 ColorSelector application = new ColorSelector();
                 application.getFrmColorSelector().setVisible(true);
-                application.changeColor();
+                application.getSlspRed().setValue(SliderSpinner.MAX_VALUE);
+                application.getSlspGreen().setValue(SliderSpinner.MAX_VALUE);
+                application.getSlspBlue().setValue(SliderSpinner.MAX_VALUE);
+                application.getSlspAlpha().setValue(SliderSpinner.MIN_VALUE);
             }
         });
     }

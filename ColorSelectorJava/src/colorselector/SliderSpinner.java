@@ -7,10 +7,10 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
@@ -131,8 +131,9 @@ public class SliderSpinner extends JPanel {
             public void mouseWheelMoved(MouseWheelEvent e) {
                 SliderSpinner.this.incrementValue(
                         (e.getWheelRotation() < 0),
-                        (e.isControlDown() || e.getModifiersEx() == (MouseEvent.META_MASK | MouseWheelEvent.BUTTON3)));
-
+                        (e.isControlDown() || ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0)));
+                // Para botão do Mouse ver
+                // http://www.exampledepot.com/egs/java.awt.event/MouseEvents.html
             }
         });
     }

@@ -19,6 +19,7 @@ import javax.swing.JSpinner;
 import javax.swing.JSpinner.NumberEditor;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JCheckBox;
+import java.awt.Insets;
 
 /**
  * @author rafael
@@ -87,32 +88,40 @@ public class SliderSpinner extends JPanel {
      * @return void
      */
     private void initialize() {
-        GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
-        gridBagConstraints2.gridx = 3;
-        gridBagConstraints2.ipady = 0;
-        gridBagConstraints2.gridy = 0;
+        Insets insets = new Insets(0, 5, 0, 5);
+        
+      GridBagConstraints gridBagChbSelected = new GridBagConstraints();
+        gridBagChbSelected.insets = insets;
+        
+        GridBagConstraints gridBagSpnValue = new GridBagConstraints();
+        gridBagSpnValue.gridx = 3;
+        gridBagSpnValue.ipady = 0;
+        gridBagSpnValue.insets = insets;
+        gridBagSpnValue.gridy = 0;
 
-        GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
-        gridBagConstraints1.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints1.gridy = 0;
-        gridBagConstraints1.ipadx = 0;
-        gridBagConstraints1.ipady = 0;
-        gridBagConstraints1.weightx = 1.0;
-        gridBagConstraints1.gridx = 2;
+        GridBagConstraints gridBagSldValue = new GridBagConstraints();
+        gridBagSldValue.fill = GridBagConstraints.HORIZONTAL;
+        gridBagSldValue.gridy = 0;
+        gridBagSldValue.ipadx = 0;
+        gridBagSldValue.ipady = 0;
+        gridBagSldValue.weightx = 1.0;
+        gridBagSldValue.insets = insets;
+        gridBagSldValue.gridx = 2;
 
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.ipady = 0;
-        gridBagConstraints.gridy = 0;
+        GridBagConstraints gridBagLblTitle = new GridBagConstraints();
+        gridBagLblTitle.gridx = 1;
+        gridBagLblTitle.ipady = 0;
+        gridBagLblTitle.insets = insets;
+        gridBagLblTitle.gridy = 0;
 
         lblTitle = new JLabel();
         lblTitle.setText("000");
         this.setSize(300, 53);
         this.setLayout(new GridBagLayout());
-        this.add(getChbSelected(), new GridBagConstraints());
-        this.add(lblTitle, gridBagConstraints);
-        this.add(getSldValue(), gridBagConstraints1);
-        this.add(getSpnValue(), gridBagConstraints2);
+        this.add(getChbSelected(), gridBagChbSelected);
+        this.add(lblTitle, gridBagLblTitle);
+        this.add(getSldValue(), gridBagSldValue);
+        this.add(getSpnValue(), gridBagSpnValue);
         this.addMouseWheelListener(new MouseWheelListener() {
 
             @Override

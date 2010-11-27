@@ -3,8 +3,10 @@
  */
 package colorselector;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -12,14 +14,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JSpinner.NumberEditor;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.JCheckBox;
-import java.awt.Insets;
 
 /**
  * @author rafael
@@ -32,6 +33,8 @@ public class SliderSpinner extends JPanel {
     private JSlider sldValue = null;
     private JSpinner spnValue = null;
     private int value = 0;
+
+    private boolean contrastTitleFont;
 
     public static int MIN_VALUE = 0;
     public static int MAX_VALUE = 255;
@@ -89,10 +92,10 @@ public class SliderSpinner extends JPanel {
      */
     private void initialize() {
         Insets insets = new Insets(0, 5, 0, 5);
-        
-      GridBagConstraints gridBagChbSelected = new GridBagConstraints();
+
+        GridBagConstraints gridBagChbSelected = new GridBagConstraints();
         gridBagChbSelected.insets = insets;
-        
+
         GridBagConstraints gridBagSpnValue = new GridBagConstraints();
         gridBagSpnValue.gridx = 3;
         gridBagSpnValue.ipady = 0;
@@ -208,6 +211,25 @@ public class SliderSpinner extends JPanel {
         return spnValue;
     }
 
+    /**
+     * This method initializes chbSelected
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getChbSelected() {
+        if (chbSelected == null) {
+            chbSelected = new JCheckBox();
+            chbSelected.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent e) {
+                    boolean selected = (e.getStateChange() == ItemEvent.SELECTED);
+                    SliderSpinner.this.firePropertyChange(PROP_SELECTED,
+                            !selected, selected);
+                }
+            });
+        }
+        return chbSelected;
+    }
+
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
@@ -215,6 +237,14 @@ public class SliderSpinner extends JPanel {
         this.lblTitle.setEnabled(enabled);
         this.sldValue.setEnabled(enabled);
         this.spnValue.setEnabled(enabled);
+    }
+
+    @Override
+    public void setBackground(Color c) {
+        super.setBackground(c);
+
+        this.getSldValue().setBackground(c);
+        this.getChbSelected().setBackground(c);
     }
 
     public int getValue() {
@@ -249,23 +279,15 @@ public class SliderSpinner extends JPanel {
         super.firePropertyChange(PROP_SELECTED, oldValue, s);
     }
 
-    /**
-     * This method initializes chbSelected
-     * 
-     * @return javax.swing.JCheckBox
-     */
-    private JCheckBox getChbSelected() {
-        if (chbSelected == null) {
-            chbSelected = new JCheckBox();
-            chbSelected.addItemListener(new java.awt.event.ItemListener() {
-                public void itemStateChanged(java.awt.event.ItemEvent e) {
-                    boolean selected = (e.getStateChange() == ItemEvent.SELECTED);
-                    SliderSpinner.this.firePropertyChange(PROP_SELECTED,
-                            !selected, selected);
-                }
-            });
-        }
-        return chbSelected;
+    public boolean isContrastTitleFont() {
+        return contrastTitleFont;
+    }
+
+    public void setContrastTitleFont(boolean contrastTitleFont) {
+        this.contrastTitleFont = contrastTitleFont;
+
+        this.lblTitle.setForeground(contrastTitleFont ? Color.WHITE
+                : Color.BLACK);
     }
 
 } // @jve:decl-index=0:visual-constraint="40,45"

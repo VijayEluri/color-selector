@@ -79,6 +79,14 @@ public class ColorSelector {
             }
         }
     };
+    private PropertyChangeListener sliderColorListener = new PropertyChangeListener() {
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            if (evt.getPropertyName().equals(SliderSpinner.PROP_VALUE)) {
+                changeSliderColor((SliderSpinner) evt.getSource());  //  @jve:decl-index=0:
+            }
+        }
+    };
 
     private ItemListener webColorListener = new ItemListener() {
         @Override
@@ -108,6 +116,16 @@ public class ColorSelector {
         sliderSpinner.removePropertyChangeListener(this.sliderListener);
         sliderSpinner.setValue(value);
         sliderSpinner.addPropertyChangeListener(this.sliderListener);
+    }
+
+    private void changeSliderColor(SliderSpinner source) {
+        if(source == this.getSlspRed()) {
+            source.setBackground(new Color(source.getValue(), 0, 0));
+        } else if(source == this.getSlspGreen()) {
+            source.setBackground(new Color(0, source.getValue(), 0));
+        } if(source == this.getSlspBlue()) {
+            source.setBackground(new Color(0, 0, source.getValue()));
+        } 
     }
 
     private void generateRandomColor() {
@@ -144,21 +162,19 @@ public class ColorSelector {
                 }
             }
         }
-
+        
         this.changeColor(source);
     }
 
     private void sliderSelected(SliderSpinner source) {
         if (source.isSelected()) {
             this.syncronizedSliders.add(source);
-            System.out.println(this.syncronizedSliders);
 
             int sum = 0;
             for (SliderSpinner sliderSpinner : this.syncronizedSliders) {
                 sum += sliderSpinner.getValue();
             }
             int media = sum / this.syncronizedSliders.size();
-            System.out.println(media);
 
             for (SliderSpinner sliderSpinner : this.syncronizedSliders) {
                 this.changeSliderSpinnerValue(sliderSpinner, media);
@@ -526,6 +542,8 @@ public class ColorSelector {
             slspRed = new SliderSpinner();
             slspRed.setTitle("R");
             slspRed.addPropertyChangeListener(this.sliderListener);
+            slspRed.addPropertyChangeListener(this.sliderColorListener);
+            slspRed.setContrastTitleFont(true);
         }
         return slspRed;
     }
@@ -537,17 +555,11 @@ public class ColorSelector {
      */
     private SliderSpinner getSlspGreen() {
         if (slspGreen == null) {
-            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
-            gridBagConstraints3.fill = GridBagConstraints.HORIZONTAL;
-            gridBagConstraints3.gridx = 0;
-            gridBagConstraints3.gridy = 2;
-            gridBagConstraints3.ipadx = 0;
-            gridBagConstraints3.ipady = 2;
-            gridBagConstraints3.weightx = 1.0;
-            gridBagConstraints3.insets = new Insets(5, 5, 5, 5);
             slspGreen = new SliderSpinner();
             slspGreen.setTitle("G");
             slspGreen.addPropertyChangeListener(this.sliderListener);
+            slspGreen.addPropertyChangeListener(this.sliderColorListener);
+            slspGreen.setContrastTitleFont(true);
         }
         return slspGreen;
     }
@@ -562,6 +574,8 @@ public class ColorSelector {
             slspBlue = new SliderSpinner();
             slspBlue.setTitle("B");
             slspBlue.addPropertyChangeListener(this.sliderListener);
+            slspBlue.addPropertyChangeListener(this.sliderColorListener);
+            slspBlue.setContrastTitleFont(true);
         }
         return slspBlue;
     }

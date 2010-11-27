@@ -5,6 +5,7 @@ package colorselector;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.Locale;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -17,35 +18,55 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 public enum Formatter {
 
     HEX("Hexadecimal") {
+        private static final String HEXADECIMAL_FORMAT = "#%02x%02x%02x";
+
         @Override
         public String format(Color c, boolean hasAlpha) {
-            return String.format("#%02x%02x%02x", c.getRed(), c.getGreen(),
+            return String.format(HEXADECIMAL_FORMAT, c.getRed(), c.getGreen(),
                     c.getBlue()).toUpperCase();
         }
     },
     RGB("RGB") {
+        private static final String RGB_FORMAT = "rgb(%3d, %3d, %3d)";
+
         @Override
         public String format(Color c, boolean hasAlpha) {
-            return String.format("RGB(%03d, %03d, %03d)", c.getRed(),
-                    c.getGreen(), c.getBlue());
+            return String.format(RGB_FORMAT, c.getRed(), c.getGreen(),
+                    c.getBlue());
         }
     },
     PERCENT("Percent") {
+        private final String RGB_FORMAT = "rgb(%3d%%, %3d%%, %3d%%)";
+        private final String RGBA_FORMAT = "rgba(%3d%%, %3d%%, %3d%%, %.2f)";
 
-        private float toHexPercent(int value) {
-            return (float) (100.0 * value / 255);
+        private float toHexProportion(int value) {
+            return ((float) value) / 255;
         }
 
+        private int toHexPercent(int value) {
+            return (int) (100 * toHexProportion(value));
+        }
+
+        /**
+         * See http://www.w3.org/TR/css3-color/#rgba-color
+         * 
+         * @param c
+         * @return
+         */
         private String formatWithAlpha(Color c) {
-            float percenteAlpha = (float) c.getAlpha() / 255;
-
-            return String.format("RGB(%#3.1f, %#3.1f, %#3.1f, %.2f)",
+            return String.format(Locale.US, RGBA_FORMAT,
                     toHexPercent(c.getRed()), toHexPercent(c.getGreen()),
-                    toHexPercent(c.getBlue()), percenteAlpha);
+                    toHexPercent(c.getBlue()), toHexProportion(c.getAlpha()));
         }
 
+        /**
+         * See http://www.w3.org/TR/css3-color/#rgb-color
+         * 
+         * @param c
+         * @return
+         */
         private String formatWithOutAlpha(Color c) {
-            return String.format("RGB(%#3.1f, %#3.1f, %#3.1f)",
+            return String.format(Locale.US, RGB_FORMAT,
                     toHexPercent(c.getRed()), toHexPercent(c.getGreen()),
                     toHexPercent(c.getBlue()));
         }

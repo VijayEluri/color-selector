@@ -16,6 +16,8 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashSet;
@@ -27,6 +29,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -63,7 +66,8 @@ public class ColorSelector {
     private SliderSpinner slspGreen = null;
     private SliderSpinner slspBlue = null;
     private JPanel pnlControls = null;
-    private PropertyChangeListener changeListener = new PropertyChangeListener() {
+
+    private PropertyChangeListener sliderListener = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if (evt.getPropertyName().equals(SliderSpinner.PROP_VALUE)) {
@@ -74,20 +78,29 @@ public class ColorSelector {
             }
         }
     };
+
+    private ItemListener webColorListener = new ItemListener() {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            webColorSelected();
+
+        }
+    };
+
     private SliderSpinner slspAlpha = null;
     private JTextField txfColorValue = null;
     private JCheckBox chbEnableAlpha = null;
     private JComboBox cmbFormat = null;
-    private JComboBox chbEqualizer = null;
+    private JComboBox cmbWebColors = null;
     private JMenu mnuFormat = null;
     private JCheckBoxMenuItem mniEnableAlpha = null;
 
     private Set<SliderSpinner> syncronizedSliders = new HashSet<SliderSpinner>(); // @jve:decl-index=0:
 
     private void changeSliderSpinnerValue(SliderSpinner sliderSpinner, int value) {
-        sliderSpinner.removePropertyChangeListener(this.changeListener);
+        sliderSpinner.removePropertyChangeListener(this.sliderListener);
         sliderSpinner.setValue(value);
-        sliderSpinner.addPropertyChangeListener(this.changeListener);
+        sliderSpinner.addPropertyChangeListener(this.sliderListener);
     }
 
     private void generateRandomColor() {
@@ -112,7 +125,7 @@ public class ColorSelector {
                 this.syncronizedSliders.contains(this.getSlspAlpha()) ? syncronizedValue
                         : random.nextInt(max));
 
-        this.changeColor();
+        this.changeColor(this.getPnlColor());
     }
 
     private void sliderChanged(SliderSpinner source) {
@@ -125,7 +138,7 @@ public class ColorSelector {
             }
         }
 
-        this.changeColor();
+        this.changeColor(source);
     }
 
     private void sliderSelected(SliderSpinner source) {
@@ -144,28 +157,61 @@ public class ColorSelector {
                 this.changeSliderSpinnerValue(sliderSpinner, media);
             }
 
-            this.changeColor();
+            this.changeColor(source);
         } else {
             this.syncronizedSliders.remove(source);
         }
     }
 
-    private void changeColor() {
-        Color c = chbEnableAlpha.isSelected() ? //
-        new Color(this.getSlspRed().getValue(), //
+    private void webColorSelected() {
+        WebColor webColor = (WebColor) this.getCmbWebColors().getSelectedItem();
+
+        if (webColor != WebColor.UNDEFINED) {
+            this.changeSliderSpinnerValue(this.getSlspRed(), webColor.getRed());
+            this.changeSliderSpinnerValue(this.getSlspGreen(),
+                    webColor.getGreen());
+            this.changeSliderSpinnerValue(this.getSlspBlue(),
+                    webColor.getBlue());
+
+            this.changeColor(this.getCmbWebColors());
+        }
+    }
+
+    private void changeColor(JComponent source) {
+        Color simpleColor = new Color(this.getSlspRed().getValue(), //
                 this.getSlspGreen().getValue(), //
                 this.getSlspBlue().getValue(), //
-                this.getSlspAlpha().getValue())
-                : //
-                new Color(this.getSlspRed().getValue(), //
-                        this.getSlspGreen().getValue(), //
-                        this.getSlspBlue().getValue());
+                this.getSlspAlpha().getValue());
+        Color alphaColor = new Color(this.getSlspRed().getValue(), //
+                this.getSlspGreen().getValue(), //
+                this.getSlspBlue().getValue());
+        Color c = chbEnableAlpha.isSelected() ? simpleColor : alphaColor;
 
         this.getPnlColor().setBackground(c);
         this.getTxfColorValue().setText(
                 (((Formatter) this.getCmbFormat().getSelectedItem()).format(c,
                         this.chbEnableAlpha.isSelected())));
+        if (source != this.getCmbWebColors()) {
+            changeCmbWebColors(c);
+        }
+    }
 
+    private void changeCmbWebColors(Color c) {
+        WebColor selected = WebColor.UNDEFINED;
+        System.out.println(c);
+        for (WebColor webColor : WebColor.values()) {
+            if ((c.getRed() == webColor.getRed())
+                    && (c.getGreen() == webColor.getGreen())
+                    && (c.getBlue() == webColor.getBlue())) {
+                selected = webColor;
+                break;
+            }
+        }
+        System.out.println(selected);
+        
+        this.getCmbWebColors().removeItemListener(webColorListener);
+        this.getCmbWebColors().setSelectedItem(selected);
+        this.getCmbWebColors().addItemListener(webColorListener);
     }
 
     private void enableAlpha(boolean enable, Object source) {
@@ -177,7 +223,7 @@ public class ColorSelector {
             chbEnableAlpha.setSelected(enable);
         }
 
-        this.changeColor();
+        this.changeColor(this.getChbEnableAlpha());
     }
 
     private void formaterChosen(Formatter formatter, Object source) {
@@ -194,7 +240,7 @@ public class ColorSelector {
             this.cmbFormat.setSelectedItem(formatter);
         }
 
-        this.changeColor();
+        this.changeColor(this.getCmbFormat());
     }
 
     /**
@@ -430,7 +476,7 @@ public class ColorSelector {
         if (slspRed == null) {
             slspRed = new SliderSpinner();
             slspRed.setTitle("R");
-            slspRed.addPropertyChangeListener(this.changeListener);
+            slspRed.addPropertyChangeListener(this.sliderListener);
         }
         return slspRed;
     }
@@ -452,7 +498,7 @@ public class ColorSelector {
             gridBagConstraints3.insets = new Insets(5, 5, 5, 5);
             slspGreen = new SliderSpinner();
             slspGreen.setTitle("G");
-            slspGreen.addPropertyChangeListener(this.changeListener);
+            slspGreen.addPropertyChangeListener(this.sliderListener);
         }
         return slspGreen;
     }
@@ -466,7 +512,7 @@ public class ColorSelector {
         if (slspBlue == null) {
             slspBlue = new SliderSpinner();
             slspBlue.setTitle("B");
-            slspBlue.addPropertyChangeListener(this.changeListener);
+            slspBlue.addPropertyChangeListener(this.sliderListener);
         }
         return slspBlue;
     }
@@ -500,6 +546,7 @@ public class ColorSelector {
             gridBagSlspBlue.insets = new Insets(5, 5, 5, 5);
             gridBagSlspBlue.weightx = 4.0;
             gridBagSlspBlue.gridy = 2;
+
             GridBagConstraints gridBagEnableAlpha = new GridBagConstraints();
             gridBagEnableAlpha.insets = new Insets(5, 5, 5, 5);
             gridBagEnableAlpha.gridy = 3;
@@ -507,6 +554,7 @@ public class ColorSelector {
             gridBagEnableAlpha.ipady = 0;
             gridBagEnableAlpha.anchor = GridBagConstraints.WEST;
             gridBagEnableAlpha.gridx = 1;
+            
             GridBagConstraints gridBagTxfColorValue = new GridBagConstraints();
             gridBagTxfColorValue.fill = GridBagConstraints.HORIZONTAL;
             gridBagTxfColorValue.gridx = 1;
@@ -516,6 +564,7 @@ public class ColorSelector {
             gridBagTxfColorValue.weightx = 1.0;
             gridBagTxfColorValue.anchor = GridBagConstraints.WEST;
             gridBagTxfColorValue.insets = new Insets(5, 5, 5, 5);
+            
             GridBagConstraints gridBagSlspAlpha = new GridBagConstraints();
             gridBagSlspAlpha.insets = new Insets(5, 5, 5, 5);
             gridBagSlspAlpha.gridy = 3;
@@ -525,6 +574,7 @@ public class ColorSelector {
             gridBagSlspAlpha.weightx = 4.0;
             gridBagSlspAlpha.weighty = 0.0;
             gridBagSlspAlpha.gridx = 0;
+            
             GridBagConstraints gridBagSlspGreen = new GridBagConstraints();
             gridBagSlspGreen.insets = new Insets(5, 5, 5, 5);
             gridBagSlspGreen.gridy = 1;
@@ -533,6 +583,7 @@ public class ColorSelector {
             gridBagSlspGreen.fill = GridBagConstraints.HORIZONTAL;
             gridBagSlspGreen.weightx = 4.0;
             gridBagSlspGreen.gridx = 0;
+            
             GridBagConstraints gridBagSlspRed = new GridBagConstraints();
             gridBagSlspRed.insets = new Insets(5, 5, 5, 5);
             gridBagSlspRed.gridy = 0;
@@ -552,7 +603,7 @@ public class ColorSelector {
             pnlControls.add(getTxfColorValue(), gridBagTxfColorValue);
             pnlControls.add(getCmbFormat(), gridBagCmbFormat);
             pnlControls.add(getChbEnableAlpha(), gridBagEnableAlpha);
-            pnlControls.add(getChbEqualizer(), gridBagChbEqualizer);
+            pnlControls.add(getCmbWebColors(), gridBagChbEqualizer);
         }
         return pnlControls;
     }
@@ -566,7 +617,7 @@ public class ColorSelector {
         if (slspAlpha == null) {
             slspAlpha = new SliderSpinner();
             slspAlpha.setTitle("A");
-            slspAlpha.addPropertyChangeListener(this.changeListener);
+            slspAlpha.addPropertyChangeListener(this.sliderListener);
             slspAlpha.setEnabled(false);
         }
         return slspAlpha;
@@ -627,15 +678,17 @@ public class ColorSelector {
     }
 
     /**
-     * This method initializes chbEqualizer
+     * This method initializes cmbWebColors
      * 
      * @return javax.swing.JComboBox
      */
-    private JComboBox getChbEqualizer() {
-        if (chbEqualizer == null) {
-            chbEqualizer = new JComboBox(new Object[] { "ONE" });
+    private JComboBox getCmbWebColors() {
+        if (cmbWebColors == null) {
+            cmbWebColors = new JComboBox(WebColor.values());
+            cmbWebColors.setRenderer(new ColorEnumRenderer());
+            cmbWebColors.addItemListener(webColorListener);
         }
-        return chbEqualizer;
+        return cmbWebColors;
     }
 
     /**

@@ -284,7 +284,7 @@ public class ColorSelector {
             frmColorSelector.setJMenuBar(getJJMenuBar());
             frmColorSelector.setSize(792, 341);
             frmColorSelector.setContentPane(getJContentPane());
-            frmColorSelector.setTitle("Color Selector");
+            frmColorSelector.setTitle(Messages.getString("ColorSelector.title")); //$NON-NLS-1$
         }
         return frmColorSelector;
     }
@@ -333,7 +333,7 @@ public class ColorSelector {
     private JMenu getFileMenu() {
         if (fileMenu == null) {
             fileMenu = new JMenu();
-            fileMenu.setText("File");
+            fileMenu.setText(Messages.getString("ColorSelector.menu.file")); //$NON-NLS-1$
             fileMenu.add(getMniRandomColor());
             fileMenu.add(getMniExit());
         }
@@ -348,7 +348,7 @@ public class ColorSelector {
     private JMenu getMnuOptions() {
         if (mnuOptions == null) {
             mnuOptions = new JMenu();
-            mnuOptions.setText("Options");
+            mnuOptions.setText(Messages.getString("ColorSelector.menu.options")); //$NON-NLS-1$
             mnuOptions.add(getMnuFormat());
             mnuOptions.add(getMniEnableAlpha());
         }
@@ -363,7 +363,7 @@ public class ColorSelector {
     private JMenu getHelpMenu() {
         if (helpMenu == null) {
             helpMenu = new JMenu();
-            helpMenu.setText("Help");
+            helpMenu.setText(Messages.getString("ColorSelector.menu.help")); //$NON-NLS-1$
             helpMenu.add(getAboutMenuItem());
         }
         return helpMenu;
@@ -377,7 +377,7 @@ public class ColorSelector {
     private JMenuItem getMniExit() {
         if (mniExit == null) {
             mniExit = new JMenuItem();
-            mniExit.setText("Exit");
+            mniExit.setText(Messages.getString("ColorSelector.menu.exit")); //$NON-NLS-1$
             mniExit.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     System.exit(0);
@@ -395,7 +395,7 @@ public class ColorSelector {
     private JMenuItem getAboutMenuItem() {
         if (aboutMenuItem == null) {
             aboutMenuItem = new JMenuItem();
-            aboutMenuItem.setText("About");
+            aboutMenuItem.setText(Messages.getString("ColorSelector.menu.about")); //$NON-NLS-1$
             aboutMenuItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     JDialog aboutDialog = getAboutDialog();
@@ -418,7 +418,7 @@ public class ColorSelector {
     private JDialog getAboutDialog() {
         if (aboutDialog == null) {
             aboutDialog = new JDialog(getFrmColorSelector(), true);
-            aboutDialog.setTitle("About");
+            aboutDialog.setTitle(Messages.getString("ColorSelector.aboutDialog.title")); //$NON-NLS-1$
             aboutDialog.setSize(new Dimension(161, 128));
             aboutDialog.setContentPane(getAboutContentPane());
         }
@@ -444,7 +444,7 @@ public class ColorSelector {
             gridBagLblProgramCopyright.gridy = 2;
             
             lblProgramCopyright = new JLabel();
-            lblProgramCopyright.setText("(c) Rafael Afonso - 2010");
+            lblProgramCopyright.setText(Messages.getString("ColorSelector.aboutDialog.copyright")); //$NON-NLS-1$
             lblProgramCopyright.setDisplayedMnemonic(KeyEvent.VK_UNDEFINED);
             lblProgramCopyright.setHorizontalAlignment(SwingConstants.CENTER);
             
@@ -455,7 +455,7 @@ public class ColorSelector {
             gridBagLblProgramName.gridy = 0;
             
             lblProgramName = new JLabel();
-            lblProgramName.setText("Color Selector");
+            lblProgramName.setText(Messages.getString("ColorSelector.aboutDialog.name")); //$NON-NLS-1$
             lblProgramName.setHorizontalAlignment(SwingConstants.CENTER);
             
             GridBagConstraints gridBagLblProgramVersion = new GridBagConstraints();
@@ -482,7 +482,7 @@ public class ColorSelector {
     private JLabel getLblProgramVersion() {
         if (lblProgramVersion == null) {
             lblProgramVersion = new JLabel();
-            lblProgramVersion.setText("Version 1.0");
+            lblProgramVersion.setText(Messages.getString("ColorSelector.aboutDialog.version")); //$NON-NLS-1$
             lblProgramVersion.setHorizontalAlignment(SwingConstants.CENTER);
         }
         return lblProgramVersion;
@@ -496,7 +496,7 @@ public class ColorSelector {
     private JMenuItem getMniRandomColor() {
         if (mniRandomColor == null) {
             mniRandomColor = new JMenuItem();
-            mniRandomColor.setText("Random Color");
+            mniRandomColor.setText(Messages.getString("ColorSelector.menu.random_color")); //$NON-NLS-1$
             mniRandomColor
                     .addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -540,7 +540,7 @@ public class ColorSelector {
     private SliderSpinner getSlspRed() {
         if (slspRed == null) {
             slspRed = new SliderSpinner();
-            slspRed.setTitle("R");
+            slspRed.setTitle(Messages.getString("ColorSelector.sliderspinner.r.title")); //$NON-NLS-1$
             slspRed.addPropertyChangeListener(this.sliderListener);
             slspRed.addPropertyChangeListener(this.sliderColorListener);
             slspRed.setContrastTitleFont(true);
@@ -556,7 +556,7 @@ public class ColorSelector {
     private SliderSpinner getSlspGreen() {
         if (slspGreen == null) {
             slspGreen = new SliderSpinner();
-            slspGreen.setTitle("G");
+            slspGreen.setTitle(Messages.getString("ColorSelector.sliderapinner.g.title")); //$NON-NLS-1$
             slspGreen.addPropertyChangeListener(this.sliderListener);
             slspGreen.addPropertyChangeListener(this.sliderColorListener);
             slspGreen.setContrastTitleFont(true);
@@ -572,7 +572,7 @@ public class ColorSelector {
     private SliderSpinner getSlspBlue() {
         if (slspBlue == null) {
             slspBlue = new SliderSpinner();
-            slspBlue.setTitle("B");
+            slspBlue.setTitle(Messages.getString("ColorSelector.sliderapinner.b.title")); //$NON-NLS-1$
             slspBlue.addPropertyChangeListener(this.sliderListener);
             slspBlue.addPropertyChangeListener(this.sliderColorListener);
             slspBlue.setContrastTitleFont(true);
@@ -593,14 +593,14 @@ public class ColorSelector {
             gridBagLblTitleColorFormat.insets = new Insets(5, 10, 5, 5);
             gridBagLblTitleColorFormat.gridy = 2;
             lblTitleColorFormat = new JLabel();
-            lblTitleColorFormat.setText("Color Format:");
+            lblTitleColorFormat.setText(Messages.getString("ColorSelector.title.colorformat")); //$NON-NLS-1$
             GridBagConstraints gridBagLblTitleWebColor = new GridBagConstraints();
             gridBagLblTitleWebColor.gridx = 1;
             gridBagLblTitleWebColor.anchor = GridBagConstraints.EAST;
             gridBagLblTitleWebColor.insets = new Insets(5, 10, 5, 5);
             gridBagLblTitleWebColor.gridy = 0;
             lblTitleWebColor = new JLabel();
-            lblTitleWebColor.setText("Web Color:");
+            lblTitleWebColor.setText(Messages.getString("ColorSelector.title.webcolor")); //$NON-NLS-1$
 
             GridBagConstraints gridBagLblTitleColorCode = new GridBagConstraints();
             gridBagLblTitleColorCode.gridx = 1;
@@ -608,7 +608,7 @@ public class ColorSelector {
             gridBagLblTitleColorCode.insets = new Insets(5, 10, 5, 5);
             gridBagLblTitleColorCode.gridy = 1;
             lblTitleColorCode = new JLabel();
-            lblTitleColorCode.setText("Color Code:");
+            lblTitleColorCode.setText(Messages.getString("ColorSelector.title.colorcode")); //$NON-NLS-1$
             GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
             gridBagConstraints1.gridx = 1;
             gridBagConstraints1.gridy = 0;
@@ -709,7 +709,7 @@ public class ColorSelector {
     private SliderSpinner getSlspAlpha() {
         if (slspAlpha == null) {
             slspAlpha = new SliderSpinner();
-            slspAlpha.setTitle("A");
+            slspAlpha.setTitle(Messages.getString("ColorSelector.sliderapinner.a.title")); //$NON-NLS-1$
             slspAlpha.addPropertyChangeListener(this.sliderListener);
             slspAlpha.setEnabled(false);
         }
@@ -740,7 +740,7 @@ public class ColorSelector {
     private JCheckBox getChbEnableAlpha() {
         if (chbEnableAlpha == null) {
             chbEnableAlpha = new JCheckBox();
-            chbEnableAlpha.setText("Enable Alpha");
+            chbEnableAlpha.setText(Messages.getString("ColorSelector.title.enablealpha")); //$NON-NLS-1$
             chbEnableAlpha.addItemListener(new java.awt.event.ItemListener() {
                 public void itemStateChanged(java.awt.event.ItemEvent e) {
                     enableAlpha(chbEnableAlpha.isSelected(),
@@ -791,7 +791,7 @@ public class ColorSelector {
     private JMenu getMnuFormat() {
         if (mnuFormat == null) {
             mnuFormat = new JMenu();
-            mnuFormat.setText("Color Format");
+            mnuFormat.setText(Messages.getString("ColorSelector.menu.colorformat")); //$NON-NLS-1$
 
             // Formats
             ButtonGroup group = new ButtonGroup();
@@ -819,7 +819,7 @@ public class ColorSelector {
      */
     private JCheckBoxMenuItem getMniEnableAlpha() {
         if (mniEnableAlpha == null) {
-            mniEnableAlpha = new JCheckBoxMenuItem("Enable Alpha");
+            mniEnableAlpha = new JCheckBoxMenuItem(Messages.getString("ColorSelector.menu.enablealpha")); //$NON-NLS-1$
             mniEnableAlpha.addItemListener(new java.awt.event.ItemListener() {
                 public void itemStateChanged(java.awt.event.ItemEvent e) {
                     enableAlpha(mniEnableAlpha.isSelected(), mniEnableAlpha);

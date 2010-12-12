@@ -51,24 +51,22 @@ public class ColorSelector {
         layoutInfo: __layoutInfo_lblTitleWebColor
         text: "Web Color:"
         textAlignment: javafx.scene.text.TextAlignment.RIGHT
+        hpos: javafx.geometry.HPos.RIGHT
     }
     
-    def __layoutInfo_chbWebColors: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind width2
-    }
     public-read def chbWebColors: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
-        layoutInfo: __layoutInfo_chbWebColors
         items: [ "Item 1", "Item 2", "Item 3", ]
     }
     
     def __layoutInfo_hrbControl0: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         width: bind scene.width
-        height: bind scene.height / 8
     }
     public-read def hrbControl0: javafx.scene.layout.HBox = javafx.scene.layout.HBox {
         layoutInfo: __layoutInfo_hrbControl0
         content: [ btnRed, lblTitleWebColor, chbWebColors, ]
         spacing: 6.0
+        vpos: javafx.geometry.VPos.BASELINE
+        nodeVPos: javafx.geometry.VPos.BASELINE
     }
     
     def __layoutInfo_btnGreen: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -82,25 +80,7 @@ public class ColorSelector {
     public-read def lblTitleColor: javafx.scene.control.Label = javafx.scene.control.Label {
         text: "Color Code:"
         textAlignment: javafx.scene.text.TextAlignment.RIGHT
-    }
-    
-    def __layoutInfo_txbColorValue: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind width2
-    }
-    public-read def txbColorValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
-        layoutInfo: __layoutInfo_txbColorValue
-        text: "rgb(255, 255, 255)"
-        editable: false
-    }
-    
-    def __layoutInfo_hrbControl1: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind scene.width
-        height: bind scene.height / 8
-    }
-    public-read def hrbControl1: javafx.scene.layout.HBox = javafx.scene.layout.HBox {
-        layoutInfo: __layoutInfo_hrbControl1
-        content: [ btnGreen, lblTitleColor, txbColorValue, ]
-        spacing: 6.0
+        hpos: javafx.geometry.HPos.RIGHT
     }
     
     def __layoutInfo_btnBlue: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -116,26 +96,23 @@ public class ColorSelector {
     }
     public-read def lblTitleColorFormat: javafx.scene.control.Label = javafx.scene.control.Label {
         layoutInfo: __layoutInfo_lblTitleColorFormat
-        text: "R\u00F3tulo"
+        text: "Color Format"
         textAlignment: javafx.scene.text.TextAlignment.RIGHT
+        hpos: javafx.geometry.HPos.RIGHT
     }
     
-    def __layoutInfo_cmbColorFormat: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind width2
-    }
     public-read def cmbColorFormat: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
-        layoutInfo: __layoutInfo_cmbColorFormat
         items: [ "Item 1", "Item 2", "Item 3", ]
     }
     
     def __layoutInfo_hrbControl2: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         width: bind scene.width
-        height: bind scene.height / 8
     }
     public-read def hrbControl2: javafx.scene.layout.HBox = javafx.scene.layout.HBox {
         layoutInfo: __layoutInfo_hrbControl2
         content: [ btnBlue, lblTitleColorFormat, cmbColorFormat, ]
         spacing: 6.0
+        nodeVPos: javafx.geometry.VPos.BASELINE
     }
     
     def __layoutInfo_btnAlpha: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -143,7 +120,7 @@ public class ColorSelector {
     }
     public-read def btnAlpha: javafx.scene.control.Button = javafx.scene.control.Button {
         layoutInfo: __layoutInfo_btnAlpha
-        text: "Button"
+        text: "ALPHA"
     }
     
     def __layoutInfo_chbEnableAlpha: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -156,12 +133,46 @@ public class ColorSelector {
     
     def __layoutInfo_hrbControl3: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         width: bind scene.width
-        height: bind scene.height / 8
     }
     public-read def hrbControl3: javafx.scene.layout.HBox = javafx.scene.layout.HBox {
         layoutInfo: __layoutInfo_hrbControl3
         content: [ btnAlpha, chbEnableAlpha, ]
         spacing: 6.0
+        nodeVPos: javafx.geometry.VPos.BASELINE
+    }
+    
+    public-read def radialGradient: javafx.scene.paint.RadialGradient = javafx.scene.paint.RadialGradient {
+        stops: [ javafx.scene.paint.Stop { offset: 0.0, color: javafx.scene.paint.Color.web ("#FF0000") }, javafx.scene.paint.Stop { offset: 1.0, color: javafx.scene.paint.Color.web ("#0000FF") }, ]
+    }
+    
+    public-read def color: javafx.scene.paint.Color = javafx.scene.paint.Color {
+        red: 0.6
+    }
+    
+    public-read def color2: javafx.scene.paint.Color = javafx.scene.paint.Color {
+        red: 0.4
+        green: 1.0
+        blue: 0.2
+    }
+    
+    public-read def fontColorValue: javafx.scene.text.Font = javafx.scene.text.Font {
+        name: "monospaced"
+    }
+    
+    public-read def txbColorValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
+        text: "rgb(255, 255, 255)"
+        editable: false
+        font: fontColorValue
+    }
+    
+    def __layoutInfo_hrbControl1: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
+        width: bind scene.width
+    }
+    public-read def hrbControl1: javafx.scene.layout.HBox = javafx.scene.layout.HBox {
+        layoutInfo: __layoutInfo_hrbControl1
+        content: [ btnGreen, lblTitleColor, txbColorValue, ]
+        spacing: 6.0
+        nodeVPos: javafx.geometry.VPos.BASELINE
     }
     
     def __layoutInfo_vtbControls: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -193,20 +204,6 @@ public class ColorSelector {
         width: 600.0
         height: 400.0
         content: getDesignRootNodes ()
-    }
-    
-    public-read def radialGradient: javafx.scene.paint.RadialGradient = javafx.scene.paint.RadialGradient {
-        stops: [ javafx.scene.paint.Stop { offset: 0.0, color: javafx.scene.paint.Color.web ("#FF0000") }, javafx.scene.paint.Stop { offset: 1.0, color: javafx.scene.paint.Color.web ("#0000FF") }, ]
-    }
-    
-    public-read def color: javafx.scene.paint.Color = javafx.scene.paint.Color {
-        red: 0.6
-    }
-    
-    public-read def color2: javafx.scene.paint.Color = javafx.scene.paint.Color {
-        red: 0.4
-        green: 1.0
-        blue: 0.2
     }
     
     public-read def currentState: org.netbeans.javafx.design.DesignState = org.netbeans.javafx.design.DesignState {

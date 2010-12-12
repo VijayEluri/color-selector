@@ -8,6 +8,7 @@
             <Item value="inst:RadialGradientModel1"/>
             <Item value="inst:ColorModel1"/>
             <Item value="inst:ColorModel2"/>
+            <Item value="inst:FontModel1"/>
         </List>
         <List name="dataSources"/>
         <List name="templates"/>
@@ -41,6 +42,10 @@
         <Reference name="red" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:0.4,4,null,"/>
         <Reference name="green" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:1.0,4,null,"/>
         <Reference name="blue" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:0.2,4,null,"/>
+    </Instance>
+    <Instance classID="FontModel" instanceID="FontModel1">
+        <Reference name="instanceName" value="str:fontColorValue"/>
+        <Reference name="name" value="prop2:7,NOT_SET,4,null,4,null,21,anim:,,str:monospaced,4,null,"/>
     </Instance>
     <Instance classID="SceneModel" instanceID="SceneModel1">
         <Reference name="instanceName" value="str:scene"/>
@@ -105,7 +110,6 @@
     <Instance classID="HBoxModel" instanceID="HBoxModel1">
         <Reference name="instanceName" value="str:hrbControl0"/>
         <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,20,str:bind scene.width,4,null,4,null,"/>
-        <Reference name="layoutInfoHeight" value="prop2:7,NOT_SET,4,null,25,str:bind scene.height / 8,4,null,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
         <Reference name="clip" value="null"/>
@@ -117,6 +121,8 @@
             <Item value="inst:ChoiceBoxModel1"/>
         </List>
         <Reference name="spacing" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:6.0,4,null,"/>
+        <Reference name="vpos" value="prop2:7,NOT_SET,4,null,4,null,20,anim:,,vpos:BASELINE,4,null,"/>
+        <Reference name="nodeVPos" value="prop2:7,NOT_SET,4,null,4,null,20,anim:,,vpos:BASELINE,4,null,"/>
     </Instance>
     <Instance classID="ButtonModel" instanceID="ButtonModel1">
         <Reference name="instanceName" value="str:btnRed"/>
@@ -142,11 +148,11 @@
         <Reference name="tooltip" value="null"/>
         <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,21,anim:,,str:Web Color:,4,null,"/>
         <Reference name="textAlignment" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,textalign:RIGHT,4,null,"/>
+        <Reference name="hpos" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,hpos:RIGHT,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
     <Instance classID="ChoiceBoxModel" instanceID="ChoiceBoxModel1">
         <Reference name="instanceName" value="str:chbWebColors"/>
-        <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,15,str:bind width2,4,null,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
         <Reference name="clip" value="null"/>
@@ -158,7 +164,6 @@
     <Instance classID="HBoxModel" instanceID="HBoxModel2">
         <Reference name="instanceName" value="str:hrbControl1"/>
         <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,20,str:bind scene.width,4,null,4,null,"/>
-        <Reference name="layoutInfoHeight" value="prop2:7,NOT_SET,4,null,25,str:bind scene.height / 8,4,null,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
         <Reference name="clip" value="null"/>
@@ -170,6 +175,7 @@
             <Item value="inst:TextBoxModel1"/>
         </List>
         <Reference name="spacing" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:6.0,4,null,"/>
+        <Reference name="nodeVPos" value="prop2:7,NOT_SET,4,null,4,null,20,anim:,,vpos:BASELINE,4,null,"/>
     </Instance>
     <Instance classID="ButtonModel" instanceID="ButtonModel2">
         <Reference name="instanceName" value="str:btnGreen"/>
@@ -193,11 +199,11 @@
         <Reference name="tooltip" value="null"/>
         <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,str:Color Code:,4,null,"/>
         <Reference name="textAlignment" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,textalign:RIGHT,4,null,"/>
+        <Reference name="hpos" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,hpos:RIGHT,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
     <Instance classID="TextBoxModel" instanceID="TextBoxModel1">
         <Reference name="instanceName" value="str:txbColorValue"/>
-        <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,15,str:bind width2,4,null,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
         <Reference name="clip" value="null"/>
@@ -206,11 +212,11 @@
         <Reference name="tooltip" value="null"/>
         <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,29,anim:,,str:rgb(255, 255, 255),4,null,"/>
         <Reference name="editable" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
+        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,inst:FontModel1,4,null,"/>
     </Instance>
     <Instance classID="HBoxModel" instanceID="HBoxModel3">
         <Reference name="instanceName" value="str:hrbControl2"/>
         <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,20,str:bind scene.width,4,null,4,null,"/>
-        <Reference name="layoutInfoHeight" value="prop2:7,NOT_SET,4,null,25,str:bind scene.height / 8,4,null,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
         <Reference name="clip" value="null"/>
@@ -222,6 +228,7 @@
             <Item value="inst:ChoiceBoxModel2"/>
         </List>
         <Reference name="spacing" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:6.0,4,null,"/>
+        <Reference name="nodeVPos" value="prop2:7,NOT_SET,4,null,4,null,20,anim:,,vpos:BASELINE,4,null,"/>
     </Instance>
     <Instance classID="ButtonModel" instanceID="ButtonModel3">
         <Reference name="instanceName" value="str:btnBlue"/>
@@ -244,13 +251,13 @@
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
-        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,str:Rótulo,4,null,"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,23,anim:,,str:Color Format,4,null,"/>
         <Reference name="textAlignment" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,textalign:RIGHT,4,null,"/>
+        <Reference name="hpos" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,hpos:RIGHT,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
     <Instance classID="ChoiceBoxModel" instanceID="ChoiceBoxModel2">
         <Reference name="instanceName" value="str:cmbColorFormat"/>
-        <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,15,str:bind width2,4,null,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
         <Reference name="clip" value="null"/>
@@ -262,7 +269,6 @@
     <Instance classID="HBoxModel" instanceID="HBoxModel4">
         <Reference name="instanceName" value="str:hrbControl3"/>
         <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,20,str:bind scene.width,4,null,4,null,"/>
-        <Reference name="layoutInfoHeight" value="prop2:7,NOT_SET,4,null,25,str:bind scene.height / 8,4,null,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
         <Reference name="clip" value="null"/>
@@ -273,6 +279,7 @@
             <Item value="inst:CheckBoxModel1"/>
         </List>
         <Reference name="spacing" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:6.0,4,null,"/>
+        <Reference name="nodeVPos" value="prop2:7,NOT_SET,4,null,4,null,20,anim:,,vpos:BASELINE,4,null,"/>
     </Instance>
     <Instance classID="ButtonModel" instanceID="ButtonModel4">
         <Reference name="instanceName" value="str:btnAlpha"/>
@@ -283,7 +290,7 @@
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
-        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,str:Button,4,null,"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,str:ALPHA,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
     <Instance classID="CheckBoxModel" instanceID="CheckBoxModel1">

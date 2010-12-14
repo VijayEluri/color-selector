@@ -12,19 +12,33 @@ import javafx.scene.layout.LayoutInfo;
  */
 public class SliderControlTest {
 
+    def sliderControl = SliderControl {}
+    
     init {
+        // see: http://netbeans.org/kb/docs/javafx/fragments.html
         insert sliderControl.hrbSliderControl after verticalBox.content[0];
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:main
-    public-read def chbSelected: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
-        text: ""
+    public-read def slider: javafx.scene.control.Slider = javafx.scene.control.Slider {
+        max: 255.0
+        value: bind sliderControl.value with inverse
     }
     
     public-read def txbInputTitle: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
+        text: bind sliderControl.title with inverse
     }
     
-    public-read def txbInputValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
+    public-read def chbSelected: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
+        disable: false
+        text: ""
+        hpos: null
+        graphicHPos: null
+        selected: bind sliderControl.selected with inverse
+    }
+    
+    public-read def chbEnabled: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
+        text: ""
     }
     
     def __layoutInfo_pnlSlider: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -42,14 +56,19 @@ public class SliderControlTest {
     }
     
     public-read def txbOutputTitle: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
+        text: bind sliderControl.title
         editable: false
     }
     
     public-read def lblOutputValue: javafx.scene.control.Label = javafx.scene.control.Label {
         text: "Value"
+        textAlignment: javafx.scene.text.TextAlignment.RIGHT
+        hpos: javafx.geometry.HPos.RIGHT
+        graphicHPos: javafx.geometry.HPos.RIGHT
     }
     
     public-read def txbOutputValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
+        text: bind "{sliderControl.value as Integer}"
         editable: false
     }
     
@@ -58,12 +77,23 @@ public class SliderControlTest {
     }
     
     public-read def txtOutputSelected: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
+        text: bind "{sliderControl.selected}"
+        editable: false
+    }
+    
+    public-read def lblOutputEnabled: javafx.scene.control.Label = javafx.scene.control.Label {
+        text: "Enabled"
+    }
+    
+    public-read def txbOutputEnabled: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
+        layoutX: 97.0
+        layoutY: 222.0
         editable: false
     }
     
     public-read def fontPrimaryTitles: javafx.scene.text.Font = javafx.scene.text.Font {
         oblique: false
-        embolden: false
+        embolden: true
         autoKern: false
         ligatures: false
     }
@@ -91,13 +121,10 @@ public class SliderControlTest {
                 cells: [ lblOutput, ]
             }
             com.javafx.preview.layout.GridRow {
-                cells: [ lblOuputTitle, txbOutputTitle, ]
+                cells: [ lblOuputTitle, txbOutputTitle, lblOutputSelected, txtOutputSelected, ]
             }
             com.javafx.preview.layout.GridRow {
-                cells: [ lblOutputValue, txbOutputValue, ]
-            }
-            com.javafx.preview.layout.GridRow {
-                cells: [ lblOutputSelected, txtOutputSelected, ]
+                cells: [ lblOutputValue, txbOutputValue, lblOutputEnabled, txbOutputEnabled, ]
             }
         ]
     }
@@ -118,6 +145,16 @@ public class SliderControlTest {
         ligatures: false
     }
     
+    public-read def lblInputEnabled: javafx.scene.control.Label = javafx.scene.control.Label {
+        text: "Enabled"
+        font: fontSecondTitles
+    }
+    
+    public-read def lblInputSelected: javafx.scene.control.Label = javafx.scene.control.Label {
+        text: "Selected"
+        font: fontSecondTitles
+    }
+    
     public-read def lblInputValue: javafx.scene.control.Label = javafx.scene.control.Label {
         text: "Value"
         font: fontSecondTitles
@@ -129,11 +166,6 @@ public class SliderControlTest {
         textAlignment: javafx.scene.text.TextAlignment.RIGHT
         hpos: javafx.geometry.HPos.RIGHT
         graphicHPos: javafx.geometry.HPos.RIGHT
-    }
-    
-    public-read def lblInputSelected: javafx.scene.control.Label = javafx.scene.control.Label {
-        text: "Selected"
-        font: fontSecondTitles
     }
     
     def __layoutInfo_gridInput: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -148,13 +180,10 @@ public class SliderControlTest {
                 cells: [ lblInput, ]
             }
             com.javafx.preview.layout.GridRow {
-                cells: [ lblInputTitle, txbInputTitle, ]
+                cells: [ lblInputTitle, txbInputTitle, lblInputSelected, chbSelected, ]
             }
             com.javafx.preview.layout.GridRow {
-                cells: [ lblInputValue, txbInputValue, ]
-            }
-            com.javafx.preview.layout.GridRow {
-                cells: [ lblInputSelected, chbSelected, ]
+                cells: [ lblInputValue, slider, lblInputEnabled, chbEnabled, ]
             }
         ]
     }
@@ -172,8 +201,8 @@ public class SliderControlTest {
     }
     
     public-read def scene: javafx.scene.Scene = javafx.scene.Scene {
-        width: 240.0
-        height: 320.0
+        width: 319.0
+        height: 238.0
         content: getDesignRootNodes ()
     }
     
@@ -189,8 +218,6 @@ public class SliderControlTest {
     }
     // </editor-fold>//GEN-END:main
 
-    def sliderControl = SliderControl {
-            }
 }
 
 function run (): Void {

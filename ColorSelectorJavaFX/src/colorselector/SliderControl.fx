@@ -13,7 +13,10 @@ import javafx.geometry.Insets;
 public class SliderControl {
 
     def insets = Insets { left: 5.0, top: 0.0, right: 5.0, bottom: 0.0 };
-    
+    public var title: String = "";
+    public var value: Number = 0;
+    public var selected: Boolean = false;
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:main
     def __layoutInfo_chbSelectes: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         hfill: false
@@ -22,6 +25,7 @@ public class SliderControl {
     public-read def chbSelectes: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
         layoutInfo: __layoutInfo_chbSelectes
         text: ""
+        selected: bind selected with inverse
     }
     
     def __layoutInfo_lblTitle: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -29,7 +33,7 @@ public class SliderControl {
     }
     public-read def lblTitle: javafx.scene.control.Label = javafx.scene.control.Label {
         layoutInfo: __layoutInfo_lblTitle
-        text: "XXX"
+        text: bind title with inverse
     }
     
     def __layoutInfo_sldValue: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -42,7 +46,7 @@ public class SliderControl {
     public-read def sldValue: javafx.scene.control.Slider = javafx.scene.control.Slider {
         layoutInfo: __layoutInfo_sldValue
         max: 255.0
-        value: 50.0
+        value: bind value with inverse
         majorTickUnit: 50.0
         minorTickCount: 5
         showTickLabels: true

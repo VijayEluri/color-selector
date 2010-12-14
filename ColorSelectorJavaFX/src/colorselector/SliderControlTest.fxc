@@ -12,8 +12,8 @@
         <List name="templates"/>
         <List name="customClasses"/>
         <Reference name="scene" value="inst:SceneModel1"/>
-        <Reference name="designWidth" value="flt:240.0"/>
-        <Reference name="designHeight" value="flt:320.0"/>
+        <Reference name="designWidth" value="flt:320.0"/>
+        <Reference name="designHeight" value="flt:240.0"/>
         <Reference name="designProfile" value="profile:MOBILE"/>
         <Reference name="synchronizeDeviceAndSceneSizes" value="bool:false"/>
     </Instance>
@@ -30,7 +30,7 @@
     <Instance classID="FontModel" instanceID="FontModel1">
         <Reference name="instanceName" value="str:fontPrimaryTitles"/>
         <Reference name="autoKern" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
-        <Reference name="embolden" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
+        <Reference name="embolden" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,bool:true,4,null,"/>
         <Reference name="ligatures" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
         <Reference name="oblique" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
     </Instance>
@@ -44,8 +44,8 @@
         <List name="content">
             <Item value="inst:VBoxModel1"/>
         </List>
-        <Reference name="width" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,flt:240.0,4,null,"/>
-        <Reference name="height" value="prop2:7,NOT_SET,4,null,4,null,25,anim:0,DISCRETE,flt:320.0,4,null,"/>
+        <Reference name="width" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,flt:319.0,4,null,"/>
+        <Reference name="height" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,flt:238.0,4,null,"/>
         <Reference name="generateSceneInstance" value="bool:true"/>
         <Reference name="generateGetDesignSceneFunction" value="bool:true"/>
         <Reference name="generateLayoutXYForRootLevelComponents" value="bool:true"/>
@@ -78,16 +78,18 @@
         <Reference name="customClass" value="null"/>
         <List name="content">
             <Item value="inst:LabelModel1"/>
+            <Item value="inst:SliderModel1"/>
             <Item value="inst:LabelModel2"/>
-            <Item value="inst:CheckBoxModel1"/>
             <Item value="inst:LabelModel3"/>
-            <Item value="inst:LabelModel4"/>
             <Item value="inst:TextBoxModel1"/>
-            <Item value="inst:TextBoxModel2"/>
+            <Item value="inst:LabelModel4"/>
+            <Item value="inst:CheckBoxModel1"/>
+            <Item value="inst:LabelModel5"/>
+            <Item value="inst:CheckBoxModel2"/>
         </List>
         <Reference name="hgap" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:6.0,4,null,"/>
         <Reference name="vgap" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:6.0,4,null,"/>
-        <Reference name="designRows" value="int:4"/>
+        <Reference name="designRows" value="int:3"/>
         <Reference name="designColumns" value="int:1"/>
     </Instance>
     <Instance classID="LabelModel" instanceID="LabelModel1">
@@ -105,30 +107,18 @@
         <Reference name="graphicHPos" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,hpos:RIGHT,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
-    <Instance classID="LabelModel" instanceID="LabelModel2">
-        <Reference name="instanceName" value="str:lblInputSelected"/>
-        <Reference name="gridLayoutInfoHLocation" value="int:0"/>
-        <Reference name="gridLayoutInfoVLocation" value="int:3"/>
-        <Reference name="clip" value="null"/>
-        <Map name="customProperties"/>
-        <Reference name="customClass" value="null"/>
-        <Reference name="tooltip" value="null"/>
-        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,19,anim:,,str:Selected,4,null,"/>
-        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,inst:FontModel2,4,null,"/>
-        <Reference name="graphic" value="null"/>
-    </Instance>
-    <Instance classID="CheckBoxModel" instanceID="CheckBoxModel1">
-        <Reference name="instanceName" value="str:chbSelected"/>
+    <Instance classID="SliderModel" instanceID="SliderModel1">
+        <Reference name="instanceName" value="str:slider"/>
         <Reference name="gridLayoutInfoHLocation" value="int:1"/>
-        <Reference name="gridLayoutInfoVLocation" value="int:3"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:2"/>
         <Reference name="clip" value="null"/>
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
-        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,str:,4,null,"/>
-        <Reference name="graphic" value="null"/>
+        <Reference name="max" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,flt:255.0,4,null,"/>
+        <Reference name="value" value="prop2:7,NOT_SET,4,null,41,str:bind sliderControl.value with inverse,4,null,4,null,"/>
     </Instance>
-    <Instance classID="LabelModel" instanceID="LabelModel3">
+    <Instance classID="LabelModel" instanceID="LabelModel2">
         <Reference name="instanceName" value="str:lblInputTitle"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:1"/>
@@ -143,7 +133,7 @@
         <Reference name="graphicHPos" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,hpos:RIGHT,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
-    <Instance classID="LabelModel" instanceID="LabelModel4">
+    <Instance classID="LabelModel" instanceID="LabelModel3">
         <Reference name="instanceName" value="str:lblInputValue"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:2"/>
@@ -163,15 +153,57 @@
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,41,str:bind sliderControl.title with inverse,4,null,4,null,"/>
     </Instance>
-    <Instance classID="TextBoxModel" instanceID="TextBoxModel2">
-        <Reference name="instanceName" value="str:txbInputValue"/>
-        <Reference name="gridLayoutInfoHLocation" value="int:1"/>
+    <Instance classID="LabelModel" instanceID="LabelModel4">
+        <Reference name="instanceName" value="str:lblInputSelected"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:2"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:1"/>
+        <Reference name="clip" value="null"/>
+        <Map name="customProperties"/>
+        <Reference name="customClass" value="null"/>
+        <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,19,anim:,,str:Selected,4,null,"/>
+        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,inst:FontModel2,4,null,"/>
+        <Reference name="graphic" value="null"/>
+    </Instance>
+    <Instance classID="CheckBoxModel" instanceID="CheckBoxModel1">
+        <Reference name="instanceName" value="str:chbSelected"/>
+        <Reference name="disable" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:3"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:1"/>
+        <Reference name="clip" value="null"/>
+        <Map name="customProperties"/>
+        <Reference name="customClass" value="null"/>
+        <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,str:,4,null,"/>
+        <Reference name="hpos" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,null,4,null,"/>
+        <Reference name="graphicHPos" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,null,4,null,"/>
+        <Reference name="graphic" value="null"/>
+        <Reference name="selected" value="prop2:7,NOT_SET,4,null,44,str:bind sliderControl.selected with inverse,4,null,4,null,"/>
+    </Instance>
+    <Instance classID="LabelModel" instanceID="LabelModel5">
+        <Reference name="instanceName" value="str:lblInputEnabled"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:2"/>
         <Reference name="gridLayoutInfoVLocation" value="int:2"/>
         <Reference name="clip" value="null"/>
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,18,anim:,,str:Enabled,4,null,"/>
+        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,inst:FontModel2,4,null,"/>
+        <Reference name="graphic" value="null"/>
+    </Instance>
+    <Instance classID="CheckBoxModel" instanceID="CheckBoxModel2">
+        <Reference name="instanceName" value="str:chbEnabled"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:3"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:2"/>
+        <Reference name="clip" value="null"/>
+        <Map name="customProperties"/>
+        <Reference name="customClass" value="null"/>
+        <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,str:,4,null,"/>
+        <Reference name="graphic" value="null"/>
     </Instance>
     <Instance classID="PanelModel" instanceID="PanelModel1">
         <Reference name="instanceName" value="str:pnlSlider"/>
@@ -195,20 +227,22 @@
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <List name="content">
-            <Item value="inst:LabelModel5"/>
             <Item value="inst:LabelModel6"/>
-            <Item value="inst:TextBoxModel3"/>
             <Item value="inst:LabelModel7"/>
-            <Item value="inst:TextBoxModel4"/>
+            <Item value="inst:TextBoxModel2"/>
             <Item value="inst:LabelModel8"/>
+            <Item value="inst:TextBoxModel3"/>
+            <Item value="inst:LabelModel9"/>
+            <Item value="inst:TextBoxModel4"/>
+            <Item value="inst:LabelModel10"/>
             <Item value="inst:TextBoxModel5"/>
         </List>
         <Reference name="hgap" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:6.0,4,null,"/>
         <Reference name="vgap" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:6.0,4,null,"/>
-        <Reference name="designRows" value="int:4"/>
-        <Reference name="designColumns" value="int:2"/>
+        <Reference name="designRows" value="int:3"/>
+        <Reference name="designColumns" value="int:4"/>
     </Instance>
-    <Instance classID="LabelModel" instanceID="LabelModel5">
+    <Instance classID="LabelModel" instanceID="LabelModel6">
         <Reference name="instanceName" value="str:lblOutput"/>
         <Reference name="layoutX" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:0.0,4,null,"/>
         <Reference name="layoutY" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:0.0,4,null,"/>
@@ -223,7 +257,7 @@
         <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,inst:FontModel1,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
-    <Instance classID="LabelModel" instanceID="LabelModel6">
+    <Instance classID="LabelModel" instanceID="LabelModel7">
         <Reference name="instanceName" value="str:lblOuputTitle"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:1"/>
@@ -234,7 +268,7 @@
         <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,str:Title,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
-    <Instance classID="TextBoxModel" instanceID="TextBoxModel3">
+    <Instance classID="TextBoxModel" instanceID="TextBoxModel2">
         <Reference name="instanceName" value="str:txbOutputTitle"/>
         <Reference name="gridLayoutInfoHLocation" value="int:1"/>
         <Reference name="gridLayoutInfoVLocation" value="int:1"/>
@@ -242,9 +276,10 @@
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,28,str:bind sliderControl.title,4,null,4,null,"/>
         <Reference name="editable" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
     </Instance>
-    <Instance classID="LabelModel" instanceID="LabelModel7">
+    <Instance classID="LabelModel" instanceID="LabelModel8">
         <Reference name="instanceName" value="str:lblOutputValue"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:2"/>
@@ -253,9 +288,12 @@
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
         <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,str:Value,4,null,"/>
+        <Reference name="textAlignment" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,textalign:RIGHT,4,null,"/>
+        <Reference name="hpos" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,hpos:RIGHT,4,null,"/>
+        <Reference name="graphicHPos" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,hpos:RIGHT,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
-    <Instance classID="TextBoxModel" instanceID="TextBoxModel4">
+    <Instance classID="TextBoxModel" instanceID="TextBoxModel3">
         <Reference name="instanceName" value="str:txbOutputValue"/>
         <Reference name="gridLayoutInfoHLocation" value="int:1"/>
         <Reference name="gridLayoutInfoVLocation" value="int:2"/>
@@ -263,12 +301,13 @@
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,43,str:bind &quot;{sliderControl.value as Integer}&quot;,4,null,4,null,"/>
         <Reference name="editable" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
     </Instance>
-    <Instance classID="LabelModel" instanceID="LabelModel8">
+    <Instance classID="LabelModel" instanceID="LabelModel9">
         <Reference name="instanceName" value="str:lblOutputSelected"/>
-        <Reference name="gridLayoutInfoHLocation" value="int:0"/>
-        <Reference name="gridLayoutInfoVLocation" value="int:3"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:2"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:1"/>
         <Reference name="clip" value="null"/>
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
@@ -276,10 +315,34 @@
         <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,19,anim:,,str:Selected,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
-    <Instance classID="TextBoxModel" instanceID="TextBoxModel5">
+    <Instance classID="TextBoxModel" instanceID="TextBoxModel4">
         <Reference name="instanceName" value="str:txtOutputSelected"/>
-        <Reference name="gridLayoutInfoHLocation" value="int:1"/>
-        <Reference name="gridLayoutInfoVLocation" value="int:3"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:3"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:1"/>
+        <Reference name="clip" value="null"/>
+        <Map name="customProperties"/>
+        <Reference name="customClass" value="null"/>
+        <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,35,str:bind &quot;{sliderControl.selected}&quot;,4,null,4,null,"/>
+        <Reference name="editable" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
+    </Instance>
+    <Instance classID="LabelModel" instanceID="LabelModel10">
+        <Reference name="instanceName" value="str:lblOutputEnabled"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:2"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:2"/>
+        <Reference name="clip" value="null"/>
+        <Map name="customProperties"/>
+        <Reference name="customClass" value="null"/>
+        <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,18,anim:,,str:Enabled,4,null,"/>
+        <Reference name="graphic" value="null"/>
+    </Instance>
+    <Instance classID="TextBoxModel" instanceID="TextBoxModel5">
+        <Reference name="instanceName" value="str:txbOutputEnabled"/>
+        <Reference name="layoutX" value="prop2:7,NOT_SET,4,null,4,null,15,anim:,,flt:97.0,4,null,"/>
+        <Reference name="layoutY" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,flt:222.0,4,null,"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:3"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:2"/>
         <Reference name="clip" value="null"/>
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>

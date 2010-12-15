@@ -37,6 +37,7 @@
     </Instance>
     <Instance classID="HBoxModel" instanceID="HBoxModel1">
         <Reference name="instanceName" value="str:hrbSliderControl"/>
+        <Reference name="disable" value="prop2:7,NOT_SET,4,null,29,str:bind disable with inverse,4,null,4,null,"/>
         <Reference name="layoutX" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:0.0,4,null,"/>
         <Reference name="layoutY" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:0.0,4,null,"/>
         <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,flt:468.0,4,null,"/>
@@ -98,7 +99,8 @@
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
-        <Reference name="max" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,flt:255.0,4,null,"/>
+        <Reference name="min" value="prop2:7,NOT_SET,4,null,4,null,25,animcode:,,sldValueMin (),4,null,"/>
+        <Reference name="max" value="prop2:7,NOT_SET,4,null,4,null,25,animcode:,,sldValueMax (),4,null,"/>
         <Reference name="value" value="prop2:7,NOT_SET,4,null,27,str:bind value with inverse,4,null,4,null,"/>
         <Reference name="labelFormatter" value="prop2:7,NOT_SET,4,null,4,null,33,anim:,,str:sldValueLabelFormatter,4,null,"/>
         <Reference name="majorTickUnit" value="prop2:7,NOT_SET,4,null,4,null,15,anim:,,flt:50.0,4,null,"/>

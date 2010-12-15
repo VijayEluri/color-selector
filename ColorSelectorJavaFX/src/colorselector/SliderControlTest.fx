@@ -16,7 +16,7 @@ public class SliderControlTest {
     
     init {
         // see: http://netbeans.org/kb/docs/javafx/fragments.html
-        insert sliderControl.hrbSliderControl after verticalBox.content[0];
+        insert sliderControl.node after verticalBox.content[0];
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:main
@@ -38,7 +38,7 @@ public class SliderControlTest {
     }
     
     public-read def chbEnabled: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
-        text: ""
+        selected: bind sliderControl.disable with inverse
     }
     
     def __layoutInfo_pnlSlider: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -68,7 +68,7 @@ public class SliderControlTest {
     }
     
     public-read def txbOutputValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
-        text: bind "{sliderControl.value as Integer}"
+        text: bind "{sliderControl.value}"
         editable: false
     }
     
@@ -82,12 +82,13 @@ public class SliderControlTest {
     }
     
     public-read def lblOutputEnabled: javafx.scene.control.Label = javafx.scene.control.Label {
-        text: "Enabled"
+        text: "Disabled"
     }
     
     public-read def txbOutputEnabled: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
         layoutX: 97.0
         layoutY: 222.0
+        text: bind "{sliderControl.disable}"
         editable: false
     }
     
@@ -146,7 +147,7 @@ public class SliderControlTest {
     }
     
     public-read def lblInputEnabled: javafx.scene.control.Label = javafx.scene.control.Label {
-        text: "Enabled"
+        text: "Disabled"
         font: fontSecondTitles
     }
     

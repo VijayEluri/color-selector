@@ -6,6 +6,7 @@
 package colorselector;
 
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 
 /**
  * @author rafael
@@ -13,10 +14,30 @@ import javafx.geometry.Insets;
 public class SliderControl {
 
     def insets = Insets { left: 5.0, top: 0.0, right: 5.0, bottom: 0.0 };
+    /**
+     * Título do componente.
+     */
     public var title: String = "";
+    /**
+     * Valor do componente
+     */
     public var value: Number = 0;
+    /**
+     * Se o componente está selecionado ou não.
+     */
     public var selected: Boolean = false;
-
+    /**
+     * Se o componente está desabilitado ou não.
+     */
+    public var disable: Boolean = false;
+    /**
+     * Valor máximo do componente.
+     */
+    public def MAX: Number = 255;
+    /**
+     * Valor mínimo do componente.
+     */
+    public def MIN: Number = 0;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:main
     def __layoutInfo_chbSelectes: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         hfill: false
@@ -45,7 +66,8 @@ public class SliderControl {
     }
     public-read def sldValue: javafx.scene.control.Slider = javafx.scene.control.Slider {
         layoutInfo: __layoutInfo_sldValue
-        max: 255.0
+        min: sldValueMin ()
+        max: sldValueMax ()
         value: bind value with inverse
         majorTickUnit: 50.0
         minorTickCount: 5
@@ -72,6 +94,7 @@ public class SliderControl {
         hshrink: javafx.scene.layout.Priority.ALWAYS
     }
     public-read def hrbSliderControl: javafx.scene.layout.HBox = javafx.scene.layout.HBox {
+        disable: bind disable with inverse
         layoutInfo: __layoutInfo_hrbSliderControl
         content: [ chbSelectes, lblTitle, sldValue, lblValue, ]
         spacing: 6.0
@@ -86,6 +109,14 @@ public class SliderControl {
     }
     // </editor-fold>//GEN-END:main
 
+    function sldValueMax (): Number {
+        MAX
+    }
+
+    function sldValueMin (): Number {
+        MIN
+    }
+
     function sldValueWidth (): Number {
         0.0
     }
@@ -98,6 +129,7 @@ public class SliderControl {
         "{%3.0f value}"
     }
 
+    public def node: Node = this.hrbSliderControl;
 }
 
 function run (): Void {

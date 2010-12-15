@@ -190,7 +190,7 @@
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
-        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,18,anim:,,str:Enabled,4,null,"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,19,anim:,,str:Disabled,4,null,"/>
         <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,inst:FontModel2,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
@@ -202,8 +202,8 @@
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
-        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,str:,4,null,"/>
         <Reference name="graphic" value="null"/>
+        <Reference name="selected" value="prop2:7,NOT_SET,4,null,43,str:bind sliderControl.disable with inverse,4,null,4,null,"/>
     </Instance>
     <Instance classID="PanelModel" instanceID="PanelModel1">
         <Reference name="instanceName" value="str:pnlSlider"/>
@@ -301,7 +301,7 @@
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
-        <Reference name="text" value="prop2:7,NOT_SET,4,null,43,str:bind &quot;{sliderControl.value as Integer}&quot;,4,null,4,null,"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,32,str:bind &quot;{sliderControl.value}&quot;,4,null,4,null,"/>
         <Reference name="editable" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
     </Instance>
     <Instance classID="LabelModel" instanceID="LabelModel9">
@@ -334,7 +334,7 @@
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
-        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,18,anim:,,str:Enabled,4,null,"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,19,anim:,,str:Disabled,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
     <Instance classID="TextBoxModel" instanceID="TextBoxModel5">
@@ -347,6 +347,7 @@
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,34,str:bind &quot;{sliderControl.disable}&quot;,4,null,4,null,"/>
         <Reference name="editable" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
     </Instance>
 </Model>

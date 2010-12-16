@@ -48,6 +48,8 @@
         <Reference name="layoutInfoHShrink" value="prop2:7,NOT_SET,4,null,4,null,24,anim:,,lipriority:ALWAYS,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="onMousePressed" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,null,4,null,"/>
+        <Reference name="onMouseWheelMoved" value="prop2:7,NOT_SET,4,null,4,null,32,anim:,,str:handleMouseWheelMoved,4,null,"/>
         <Reference name="clip" value="null"/>
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
@@ -66,6 +68,7 @@
         <Reference name="layoutInfoMargin" value="prop2:7,NOT_SET,4,null,4,null,29,animcode:,,getMarginDefault(),4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="onMouseWheelMoved" value="prop2:7,NOT_SET,4,null,4,null,32,animcode:,,handleMouseWheelMoved,4,null,"/>
         <Reference name="clip" value="null"/>
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
@@ -79,6 +82,7 @@
         <Reference name="layoutInfoMargin" value="prop2:7,NOT_SET,4,null,4,null,29,animcode:,,getMarginDefault(),4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="onMouseWheelMoved" value="prop2:7,NOT_SET,4,null,4,null,32,anim:,,str:handleMouseWheelMoved,4,null,"/>
         <Reference name="clip" value="null"/>
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
@@ -95,6 +99,7 @@
         <Reference name="layoutInfoMargin" value="prop2:7,NOT_SET,4,null,4,null,29,animcode:,,getMarginDefault(),4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="onMouseWheelMoved" value="prop2:7,NOT_SET,4,null,4,null,32,anim:,,str:handleMouseWheelMoved,4,null,"/>
         <Reference name="clip" value="null"/>
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
@@ -114,6 +119,7 @@
         <Reference name="layoutInfoMargin" value="prop2:7,NOT_SET,4,null,4,null,29,animcode:,,getMarginDefault(),4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="onMouseWheelMoved" value="prop2:7,NOT_SET,4,null,4,null,32,anim:,,str:handleMouseWheelMoved,4,null,"/>
         <Reference name="clip" value="null"/>
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>

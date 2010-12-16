@@ -7,6 +7,7 @@ package colorselector;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.input.KeyCode;
 
 /**
  * @author rafael
@@ -76,6 +77,8 @@ public class SliderControl {
     }
     public-read def sldValue: javafx.scene.control.Slider = javafx.scene.control.Slider {
         layoutInfo: __layoutInfo_sldValue
+        onKeyPressed: sldValueOnKeyPressed
+        onMousePressed: null
         onMouseWheelMoved: handleMouseWheelMoved
         min: sldValueMin ()
         max: sldValueMax ()
@@ -132,6 +135,19 @@ public class SliderControl {
         }
 
         this.value = newValue;
+    }
+
+    function sldValueOnKeyPressed (event: javafx.scene.input.KeyEvent): Void {
+        if(((event.code == KeyCode.VK_LEFT) or (event.code == KeyCode.VK_RIGHT)) and event.controlDown) {
+            def increment = if(event.code == KeyCode.VK_RIGHT) then 1 else -1;
+            this.changeValue(increment, extendedStep);
+        } else if((event.code == KeyCode.VK_UP) or (event.code == KeyCode.VK_PAGE_UP)) {
+            var step = if(event.controlDown) then extendedStep else 1;
+            this.changeValue(1, step);
+        } else if((event.code == KeyCode.VK_DOWN) or (event.code == KeyCode.VK_PAGE_DOWN)) {
+            var step = if(event.controlDown) then extendedStep else 1;
+            this.changeValue(-1, step);
+        }
     }
 
     function handleMouseWheelMoved(event: javafx.scene.input.MouseEvent): Void {

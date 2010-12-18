@@ -12,27 +12,25 @@ import javafx.scene.paint.Color;
  */
 public class ColorSelector {
 
-//    var lineControlHeight = bind scene.height / 8;
-    //var width0 = bind scene.width / 2;
-    //  var pos1 = bind (pos0 + width0);
     var width1 = 150;  // bind (2 * scene.width / 10);
-//    var pos2 = bind (pos1 + width1);
-//    var width2 = bind 3 * scene.width / 10;
 
     init {
 
     }
 
-    public-read def sliderControlRed = SliderControl {
+    public-read def sliderControlRed: SliderControl = SliderControl {
                 title: 'R'
+                onChange: changeColors
             }
 
-    public-read def sliderControlGreen = SliderControl {
+    public-read def sliderControlGreen: SliderControl = SliderControl {
                 title: 'G'
+                onChange: changeColors
             }
 
-    public-read def sliderControlBlue = SliderControl {
+    public-read def sliderControlBlue: SliderControl = SliderControl {
                 title: 'B'
+                onChange: changeColors
             }
 
     public-read def sliderControlAlpha = SliderControl {
@@ -92,7 +90,7 @@ public class ColorSelector {
 
     public-read def lblTitleColorFormat: javafx.scene.control.Label = javafx.scene.control.Label {
                 layoutInfo: __layoutInfo_lblTitleColorFormat
-                text: "Color Format"
+                text: "Color Format:"
                 textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
@@ -168,9 +166,6 @@ public class ColorSelector {
                 content: getDesignRootNodes()
             }
 
-    public-read def currentState: org.netbeans.javafx.design.DesignState = org.netbeans.javafx.design.DesignState {
-            }
-
     public function getDesignRootNodes(): javafx.scene.Node[] {
         [verticalBox,]
     }
@@ -178,18 +173,6 @@ public class ColorSelector {
     public function getDesignScene(): javafx.scene.Scene {
         scene
     }
-
-    var redValue = bind this.sliderControlRed.value on replace {
-                changeColors();
-            }
-
-    var blueValue = bind this.sliderControlBlue.value on replace {
-                changeColors();
-            }
-
-    var greenValue = bind this.sliderControlGreen.value on replace {
-                changeColors();
-            }
 
     function changeColors(): Void {
         this.rectangle.fill = Color.rgb(this.sliderControlRed.value,

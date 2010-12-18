@@ -24,7 +24,9 @@ public class SliderControl {
     /**
      * Valor do componente
      */
-    public var value: Number = 0;
+    public var value: Number = 0 on replace {
+                onChange();
+            };
 
     /**
      * Se o componente está selecionado ou não.
@@ -35,6 +37,9 @@ public class SliderControl {
      * Se o componente está desabilitado ou não.
      */
     public var disable: Boolean = false;
+
+    public var onChange: function(): Void = function() {
+            }
 
     /**
      * Valor máximo do componente.

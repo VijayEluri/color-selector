@@ -11,20 +11,43 @@ package colorselector;
 public class ColorSelector {
 
 //    var lineControlHeight = bind scene.height / 8;
-    var pos0 = 0;
-    var width0 = bind scene.width / 2;
-    var pos1 = bind (pos0 + width0);
-    var width1 = bind (2 * scene.width / 10);
-    var pos2 = bind (pos1 + width1);
-    var width2 = bind 3 * scene.width / 10;
+    //var width0 = bind scene.width / 2;
+  //  var pos1 = bind (pos0 + width0);
+    var width1 = 150;  // bind (2 * scene.width / 10);
+//    var pos2 = bind (pos1 + width1);
+//    var width2 = bind 3 * scene.width / 10;
 
-    bound function sliderWidth(): Number {
-        scene.width / 2
+
+    init {
+//        this.grid.rows[0].cells[0] = this.sliderControlRed.node;
+/*
+        var cells0 = grid.rows[0].cells;
+        insert sliderControlRed.node before cells0[0] ;
+        println(this.grid.rows[0].cells[0]);
+*/
+    }
+
+    public-read def sliderControlRed = SliderControl {
+        title: 'R'
+    }
+
+    public-read def sliderControlGreen = SliderControl {
+        title: 'G'
+    }
+
+    public-read def sliderControlBlue = SliderControl {
+        title: 'B'
+    }
+
+    public-read def sliderControlAlpha = SliderControl {
+        title: 'A'
+        disable: true
     }
 
 
 
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:main
+
+
     def __layoutInfo_rectangle: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         hgrow: javafx.scene.layout.Priority.ALWAYS
         vgrow: javafx.scene.layout.Priority.ALWAYS
@@ -35,64 +58,40 @@ public class ColorSelector {
         height: bind scene.height / 2
     }
     
-    def __layoutInfo_btnRed: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind width0
-    }
-    public-read def btnRed: javafx.scene.control.Button = javafx.scene.control.Button {
-        layoutInfo: __layoutInfo_btnRed
-        text: "RED"
-        textAlignment: javafx.scene.text.TextAlignment.CENTER
-    }
-    
     def __layoutInfo_lblTitleWebColor: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         width: bind width1
+        vpos: javafx.geometry.VPos.TOP
     }
+
     public-read def lblTitleWebColor: javafx.scene.control.Label = javafx.scene.control.Label {
         layoutInfo: __layoutInfo_lblTitleWebColor
         text: "Web Color:"
         textAlignment: javafx.scene.text.TextAlignment.RIGHT
         hpos: javafx.geometry.HPos.RIGHT
     }
-    
+
+    def __layoutInfo_chbWebColors: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
+        vpos: javafx.geometry.VPos.TOP
+    }
     public-read def chbWebColors: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
+        layoutInfo: __layoutInfo_chbWebColors
         items: [ "Item 1", "Item 2", "Item 3", ]
     }
-    
-    def __layoutInfo_hrbControl0: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind scene.width
+   
+    def __layoutInfo_lblTitleColor: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
+        width: bind width1
+        vpos: javafx.geometry.VPos.TOP
     }
-    public-read def hrbControl0: javafx.scene.layout.HBox = javafx.scene.layout.HBox {
-        layoutInfo: __layoutInfo_hrbControl0
-        content: [ btnRed, lblTitleWebColor, chbWebColors, ]
-        spacing: 6.0
-        vpos: javafx.geometry.VPos.BASELINE
-        nodeVPos: javafx.geometry.VPos.BASELINE
-    }
-    
-    def __layoutInfo_btnGreen: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind width0
-    }
-    public-read def btnGreen: javafx.scene.control.Button = javafx.scene.control.Button {
-        layoutInfo: __layoutInfo_btnGreen
-        text: "GREEN"
-    }
-    
     public-read def lblTitleColor: javafx.scene.control.Label = javafx.scene.control.Label {
+        layoutInfo: __layoutInfo_lblTitleColor
         text: "Color Code:"
         textAlignment: javafx.scene.text.TextAlignment.RIGHT
         hpos: javafx.geometry.HPos.RIGHT
     }
     
-    def __layoutInfo_btnBlue: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind width0
-    }
-    public-read def btnBlue: javafx.scene.control.Button = javafx.scene.control.Button {
-        layoutInfo: __layoutInfo_btnBlue
-        text: "BLUE"
-    }
-    
     def __layoutInfo_lblTitleColorFormat: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         width: bind width1
+        vpos: javafx.geometry.VPos.TOP
     }
     public-read def lblTitleColorFormat: javafx.scene.control.Label = javafx.scene.control.Label {
         layoutInfo: __layoutInfo_lblTitleColorFormat
@@ -101,91 +100,54 @@ public class ColorSelector {
         hpos: javafx.geometry.HPos.RIGHT
     }
     
+    def __layoutInfo_cmbColorFormat: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
+        vpos: javafx.geometry.VPos.TOP
+    }
     public-read def cmbColorFormat: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
+        layoutInfo: __layoutInfo_cmbColorFormat
         items: [ "Item 1", "Item 2", "Item 3", ]
     }
     
-    def __layoutInfo_hrbControl2: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind scene.width
-    }
-    public-read def hrbControl2: javafx.scene.layout.HBox = javafx.scene.layout.HBox {
-        layoutInfo: __layoutInfo_hrbControl2
-        content: [ btnBlue, lblTitleColorFormat, cmbColorFormat, ]
-        spacing: 6.0
-        nodeVPos: javafx.geometry.VPos.BASELINE
-    }
-    
-    def __layoutInfo_btnAlpha: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind width0
-    }
-    public-read def btnAlpha: javafx.scene.control.Button = javafx.scene.control.Button {
-        layoutInfo: __layoutInfo_btnAlpha
-        text: "ALPHA"
-    }
-    
-    def __layoutInfo_chbEnableAlpha: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind width0
+    def __layoutInfo_chbEnableAlpha: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
+        hspan: 2
+        vpos: javafx.geometry.VPos.TOP
     }
     public-read def chbEnableAlpha: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
         layoutInfo: __layoutInfo_chbEnableAlpha
         text: "Enable Alpha"
     }
     
-    def __layoutInfo_hrbControl3: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind scene.width
-    }
-    public-read def hrbControl3: javafx.scene.layout.HBox = javafx.scene.layout.HBox {
-        layoutInfo: __layoutInfo_hrbControl3
-        content: [ btnAlpha, chbEnableAlpha, ]
-        spacing: 6.0
-        nodeVPos: javafx.geometry.VPos.BASELINE
-    }
-    
-    public-read def radialGradient: javafx.scene.paint.RadialGradient = javafx.scene.paint.RadialGradient {
-        stops: [ javafx.scene.paint.Stop { offset: 0.0, color: javafx.scene.paint.Color.web ("#FF0000") }, javafx.scene.paint.Stop { offset: 1.0, color: javafx.scene.paint.Color.web ("#0000FF") }, ]
-    }
-    
-    public-read def color: javafx.scene.paint.Color = javafx.scene.paint.Color {
-        red: 0.6
-    }
-    
-    public-read def color2: javafx.scene.paint.Color = javafx.scene.paint.Color {
-        red: 0.4
-        green: 1.0
-        blue: 0.2
-    }
-    
     public-read def fontColorValue: javafx.scene.text.Font = javafx.scene.text.Font {
         name: "monospaced"
     }
     
+    def __layoutInfo_txbColorValue: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
+        vpos: javafx.geometry.VPos.TOP
+    }
     public-read def txbColorValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
+        layoutInfo: __layoutInfo_txbColorValue
         text: "rgb(255, 255, 255)"
         editable: false
         font: fontColorValue
     }
     
-    def __layoutInfo_hrbControl1: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind scene.width
-    }
-    public-read def hrbControl1: javafx.scene.layout.HBox = javafx.scene.layout.HBox {
-        layoutInfo: __layoutInfo_hrbControl1
-        content: [ btnGreen, lblTitleColor, txbColorValue, ]
-        spacing: 6.0
-        nodeVPos: javafx.geometry.VPos.BASELINE
-    }
-    
-    def __layoutInfo_vtbControls: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        hfill: true
-        hgrow: javafx.scene.layout.Priority.ALWAYS
-        vgrow: javafx.scene.layout.Priority.ALWAYS
-        hshrink: javafx.scene.layout.Priority.ALWAYS
-        vshrink: javafx.scene.layout.Priority.ALWAYS
-    }
-    public-read def vtbControls: javafx.scene.layout.VBox = javafx.scene.layout.VBox {
-        layoutInfo: __layoutInfo_vtbControls
-        content: [ hrbControl0, hrbControl1, hrbControl2, hrbControl3, ]
-        spacing: 6.0
+    public-read def grid: com.javafx.preview.layout.Grid = com.javafx.preview.layout.Grid {
+        hgap: 6.0
+        vgap: 6.0
+        rows: [
+            com.javafx.preview.layout.GridRow {
+                cells: [ this.sliderControlRed.node, lblTitleWebColor, chbWebColors, ]
+            }
+            com.javafx.preview.layout.GridRow {
+                cells: [ this.sliderControlGreen.node, lblTitleColor, txbColorValue, ]
+            }
+            com.javafx.preview.layout.GridRow {
+                cells: [ this.sliderControlBlue.node, lblTitleColorFormat, cmbColorFormat, ]
+            }
+            com.javafx.preview.layout.GridRow {
+                cells: [ this.sliderControlAlpha.node, chbEnableAlpha, ]
+            }
+        ]
     }
     
     def __layoutInfo_verticalBox: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -196,7 +158,7 @@ public class ColorSelector {
         layoutX: 0.0
         layoutY: 0.0
         layoutInfo: __layoutInfo_verticalBox
-        content: [ rectangle, vtbControls, ]
+        content: [ rectangle, grid, ]
         spacing: 6.0
     }
     
@@ -216,8 +178,6 @@ public class ColorSelector {
     public function getDesignScene (): javafx.scene.Scene {
         scene
     }
-    // </editor-fold>//GEN-END:main
-
 
 }
 

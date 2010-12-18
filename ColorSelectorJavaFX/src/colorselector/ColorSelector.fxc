@@ -111,6 +111,7 @@
     <Instance classID="LabelModel" instanceID="LabelModel1">
         <Reference name="instanceName" value="str:lblTitleWebColor"/>
         <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,15,str:bind width1,4,null,4,null,"/>
+        <Reference name="layoutInfoVPos" value="prop2:7,NOT_SET,4,null,4,null,20,anim:,,vpos:BASELINE,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:2"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
         <Reference name="clip" value="null"/>
@@ -124,6 +125,7 @@
     </Instance>
     <Instance classID="ChoiceBoxModel" instanceID="ChoiceBoxModel1">
         <Reference name="instanceName" value="str:chbWebColors"/>
+        <Reference name="layoutInfoVPos" value="prop2:7,NOT_SET,4,null,4,null,20,anim:,,vpos:BASELINE,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:3"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
         <Reference name="clip" value="null"/>
@@ -135,6 +137,7 @@
     <Instance classID="LabelModel" instanceID="LabelModel2">
         <Reference name="instanceName" value="str:lblTitleColor"/>
         <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,15,str:bind width1,4,null,4,null,"/>
+        <Reference name="layoutInfoVPos" value="prop2:7,NOT_SET,4,null,4,null,20,anim:,,vpos:BASELINE,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:2"/>
         <Reference name="gridLayoutInfoVLocation" value="int:1"/>
         <Reference name="clip" value="null"/>
@@ -148,6 +151,7 @@
     </Instance>
     <Instance classID="TextBoxModel" instanceID="TextBoxModel1">
         <Reference name="instanceName" value="str:txbColorValue"/>
+        <Reference name="layoutInfoVPos" value="prop2:7,NOT_SET,4,null,4,null,20,anim:,,vpos:BASELINE,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:3"/>
         <Reference name="gridLayoutInfoVLocation" value="int:1"/>
         <Reference name="clip" value="null"/>
@@ -161,6 +165,7 @@
     <Instance classID="LabelModel" instanceID="LabelModel3">
         <Reference name="instanceName" value="str:lblTitleColorFormat"/>
         <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,15,str:bind width1,4,null,4,null,"/>
+        <Reference name="layoutInfoVPos" value="prop2:7,NOT_SET,4,null,4,null,20,anim:,,vpos:BASELINE,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:2"/>
         <Reference name="gridLayoutInfoVLocation" value="int:2"/>
         <Reference name="clip" value="null"/>
@@ -174,6 +179,7 @@
     </Instance>
     <Instance classID="ChoiceBoxModel" instanceID="ChoiceBoxModel2">
         <Reference name="instanceName" value="str:cmbColorFormat"/>
+        <Reference name="layoutInfoVPos" value="prop2:7,NOT_SET,4,null,4,null,20,anim:,,vpos:BASELINE,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:3"/>
         <Reference name="gridLayoutInfoVLocation" value="int:2"/>
         <Reference name="clip" value="null"/>
@@ -185,6 +191,7 @@
     <Instance classID="CheckBoxModel" instanceID="CheckBoxModel1">
         <Reference name="instanceName" value="str:chbEnableAlpha"/>
         <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,15,str:bind width0,4,null,4,null,"/>
+        <Reference name="layoutInfoVPos" value="prop2:7,NOT_SET,4,null,4,null,20,anim:,,vpos:BASELINE,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:2"/>
         <Reference name="gridLayoutInfoVLocation" value="int:3"/>
         <Reference name="gridLayoutInfoHSpan" value="prop2:7,NOT_SET,4,null,4,null,12,anim:,,int:2,4,null,"/>

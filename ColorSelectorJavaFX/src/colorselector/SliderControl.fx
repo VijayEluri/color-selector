@@ -50,6 +50,7 @@ public class SliderControl {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:main
     def __layoutInfo_chbSelectes: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         hfill: false
+        vpos: javafx.geometry.VPos.TOP
         margin: getMarginDefault()
     }
     public-read def chbSelectes: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
@@ -60,6 +61,7 @@ public class SliderControl {
     }
     
     def __layoutInfo_lblTitle: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
+        vpos: javafx.geometry.VPos.TOP
         margin: getMarginDefault()
     }
     public-read def lblTitle: javafx.scene.control.Label = javafx.scene.control.Label {
@@ -71,6 +73,7 @@ public class SliderControl {
     def __layoutInfo_sldValue: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         width: sldValueWidth ()
         hfill: true
+        vpos: javafx.geometry.VPos.TOP
         hgrow: javafx.scene.layout.Priority.ALWAYS
         hshrink: javafx.scene.layout.Priority.ALWAYS
         margin: getMarginDefault()
@@ -83,6 +86,7 @@ public class SliderControl {
         min: sldValueMin ()
         max: sldValueMax ()
         value: bind value with inverse
+        clickToPosition: false
         majorTickUnit: 50.0
         minorTickCount: 5
         showTickLabels: true
@@ -92,6 +96,7 @@ public class SliderControl {
     }
     
     def __layoutInfo_lblValue: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
+        vpos: javafx.geometry.VPos.TOP
         margin: getMarginDefault()
     }
     public-read def lblValue: javafx.scene.control.Label = javafx.scene.control.Label {

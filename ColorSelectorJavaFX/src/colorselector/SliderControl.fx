@@ -10,6 +10,16 @@ import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 
 /**
+ * Valor máximo do componente.
+ */
+public def MAX: Number = 255;
+
+/**
+ * Valor mínimo do componente.
+ */
+public def MIN: Number = 0;
+
+/**
  * @author rafael
  */
 public class SliderControl {
@@ -31,25 +41,25 @@ public class SliderControl {
     /**
      * Se o componente está selecionado ou não.
      */
-    public var selected: Boolean = false;
+    public var selected: Boolean = false on replace {
+                onSelect();
+            }
 
     /**
      * Se o componente está desabilitado ou não.
      */
-    public var disable: Boolean = false;
+    public var disable: Boolean = false on replace {
+                onDisable();
+            }
 
     public var onChange: function(): Void = function() {
             }
 
-    /**
-     * Valor máximo do componente.
-     */
-    public def MAX: Number = 255;
+    public var onDisable: function(): Void = function() {
+            }
 
-    /**
-     * Valor mínimo do componente.
-     */
-    public def MIN: Number = 0;
+    public var onSelect: function(): Void = function() {
+            }
 
     def extendedStep = 25; //(MAX - MIN) / 10;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:main

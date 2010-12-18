@@ -6,6 +6,8 @@
 package colorselector;
 
 import javafx.scene.paint.Color;
+import javafx.util.Math;
+import javafx.scene.input.MouseEvent;
 
 /**
  * @author rafael
@@ -15,7 +17,7 @@ public class ColorSelector {
     var width1 = 150;  // bind (2 * scene.width / 10);
 
     init {
-
+        changeColors();
     }
 
     public-read def sliderControlRed: SliderControl = SliderControl {
@@ -35,7 +37,10 @@ public class ColorSelector {
 
     public-read def sliderControlAlpha = SliderControl {
                 title: 'A'
-                disable: true
+                value: SliderControl.MAX
+                disable: bind (not this.chbEnableAlpha.selected)
+                onChange: changeColors
+                onDisable: changeColors
             }
 
     def __layoutInfo_rectangle: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -47,6 +52,12 @@ public class ColorSelector {
                 layoutInfo: __layoutInfo_rectangle
                 width: bind scene.width
                 height: bind scene.height / 2
+                fill: Color.WHITE
+                onMouseClicked: function(event: MouseEvent): Void {
+                    if (event.clickCount == 2) {
+                        shuffleColors()
+                    }
+                }
             }
 
     def __layoutInfo_lblTitleWebColor: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -174,10 +185,26 @@ public class ColorSelector {
         scene
     }
 
+    function shuffleColors(): Void {
+        this.sliderControlRed.value = Math.random() * sliderControlAlpha.MAX;
+        this.sliderControlGreen.value = Math.random() * sliderControlAlpha.MAX;
+        this.sliderControlBlue.value = Math.random() * sliderControlAlpha.MAX;
+        if (not this.sliderControlAlpha.disable) {
+            this.sliderControlAlpha.value = Math.random() * sliderControlAlpha.MAX;
+        }
+    }
+
     function changeColors(): Void {
-        this.rectangle.fill = Color.rgb(this.sliderControlRed.value,
-                this.sliderControlGreen.value,
-                this.sliderControlBlue.value);
+        if (this.sliderControlAlpha.disable) {
+            this.rectangle.fill = Color.rgb(this.sliderControlRed.value,
+                    this.sliderControlGreen.value,
+                    this.sliderControlBlue.value);
+        } else {
+            def alpha = this.sliderControlAlpha.value / sliderControlAlpha.MAX;
+            this.rectangle.fill = Color.rgb(this.sliderControlRed.value,
+                    this.sliderControlGreen.value,
+                    this.sliderControlBlue.value, alpha);
+        }
     }
 
 }

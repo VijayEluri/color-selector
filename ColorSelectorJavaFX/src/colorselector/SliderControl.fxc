@@ -40,7 +40,7 @@
         <Reference name="disable" value="prop2:7,NOT_SET,4,null,29,str:bind disable with inverse,4,null,4,null,"/>
         <Reference name="layoutX" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:0.0,4,null,"/>
         <Reference name="layoutY" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:0.0,4,null,"/>
-        <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,flt:468.0,4,null,"/>
+        <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,27,str:bind width with inverse,4,null,4,null,"/>
         <Reference name="layoutInfoHeight" value="prop2:7,NOT_SET,4,null,4,null,15,anim:,,flt:60.0,4,null,"/>
         <Reference name="layoutInfoHFill" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,bool:true,4,null,"/>
         <Reference name="layoutInfoVFill" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>

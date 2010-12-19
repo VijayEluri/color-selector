@@ -8,15 +8,22 @@ package colorselector;
 import javafx.scene.paint.Color;
 import javafx.util.Math;
 import javafx.scene.input.MouseEvent;
+import colorselector.ColorFormatter;
 
 /**
  * @author rafael
  */
 public class ColorSelector {
 
-    var width1 = 150;
+    var width1 = 100;
+
+    var controlsWidht = bind 0.6 * scene.width;
 
     var syncronizedControls: SliderControl[] = [];
+
+    var currentFormatter: ColorFormatter = bind (cmbColorFormat.selectedItem) as ColorFormatter on replace {
+                formatColor();
+            }
 
     init {
         changeColors(null);
@@ -30,6 +37,7 @@ public class ColorSelector {
                 onSelect: function() {
                     syncronizeControl(sliderControlRed);
                 }
+                width: bind controlsWidht
             }
 
     public-read def sliderControlGreen: SliderControl = SliderControl {
@@ -40,6 +48,7 @@ public class ColorSelector {
                 onSelect: function() {
                     syncronizeControl(sliderControlGreen);
                 }
+                width: bind controlsWidht
             }
 
     public-read def sliderControlBlue: SliderControl = SliderControl {
@@ -50,6 +59,7 @@ public class ColorSelector {
                 onSelect: function() {
                     syncronizeControl(sliderControlBlue);
                 }
+                width: bind controlsWidht
             }
 
     public-read def sliderControlAlpha: SliderControl = SliderControl {
@@ -61,13 +71,14 @@ public class ColorSelector {
                 }
                 onDisable: function() {
                     changeColors(sliderControlAlpha);
-                    if(sliderControlAlpha.disable) {
+                    if (sliderControlAlpha.disable) {
                         sliderControlAlpha.selected = false;
                     }
                 }
                 onSelect: function() {
                     syncronizeControl(sliderControlAlpha);
                 }
+                width: bind controlsWidht
             }
 
     def __layoutInfo_rectangle: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -138,7 +149,7 @@ public class ColorSelector {
 
     public-read def cmbColorFormat: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
                 layoutInfo: __layoutInfo_cmbColorFormat
-                items: ["Item 1", "Item 2", "Item 3",]
+                items: ColorFormatter.formatters
             }
 
     def __layoutInfo_chbEnableAlpha: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
@@ -153,10 +164,12 @@ public class ColorSelector {
 
     public-read def fontColorValue: javafx.scene.text.Font = javafx.scene.text.Font {
                 name: "monospaced"
+                size: 10
             }
 
     def __layoutInfo_txbColorValue: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
                 vpos: javafx.geometry.VPos.TOP
+                minWidth: bind 0.3 * scene.width
             }
 
     public-read def txbColorValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
@@ -210,6 +223,10 @@ public class ColorSelector {
 
     public function getDesignScene(): javafx.scene.Scene {
         scene
+    }
+
+    function formatColor(): Void {
+        this.txbColorValue.text = currentFormatter.format(this.rectangle.fill as Color, not sliderControlAlpha.disable);
     }
 
     function syncronizeControl(source: SliderControl): Void {
@@ -267,6 +284,7 @@ public class ColorSelector {
                     this.sliderControlGreen.value,
                     this.sliderControlBlue.value, alpha);
         }
+        this.formatColor();
     }
 
 }

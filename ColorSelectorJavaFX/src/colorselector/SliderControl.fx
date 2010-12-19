@@ -52,6 +52,8 @@ public class SliderControl {
                 onDisable();
             }
 
+    public var width: Number = 468.0;
+
     public var onChange: function(): Void = function() {
             }
 
@@ -121,7 +123,7 @@ public class SliderControl {
     }
     
     def __layoutInfo_hrbSliderControl: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: 468.0
+        width: bind width with inverse
         height: 60.0
         hfill: true
         vfill: false

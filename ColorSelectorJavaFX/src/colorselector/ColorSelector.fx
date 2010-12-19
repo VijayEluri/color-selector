@@ -14,33 +14,60 @@ import javafx.scene.input.MouseEvent;
  */
 public class ColorSelector {
 
-    var width1 = 150;  // bind (2 * scene.width / 10);
+    var width1 = 150;
+
+    var syncronizedControls: SliderControl[] = [];
 
     init {
-        changeColors();
+        changeColors(null);
     }
 
     public-read def sliderControlRed: SliderControl = SliderControl {
                 title: 'R'
-                onChange: changeColors
+                onChange: function() {
+                    changeColors(sliderControlRed);
+                }
+                onSelect: function() {
+                    syncronizeControl(sliderControlRed);
+                }
             }
 
     public-read def sliderControlGreen: SliderControl = SliderControl {
                 title: 'G'
-                onChange: changeColors
+                onChange: function() {
+                    changeColors(sliderControlGreen);
+                }
+                onSelect: function() {
+                    syncronizeControl(sliderControlGreen);
+                }
             }
 
     public-read def sliderControlBlue: SliderControl = SliderControl {
                 title: 'B'
-                onChange: changeColors
+                onChange: function() {
+                    changeColors(sliderControlBlue);
+                }
+                onSelect: function() {
+                    syncronizeControl(sliderControlBlue);
+                }
             }
 
-    public-read def sliderControlAlpha = SliderControl {
+    public-read def sliderControlAlpha: SliderControl = SliderControl {
                 title: 'A'
                 value: SliderControl.MAX
                 disable: bind (not this.chbEnableAlpha.selected)
-                onChange: changeColors
-                onDisable: changeColors
+                onChange: function() {
+                    changeColors(sliderControlAlpha);
+                }
+                onDisable: function() {
+                    changeColors(sliderControlAlpha);
+                    if(sliderControlAlpha.disable) {
+                        sliderControlAlpha.selected = false;
+                    }
+                }
+                onSelect: function() {
+                    syncronizeControl(sliderControlAlpha);
+                }
             }
 
     def __layoutInfo_rectangle: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -185,16 +212,51 @@ public class ColorSelector {
         scene
     }
 
-    function shuffleColors(): Void {
-        this.sliderControlRed.value = Math.random() * sliderControlAlpha.MAX;
-        this.sliderControlGreen.value = Math.random() * sliderControlAlpha.MAX;
-        this.sliderControlBlue.value = Math.random() * sliderControlAlpha.MAX;
-        if (not this.sliderControlAlpha.disable) {
-            this.sliderControlAlpha.value = Math.random() * sliderControlAlpha.MAX;
+    function syncronizeControl(source: SliderControl): Void {
+        if (source.selected) {
+            insert source into this.syncronizedControls;
+
+            var size = sizeof this.syncronizedControls;
+            if (size > 1) {
+                var sum = 0.0;
+                for (control in this.syncronizedControls) {
+                    sum += control.value;
+                }
+                def newValue = sum / size;
+                for (control in this.syncronizedControls) {
+                    control.value = newValue;
+                }
+            }
+        } else {
+            delete source from this.syncronizedControls;
         }
     }
 
-    function changeColors(): Void {
+    function getRandom(): Number {
+        Math.random() * SliderControl.MAX;
+    }
+
+    function shuffleColors(): Void {
+        def hasSync = (sizeof this.syncronizedControls > 1);
+        def syncValue = if (hasSync) this.getRandom() else 0.0;
+
+        this.sliderControlRed.value = if (hasSync and this.sliderControlRed.selected) syncValue else this.getRandom();
+        this.sliderControlGreen.value = if (hasSync and this.sliderControlGreen.selected) syncValue else this.getRandom();
+        this.sliderControlBlue.value = if (hasSync and this.sliderControlBlue.selected) syncValue else this.getRandom();
+        if (not this.sliderControlAlpha.disable) {
+            this.sliderControlAlpha.value = if (hasSync and this.sliderControlAlpha.selected) syncValue else this.getRandom();
+        }
+    }
+
+    function changeColors(source: SliderControl): Void {
+        if ((source != null) and source.selected and (sizeof this.syncronizedControls > 1)) {
+            for (control in this.syncronizedControls) {
+                if ((control != source) and (control.value != source.value)) {
+                    control.value = source.value;
+                }
+            }
+        }
+
         if (this.sliderControlAlpha.disable) {
             this.rectangle.fill = Color.rgb(this.sliderControlRed.value,
                     this.sliderControlGreen.value,

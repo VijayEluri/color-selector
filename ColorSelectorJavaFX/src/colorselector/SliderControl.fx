@@ -10,16 +10,6 @@ import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
 
 /**
- * Valor máximo do componente.
- */
-public def MAX: Number = 255;
-
-/**
- * Valor mínimo do componente.
- */
-public def MIN: Number = 0;
-
-/**
  * @author rafael
  */
 public class SliderControl {
@@ -63,7 +53,7 @@ public class SliderControl {
     public var onSelect: function(): Void = function() {
             }
 
-    def extendedStep = 25; //(MAX - MIN) / 10;
+    def extendedStep = 25; 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:main
     def __layoutInfo_chbSelectes: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         hfill: false
@@ -150,10 +140,10 @@ public class SliderControl {
 
     function changeValue(increment: Integer, delta: Number): Void {
         var newValue = increment * delta + this.value;
-        if(newValue < MIN) {
-            newValue = MIN;
-        } else if(newValue > MAX) {
-            newValue = MAX;
+        if(newValue < Utils.MIN) {
+            newValue = Utils.MIN;
+        } else if(newValue > Utils.MAX) {
+            newValue = Utils.MAX;
         }
 
         this.value = newValue;
@@ -179,11 +169,11 @@ public class SliderControl {
     }
 
     function sldValueMax (): Number {
-        MAX
+        Utils.MAX
     }
 
     function sldValueMin (): Number {
-        MIN
+        Utils.MIN
     }
 
     function sldValueWidth (): Number {

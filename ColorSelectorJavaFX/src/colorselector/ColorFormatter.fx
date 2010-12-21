@@ -17,10 +17,6 @@ public abstract class ColorFormatter {
 
     abstract public function format(c: Color, hasAlpha: Boolean): String;
 
-    function numberToInt(n: Number): Integer {
-        (n * SliderControl.MAX) as Integer
-    }
-
     override function toString(): String {
         description
     }
@@ -32,7 +28,7 @@ class Hexadecimal extends ColorFormatter {
     override var description = "Hexadecimal";
 
     override function format(c: Color, hasAlpha: Boolean): String {
-        "#{%02x numberToInt(c.red)}{%02x numberToInt(c.green)}{%02x numberToInt(c.blue)}";
+        "#{%02x Utils.colorValueToInt(c.red)}{%02x Utils.colorValueToInt(c.green)}{%02x Utils.colorValueToInt(c.blue)}".toUpperCase();
     }
 }
 
@@ -40,7 +36,7 @@ class Rgb extends ColorFormatter {
     override var description = "RGB";
 
     override public function format (c : Color, hasAlpha : Boolean) : String {
-        "rgb({%03d numberToInt(c.red)}, {%03d numberToInt(c.green)}, {%03d numberToInt(c.blue)})";
+        "rgb({%03d Utils.colorValueToInt(c.red)}, {%03d Utils.colorValueToInt(c.green)}, {%03d Utils.colorValueToInt(c.blue)})";
     }
 }
 

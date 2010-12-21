@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Math;
 import javafx.scene.input.MouseEvent;
 import colorselector.ColorFormatter;
+import colorselector.WebColor;
 
 /**
  * @author rafael
@@ -23,6 +24,14 @@ public class ColorSelector {
 
     var currentFormatter: ColorFormatter = bind (cmbColorFormat.selectedItem) as ColorFormatter on replace {
                 formatColor();
+            }
+
+    var currentWebColor: WebColor = bind (chbWebColors.selectedItem) as WebColor on replace {
+                if (currentWebColor.defined) {
+                    sliderControlRed.value = currentWebColor.red;
+                    sliderControlGreen.value = currentWebColor.green;
+                    sliderControlBlue.value = currentWebColor.blue;
+                }
             }
 
     init {
@@ -64,7 +73,7 @@ public class ColorSelector {
 
     public-read def sliderControlAlpha: SliderControl = SliderControl {
                 title: 'A'
-                value: SliderControl.MAX
+                value: Utils.MAX
                 disable: bind (not this.chbEnableAlpha.selected)
                 onChange: function() {
                     changeColors(sliderControlAlpha);
@@ -116,7 +125,7 @@ public class ColorSelector {
 
     public-read def chbWebColors: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
                 layoutInfo: __layoutInfo_chbWebColors
-                items: ["Item 1", "Item 2", "Item 3",]
+                items: WebColor.values
             }
 
     def __layoutInfo_lblTitleColor: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
@@ -250,7 +259,7 @@ public class ColorSelector {
     }
 
     function getRandom(): Number {
-        Math.random() * SliderControl.MAX;
+        Math.random() * Utils.MAX;
     }
 
     function shuffleColors(): Void {
@@ -279,12 +288,39 @@ public class ColorSelector {
                     this.sliderControlGreen.value,
                     this.sliderControlBlue.value);
         } else {
-            def alpha = this.sliderControlAlpha.value / sliderControlAlpha.MAX;
+            def alpha = this.sliderControlAlpha.value / Utils.MAX;
             this.rectangle.fill = Color.rgb(this.sliderControlRed.value,
                     this.sliderControlGreen.value,
                     this.sliderControlBlue.value, alpha);
         }
+        
         this.formatColor();
+        this.handleChbWebColors();
+    }
+
+    function handleChbWebColors(): Void {
+        var currentColor: Color = this.rectangle.fill as Color;
+//        println("\t====({currentColor.red}, {currentColor.green}, {currentColor.blue})====");
+        var index = 0;
+        var found = false;
+        for (item in this.chbWebColors.items) {
+            var webColor: WebColor = item as WebColor;
+//            println("{webColor.name}: ({webColor.red}, {webColor.green}, {webColor.blue})");
+            if (webColor.defined 
+                and (webColor.red == Utils.colorValueToInt(currentColor.red))
+                and (webColor.green == Utils.colorValueToInt(currentColor.green))
+                and (webColor.blue == Utils.colorValueToInt(currentColor.blue))) {
+                this.chbWebColors.select(index);
+                found = true;
+                break;
+            }
+            index++;
+        }
+//        println("{new java.util.Date()}: {index}");
+        if(not found) {
+            this.chbWebColors.select(0);
+        }
+
     }
 
 }

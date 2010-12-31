@@ -27,13 +27,37 @@
     <Instance classID="SceneModel" instanceID="SceneModel1">
         <Reference name="instanceName" value="str:scene"/>
         <List name="content">
-            <Item value="inst:HBoxModel1"/>
+            <Item value="inst:StackModel1"/>
         </List>
         <Reference name="width" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,flt:467.0,4,null,"/>
         <Reference name="height" value="prop2:7,NOT_SET,4,null,4,null,15,anim:,,flt:60.0,4,null,"/>
         <Reference name="generateSceneInstance" value="bool:false"/>
         <Reference name="generateGetDesignSceneFunction" value="bool:false"/>
         <Reference name="generateLayoutXYForRootLevelComponents" value="bool:false"/>
+    </Instance>
+    <Instance classID="StackModel" instanceID="StackModel1">
+        <Reference name="instanceName" value="str:stack"/>
+        <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,27,str:bind width with inverse,4,null,4,null,"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:0"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="clip" value="null"/>
+        <Map name="customProperties"/>
+        <Reference name="customClass" value="null"/>
+        <List name="content">
+            <Item value="inst:RectangleShapeModel1"/>
+            <Item value="inst:HBoxModel1"/>
+        </List>
+    </Instance>
+    <Instance classID="RectangleShapeModel" instanceID="RectangleShapeModel1">
+        <Reference name="instanceName" value="str:rectangle"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:0"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="clip" value="null"/>
+        <Map name="customProperties"/>
+        <Reference name="customClass" value="null"/>
+        <Reference name="fill" value="prop2:7,NOT_SET,4,null,24,str:bind backgroundColor,4,null,4,null,"/>
+        <Reference name="width" value="prop2:7,NOT_SET,4,null,27,str:bind width with inverse,4,null,4,null,"/>
+        <Reference name="height" value="prop2:7,NOT_SET,4,null,21,str:bind stack.height,4,null,4,null,"/>
     </Instance>
     <Instance classID="HBoxModel" instanceID="HBoxModel1">
         <Reference name="instanceName" value="str:hrbSliderControl"/>
@@ -48,6 +72,7 @@
         <Reference name="layoutInfoHShrink" value="prop2:7,NOT_SET,4,null,4,null,24,anim:,,lipriority:ALWAYS,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="style" value="prop2:7,NOT_SET,4,null,17,str:bind cssStyle,4,null,4,null,"/>
         <Reference name="onMousePressed" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,null,4,null,"/>
         <Reference name="onMouseWheelMoved" value="prop2:7,NOT_SET,4,null,4,null,32,anim:,,str:handleMouseWheelMoved,4,null,"/>
         <Reference name="clip" value="null"/>
@@ -63,12 +88,13 @@
         <Reference name="vpos" value="prop2:7,NOT_SET,4,null,4,null,20,anim:,,vpos:BASELINE,4,null,"/>
     </Instance>
     <Instance classID="CheckBoxModel" instanceID="CheckBoxModel1">
-        <Reference name="instanceName" value="str:chbSelectes"/>
+        <Reference name="instanceName" value="str:chbSelected"/>
         <Reference name="layoutInfoHFill" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
         <Reference name="layoutInfoVPos" value="prop2:7,NOT_SET,4,null,4,null,15,anim:,,vpos:TOP,4,null,"/>
         <Reference name="layoutInfoMargin" value="prop2:7,NOT_SET,4,null,4,null,29,animcode:,,getMarginDefault(),4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="style" value="prop2:7,NOT_SET,4,null,17,str:bind cssStyle,4,null,4,null,"/>
         <Reference name="onMouseWheelMoved" value="prop2:7,NOT_SET,4,null,4,null,32,animcode:,,handleMouseWheelMoved,4,null,"/>
         <Reference name="clip" value="null"/>
         <Map name="customProperties"/>
@@ -84,6 +110,7 @@
         <Reference name="layoutInfoMargin" value="prop2:7,NOT_SET,4,null,4,null,29,animcode:,,getMarginDefault(),4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="style" value="prop2:7,NOT_SET,4,null,17,str:bind cssStyle,4,null,4,null,"/>
         <Reference name="onMouseWheelMoved" value="prop2:7,NOT_SET,4,null,4,null,32,anim:,,str:handleMouseWheelMoved,4,null,"/>
         <Reference name="clip" value="null"/>
         <Map name="customProperties"/>
@@ -102,6 +129,7 @@
         <Reference name="layoutInfoMargin" value="prop2:7,NOT_SET,4,null,4,null,29,animcode:,,getMarginDefault(),4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="style" value="prop2:7,NOT_SET,4,null,17,str:bind cssStyle,4,null,4,null,"/>
         <Reference name="onKeyPressed" value="prop2:7,NOT_SET,4,null,4,null,31,anim:,,str:sldValueOnKeyPressed,4,null,"/>
         <Reference name="onMousePressed" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,null,4,null,"/>
         <Reference name="onMouseWheelMoved" value="prop2:7,NOT_SET,4,null,4,null,32,anim:,,str:handleMouseWheelMoved,4,null,"/>
@@ -126,6 +154,7 @@
         <Reference name="layoutInfoMargin" value="prop2:7,NOT_SET,4,null,4,null,29,animcode:,,getMarginDefault(),4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="style" value="prop2:7,NOT_SET,4,null,17,str:bind cssStyle,4,null,4,null,"/>
         <Reference name="onMouseWheelMoved" value="prop2:7,NOT_SET,4,null,4,null,32,anim:,,str:handleMouseWheelMoved,4,null,"/>
         <Reference name="clip" value="null"/>
         <Map name="customProperties"/>

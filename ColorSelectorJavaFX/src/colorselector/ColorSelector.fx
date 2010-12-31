@@ -47,6 +47,8 @@ public class ColorSelector {
                     syncronizeControl(sliderControlRed);
                 }
                 width: bind controlsWidht
+                backgroundColor: bind Color.rgb(sliderControlRed.value, 0, 0)
+                foregroundColor: bind getForegroundColor(sliderControlRed.value)
             }
 
     public-read def sliderControlGreen: SliderControl = SliderControl {
@@ -58,6 +60,8 @@ public class ColorSelector {
                     syncronizeControl(sliderControlGreen);
                 }
                 width: bind controlsWidht
+                backgroundColor: bind Color.rgb(0, sliderControlGreen.value, 0)
+                foregroundColor: bind getForegroundColor(sliderControlGreen.value)
             }
 
     public-read def sliderControlBlue: SliderControl = SliderControl {
@@ -69,6 +73,8 @@ public class ColorSelector {
                     syncronizeControl(sliderControlBlue);
                 }
                 width: bind controlsWidht
+                backgroundColor: bind Color.rgb(0, 0, sliderControlBlue.value)
+                foregroundColor: Color.WHITE
             }
 
     public-read def sliderControlAlpha: SliderControl = SliderControl {
@@ -234,6 +240,11 @@ public class ColorSelector {
         scene
     }
 
+    var currentColor: Color = (rectangle.fill as Color) on replace {
+                this.formatColor();
+                this.handleChbWebColors();
+            }
+
     function formatColor(): Void {
         this.txbColorValue.text = currentFormatter.format(this.rectangle.fill as Color, not sliderControlAlpha.disable);
     }
@@ -293,31 +304,32 @@ public class ColorSelector {
                     this.sliderControlGreen.value,
                     this.sliderControlBlue.value, alpha);
         }
-        
-        this.formatColor();
-        this.handleChbWebColors();
+
+//        this.formatColor();
+//        this.handleChbWebColors();
+    }
+
+    function getForegroundColor(value: Number): Color {
+        if (value > (Utils.MAX) / 2) then Color.BLACK else Color.WHITE
     }
 
     function handleChbWebColors(): Void {
-        var currentColor: Color = this.rectangle.fill as Color;
-//        println("\t====({currentColor.red}, {currentColor.green}, {currentColor.blue})====");
         var index = 0;
         var found = false;
         for (item in this.chbWebColors.items) {
             var webColor: WebColor = item as WebColor;
-//            println("{webColor.name}: ({webColor.red}, {webColor.green}, {webColor.blue})");
-            if (webColor.defined 
-                and (webColor.red == Utils.colorValueToInt(currentColor.red))
-                and (webColor.green == Utils.colorValueToInt(currentColor.green))
-                and (webColor.blue == Utils.colorValueToInt(currentColor.blue))) {
+            if (webColor.defined
+                    and (webColor.red == Utils.colorValueToInt(currentColor.red))
+                    and (webColor.green == Utils.colorValueToInt(currentColor.green))
+                    and (webColor.blue == Utils.colorValueToInt(currentColor.blue))) {
                 this.chbWebColors.select(index);
                 found = true;
                 break;
             }
             index++;
         }
-//        println("{new java.util.Date()}: {index}");
-        if(not found) {
+
+        if (not found) {
             this.chbWebColors.select(0);
         }
 

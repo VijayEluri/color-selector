@@ -8,6 +8,7 @@ package colorselector;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 
 /**
  * @author rafael
@@ -44,6 +45,17 @@ public class SliderControl {
 
     public var width: Number = 468.0;
 
+    public var backgroundColor: Color = Color.WHITE;
+
+    public var foregroundColor: Color = Color.BLACK;
+
+    var cssBackground = bind "-fx-background-color: rgb({Utils.colorValueToInt(this.backgroundColor.red)}, {Utils.colorValueToInt(this.backgroundColor.green)}, {Utils.colorValueToInt(this.backgroundColor.blue)})";
+
+    // TODO: Como alterar a cor da fonte das marcas do Slider?
+    var cssForeground = bind "-fx-text-fill: rgb({Utils.colorValueToInt(this.foregroundColor.red)}, {Utils.colorValueToInt(this.foregroundColor.green)}, {Utils.colorValueToInt(this.foregroundColor.blue)})";
+
+    var cssStyle: String = bind "{cssBackground}; {cssForeground};";
+
     public var onChange: function(): Void = function() {
             }
 
@@ -53,15 +65,22 @@ public class SliderControl {
     public var onSelect: function(): Void = function() {
             }
 
-    def extendedStep = 25; 
+    def extendedStep = 25;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:main
-    def __layoutInfo_chbSelectes: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
+    public-read def rectangle: javafx.scene.shape.Rectangle = javafx.scene.shape.Rectangle {
+        fill: bind backgroundColor
+        width: bind width with inverse
+        height: bind stack.height
+    }
+    
+    def __layoutInfo_chbSelected: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         hfill: false
         vpos: javafx.geometry.VPos.TOP
         margin: getMarginDefault()
     }
-    public-read def chbSelectes: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
-        layoutInfo: __layoutInfo_chbSelectes
+    public-read def chbSelected: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
+        layoutInfo: __layoutInfo_chbSelected
+        style: bind cssStyle
         onMouseWheelMoved: handleMouseWheelMoved
         text: ""
         selected: bind selected with inverse
@@ -73,6 +92,7 @@ public class SliderControl {
     }
     public-read def lblTitle: javafx.scene.control.Label = javafx.scene.control.Label {
         layoutInfo: __layoutInfo_lblTitle
+        style: bind cssStyle
         onMouseWheelMoved: handleMouseWheelMoved
         text: bind title with inverse
     }
@@ -87,6 +107,7 @@ public class SliderControl {
     }
     public-read def sldValue: javafx.scene.control.Slider = javafx.scene.control.Slider {
         layoutInfo: __layoutInfo_sldValue
+        style: bind cssStyle
         onKeyPressed: sldValueOnKeyPressed
         onMousePressed: null
         onMouseWheelMoved: handleMouseWheelMoved
@@ -108,6 +129,7 @@ public class SliderControl {
     }
     public-read def lblValue: javafx.scene.control.Label = javafx.scene.control.Label {
         layoutInfo: __layoutInfo_lblValue
+        style: bind cssStyle
         onMouseWheelMoved: handleMouseWheelMoved
         text: bind "{%03.0f sldValue.value}"
     }
@@ -122,19 +144,30 @@ public class SliderControl {
     }
     public-read def hrbSliderControl: javafx.scene.layout.HBox = javafx.scene.layout.HBox {
         disable: bind disable with inverse
+        layoutX: 0.0
+        layoutY: 0.0
         layoutInfo: __layoutInfo_hrbSliderControl
+        style: bind cssStyle
         onMousePressed: null
         onMouseWheelMoved: handleMouseWheelMoved
-        content: [ chbSelectes, lblTitle, sldValue, lblValue, ]
+        content: [ chbSelected, lblTitle, sldValue, lblValue, ]
         spacing: 6.0
         vpos: javafx.geometry.VPos.BASELINE
+    }
+    
+    def __layoutInfo_stack: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
+        width: bind width with inverse
+    }
+    public-read def stack: javafx.scene.layout.Stack = javafx.scene.layout.Stack {
+        layoutInfo: __layoutInfo_stack
+        content: [ rectangle, hrbSliderControl, ]
     }
     
     public-read def currentState: org.netbeans.javafx.design.DesignState = org.netbeans.javafx.design.DesignState {
     }
     
     public function getDesignRootNodes (): javafx.scene.Node[] {
-        [ hrbSliderControl, ]
+        [ stack, ]
     }
     // </editor-fold>//GEN-END:main
 
@@ -188,7 +221,7 @@ public class SliderControl {
         "{%3.0f value}"
     }
 
-    public def node: Node = this.hrbSliderControl;
+    public def node: Node = this.stack;
 }
 
 function run (): Void {

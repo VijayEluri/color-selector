@@ -10,6 +10,7 @@ import javafx.util.Math;
 import javafx.scene.input.MouseEvent;
 import colorselector.ColorFormatter;
 import colorselector.WebColor;
+import javafx.scene.paint.Paint;
 
 /**
  * @author rafael
@@ -32,6 +33,11 @@ public class ColorSelector {
                     sliderControlGreen.value = currentWebColor.green;
                     sliderControlBlue.value = currentWebColor.blue;
                 }
+            }
+
+    var currentColor: Paint = Color.WHITE on replace {
+                this.formatColor();
+                this.handleChbWebColors();
             }
 
     init {
@@ -105,7 +111,7 @@ public class ColorSelector {
                 layoutInfo: __layoutInfo_rectangle
                 width: bind scene.width
                 height: bind scene.height / 2
-                fill: Color.WHITE
+                fill: bind this.currentColor
                 onMouseClicked: function(event: MouseEvent): Void {
                     if (event.clickCount == 2) {
                         shuffleColors()
@@ -240,13 +246,8 @@ public class ColorSelector {
         scene
     }
 
-    var currentColor: Color = (rectangle.fill as Color) on replace {
-                this.formatColor();
-                this.handleChbWebColors();
-            }
-
     function formatColor(): Void {
-        this.txbColorValue.text = currentFormatter.format(this.rectangle.fill as Color, not sliderControlAlpha.disable);
+        this.txbColorValue.text = currentFormatter.format(this.currentColor as Color, not sliderControlAlpha.disable);
     }
 
     function syncronizeControl(source: SliderControl): Void {
@@ -294,19 +295,10 @@ public class ColorSelector {
             }
         }
 
-        if (this.sliderControlAlpha.disable) {
-            this.rectangle.fill = Color.rgb(this.sliderControlRed.value,
-                    this.sliderControlGreen.value,
-                    this.sliderControlBlue.value);
-        } else {
-            def alpha = this.sliderControlAlpha.value / Utils.MAX;
-            this.rectangle.fill = Color.rgb(this.sliderControlRed.value,
-                    this.sliderControlGreen.value,
-                    this.sliderControlBlue.value, alpha);
-        }
-
-//        this.formatColor();
-//        this.handleChbWebColors();
+        var alpha = if (this.sliderControlAlpha.disable) 1.0 else (this.sliderControlAlpha.value / Utils.MAX);
+        this.currentColor = Color.rgb(this.sliderControlRed.value,
+                this.sliderControlGreen.value,
+                this.sliderControlBlue.value, alpha);
     }
 
     function getForegroundColor(value: Number): Color {
@@ -319,9 +311,9 @@ public class ColorSelector {
         for (item in this.chbWebColors.items) {
             var webColor: WebColor = item as WebColor;
             if (webColor.defined
-                    and (webColor.red == Utils.colorValueToInt(currentColor.red))
-                    and (webColor.green == Utils.colorValueToInt(currentColor.green))
-                    and (webColor.blue == Utils.colorValueToInt(currentColor.blue))) {
+                    and (webColor.red == Utils.colorValueToInt((currentColor as Color).red))
+                    and (webColor.green == Utils.colorValueToInt((currentColor as Color).green))
+                    and (webColor.blue == Utils.colorValueToInt((currentColor as Color).blue))) {
                 this.chbWebColors.select(index);
                 found = true;
                 break;

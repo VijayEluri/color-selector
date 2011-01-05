@@ -20,6 +20,7 @@ import com.javafx.preview.control.CheckMenuItem;
 import com.javafx.preview.control.RadioMenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Alert;
+import com.javafx.preview.layout.GridLayoutInfo;
 
 /**
  * @author rafael
@@ -177,13 +178,11 @@ public class ColorSelector {
         }
     }
 
-    def __layoutInfo_rectangle: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-                hgrow: javafx.scene.layout.Priority.ALWAYS
-                vgrow: javafx.scene.layout.Priority.ALWAYS
-            }
-
     public-read def rectangle: javafx.scene.shape.Rectangle = javafx.scene.shape.Rectangle {
-                layoutInfo: __layoutInfo_rectangle
+                layoutInfo: LayoutInfo {
+                    hgrow: javafx.scene.layout.Priority.ALWAYS
+                    vgrow: javafx.scene.layout.Priority.ALWAYS
+                }
                 width: bind scene.width
                 height: bind scene.height / 2
                 fill: bind this.currentColor
@@ -194,67 +193,55 @@ public class ColorSelector {
                 }
             }
 
-    def __layoutInfo_lblTitleWebColor: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-                width: bind width1
-                vpos: javafx.geometry.VPos.TOP
-                hpos: javafx.geometry.HPos.RIGHT
-            }
-
     public-read def lblTitleWebColor: javafx.scene.control.Label = javafx.scene.control.Label {
-                layoutInfo: __layoutInfo_lblTitleWebColor
+                layoutInfo: LayoutInfo {
+                    width: bind width1
+                    vpos: javafx.geometry.VPos.TOP
+                    hpos: javafx.geometry.HPos.RIGHT
+                }
                 text: "Web Color:"
                 textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
-    def __layoutInfo_chbWebColors: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-                vpos: javafx.geometry.VPos.TOP
-            }
-
     public-read def chbWebColors: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
-                layoutInfo: __layoutInfo_chbWebColors
+                layoutInfo: LayoutInfo {
+                    vpos: javafx.geometry.VPos.TOP
+                }
                 items: WebColor.values
             }
 
-    def __layoutInfo_lblTitleColor: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-                width: bind width1
-                vpos: javafx.geometry.VPos.TOP
-                hpos: javafx.geometry.HPos.RIGHT
-            }
-
     public-read def lblTitleColor: javafx.scene.control.Label = javafx.scene.control.Label {
-                layoutInfo: __layoutInfo_lblTitleColor
+                layoutInfo: LayoutInfo {
+                    width: bind width1
+                    vpos: javafx.geometry.VPos.TOP
+                    hpos: javafx.geometry.HPos.RIGHT
+                }
                 text: "Color Code:"
                 textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
-    def __layoutInfo_lblTitleColorFormat: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-                width: bind width1
-                vpos: javafx.geometry.VPos.TOP
-                hpos: javafx.geometry.HPos.RIGHT
-            }
-
     public-read def lblTitleColorFormat: javafx.scene.control.Label = javafx.scene.control.Label {
-                layoutInfo: __layoutInfo_lblTitleColorFormat
+                layoutInfo: LayoutInfo {
+                    width: bind width1
+                    vpos: javafx.geometry.VPos.TOP
+                    hpos: javafx.geometry.HPos.RIGHT
+                }
                 text: "Color Format:"
                 textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
-    def __layoutInfo_cmbColorFormat: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-                vpos: javafx.geometry.VPos.TOP
-            }
-
     public-read def cmbColorFormat: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
-                layoutInfo: __layoutInfo_cmbColorFormat
+                layoutInfo: LayoutInfo {
+                    vpos: javafx.geometry.VPos.TOP
+                }
                 items: ColorFormatter.formatters
             }
 
-    def __layoutInfo_chbEnableAlpha: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
-                hspan: 2
-                vpos: javafx.geometry.VPos.TOP
-            }
-
     public-read def chbEnableAlpha: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
-                layoutInfo: __layoutInfo_chbEnableAlpha
+                layoutInfo: GridLayoutInfo {
+                    hspan: 2
+                    vpos: javafx.geometry.VPos.TOP
+                }
                 text: "Enable Alpha"
             }
 
@@ -263,13 +250,11 @@ public class ColorSelector {
                 size: 10
             }
 
-    def __layoutInfo_txbColorValue: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
-                vpos: javafx.geometry.VPos.TOP
-                minWidth: bind 0.3 * scene.width
-            }
-
     public-read def txbColorValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
-                layoutInfo: __layoutInfo_txbColorValue
+                layoutInfo: GridLayoutInfo {
+                    vpos: javafx.geometry.VPos.TOP
+                    minWidth: bind 0.3 * scene.width
+                }
                 text: "rgb(255, 255, 255)"
                 editable: false
                 font: fontColorValue
@@ -294,15 +279,13 @@ public class ColorSelector {
                 ]
             }
 
-    def __layoutInfo_verticalBox: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-                width: bind scene.width
-                height: bind scene.height
-            }
-
     public-read def verticalBox: javafx.scene.layout.VBox = javafx.scene.layout.VBox {
                 layoutX: 0.0
                 layoutY: 0.0
-                layoutInfo: __layoutInfo_verticalBox
+                layoutInfo: LayoutInfo {
+                    width: bind scene.width
+                    height: bind scene.height
+                }
                 content: [menuBar, rectangle, grid,]
                 spacing: 6.0
             }

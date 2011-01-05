@@ -11,6 +11,15 @@ import javafx.scene.input.MouseEvent;
 import colorselector.ColorFormatter;
 import colorselector.WebColor;
 import javafx.scene.paint.Paint;
+import com.javafx.preview.control.MenuBar;
+import javafx.scene.layout.LayoutInfo;
+import com.javafx.preview.control.Menu;
+import com.javafx.preview.control.MenuItem;
+import javafx.scene.control.Separator;
+import com.javafx.preview.control.CheckMenuItem;
+import com.javafx.preview.control.RadioMenuItem;
+import javafx.scene.control.ToggleGroup;
+import javafx.stage.Alert;
 
 /**
  * @author rafael
@@ -23,8 +32,11 @@ public class ColorSelector {
 
     var syncronizedControls: SliderControl[] = [];
 
+    var formatGroup = ToggleGroup {}
+
     var currentFormatter: ColorFormatter = bind (cmbColorFormat.selectedItem) as ColorFormatter on replace {
                 formatColor();
+                formatGroup.toggles[cmbColorFormat.selectedIndex].selected = true;
             }
 
     var currentWebColor: WebColor = bind (chbWebColors.selectedItem) as WebColor on replace {
@@ -101,6 +113,69 @@ public class ColorSelector {
                 }
                 width: bind controlsWidht
             }
+
+    public-read def menuBar: MenuBar = MenuBar {
+                layoutInfo: LayoutInfo {
+                    width: bind scene.width
+                }
+                layoutX: 0.0
+                layoutY: 0.0
+                menus: [
+                    Menu {
+                        text: "File"
+                        items: [
+                            MenuItem {
+                                text: "Random Color"
+                                action: shuffleColors
+                            }
+                            Separator {}
+                            MenuItem {
+                                text: "Exit"
+                                action: FX.exit
+                            }
+                        ]
+                    },
+                    Menu {
+                        text: "Options"
+                        items: [
+                            Menu {
+                                text: "Color Fomat"
+                                items: for (formatter in ColorFormatter.formatters) {
+                                    RadioMenuItem {
+                                        action: itemMenuFormatSelected
+                                        text: formatter.description
+                                        toggleGroup: formatGroup
+                                    }
+                                }
+                            }
+                            CheckMenuItem {
+                                text: "Enable Alpha"
+                                selected: bind chbEnableAlpha.selected with inverse
+                            }
+                        ]
+                    },
+                    Menu {
+                        text: "Help"
+                        items: [
+                            MenuItem {
+                                text: "About"
+                                action: function(): Void {
+                                    Alert.inform("About", "Color Selector\nVersion 1.0\n(c)Rafael Afonso - 2011");
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+
+    function itemMenuFormatSelected(): Void {
+        for (index in [0..(sizeof this.formatGroup.toggles)]) {
+            if (this.formatGroup.toggles[index].selected) {
+                this.cmbColorFormat.select(index);
+                break;
+            }
+        }
+    }
 
     def __layoutInfo_rectangle: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
                 hgrow: javafx.scene.layout.Priority.ALWAYS
@@ -228,7 +303,7 @@ public class ColorSelector {
                 layoutX: 0.0
                 layoutY: 0.0
                 layoutInfo: __layoutInfo_verticalBox
-                content: [rectangle, grid,]
+                content: [menuBar, rectangle, grid,]
                 spacing: 6.0
             }
 
@@ -324,7 +399,6 @@ public class ColorSelector {
         if (not found) {
             this.chbWebColors.select(0);
         }
-
     }
 
 }

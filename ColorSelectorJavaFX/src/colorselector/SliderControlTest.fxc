@@ -62,11 +62,101 @@
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <List name="content">
+            <Item value="inst:MenuBarModel1"/>
             <Item value="inst:GridModel1"/>
             <Item value="inst:PanelModel1"/>
             <Item value="inst:GridModel2"/>
         </List>
         <Reference name="spacing" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:6.0,4,null,"/>
+    </Instance>
+    <Instance classID="MenuBarModel" instanceID="MenuBarModel1">
+        <Reference name="instanceName" value="str:menuBar"/>
+        <Reference name="layoutX" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:0.0,4,null,"/>
+        <Reference name="layoutY" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:0.0,4,null,"/>
+        <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,20,str:bind scene.width,4,null,4,null,"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:0"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="clip" value="null"/>
+        <Map name="customProperties"/>
+        <Reference name="customClass" value="null"/>
+        <Reference name="tooltip" value="null"/>
+        <List name="menus">
+            <Item value="inst:MenuModel1"/>
+            <Item value="inst:MenuModel2"/>
+            <Item value="inst:MenuModel3"/>
+        </List>
+    </Instance>
+    <Instance classID="MenuModel" instanceID="MenuModel1">
+        <Reference name="instanceName" value="str:fileMenu"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:0"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="clip" value="null"/>
+        <Map name="customProperties"/>
+        <Reference name="customClass" value="null"/>
+        <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,15,anim:,,str:File,4,null,"/>
+        <Reference name="graphic" value="null"/>
+        <List name="items">
+            <Item value="inst:SeparatorModel1"/>
+            <Item value="inst:MenuItemModel1"/>
+        </List>
+    </Instance>
+    <Instance classID="SeparatorModel" instanceID="SeparatorModel1">
+        <Reference name="instanceName" value="str:separator"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:0"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="clip" value="null"/>
+        <Map name="customProperties"/>
+        <Reference name="customClass" value="null"/>
+        <Reference name="tooltip" value="null"/>
+    </Instance>
+    <Instance classID="MenuItemModel" instanceID="MenuItemModel1">
+        <Reference name="instanceName" value="str:exitMenuItem"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:0"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="clip" value="null"/>
+        <Map name="customProperties"/>
+        <Reference name="customClass" value="null"/>
+        <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,15,anim:,,str:Exit,4,null,"/>
+        <Reference name="graphic" value="null"/>
+    </Instance>
+    <Instance classID="MenuModel" instanceID="MenuModel2">
+        <Reference name="instanceName" value="str:editMenu"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:0"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="clip" value="null"/>
+        <Map name="customProperties"/>
+        <Reference name="customClass" value="null"/>
+        <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,15,anim:,,str:Edit,4,null,"/>
+        <Reference name="graphic" value="null"/>
+        <List name="items"/>
+    </Instance>
+    <Instance classID="MenuModel" instanceID="MenuModel3">
+        <Reference name="instanceName" value="str:helpMenu"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:0"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="clip" value="null"/>
+        <Map name="customProperties"/>
+        <Reference name="customClass" value="null"/>
+        <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,15,anim:,,str:Help,4,null,"/>
+        <Reference name="graphic" value="null"/>
+        <List name="items">
+            <Item value="inst:MenuItemModel2"/>
+        </List>
+    </Instance>
+    <Instance classID="MenuItemModel" instanceID="MenuItemModel2">
+        <Reference name="instanceName" value="str:aboutMenuItem"/>
+        <Reference name="gridLayoutInfoHLocation" value="int:0"/>
+        <Reference name="gridLayoutInfoVLocation" value="int:0"/>
+        <Reference name="clip" value="null"/>
+        <Map name="customProperties"/>
+        <Reference name="customClass" value="null"/>
+        <Reference name="tooltip" value="null"/>
+        <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,str:About,4,null,"/>
+        <Reference name="graphic" value="null"/>
     </Instance>
     <Instance classID="GridModel" instanceID="GridModel1">
         <Reference name="instanceName" value="str:gridInput"/>

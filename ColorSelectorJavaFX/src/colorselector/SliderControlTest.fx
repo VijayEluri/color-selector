@@ -20,6 +20,41 @@ public class SliderControlTest {
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:main
+    public-read def separator: javafx.scene.control.Separator = javafx.scene.control.Separator {
+    }
+    
+    public-read def exitMenuItem: com.javafx.preview.control.MenuItem = com.javafx.preview.control.MenuItem {
+        text: "Exit"
+    }
+    
+    public-read def fileMenu: com.javafx.preview.control.Menu = com.javafx.preview.control.Menu {
+        text: "File"
+        items: [ separator, exitMenuItem, ]
+    }
+    
+    public-read def editMenu: com.javafx.preview.control.Menu = com.javafx.preview.control.Menu {
+        text: "Edit"
+    }
+    
+    public-read def aboutMenuItem: com.javafx.preview.control.MenuItem = com.javafx.preview.control.MenuItem {
+        text: "About"
+    }
+    
+    public-read def helpMenu: com.javafx.preview.control.Menu = com.javafx.preview.control.Menu {
+        text: "Help"
+        items: [ aboutMenuItem, ]
+    }
+    
+    def __layoutInfo_menuBar: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
+        width: bind scene.width
+    }
+    public-read def menuBar: com.javafx.preview.control.MenuBar = com.javafx.preview.control.MenuBar {
+        layoutX: 0.0
+        layoutY: 0.0
+        layoutInfo: __layoutInfo_menuBar
+        menus: [ fileMenu, editMenu, helpMenu, ]
+    }
+    
     public-read def slider: javafx.scene.control.Slider = javafx.scene.control.Slider {
         max: 255.0
         value: bind sliderControl.value with inverse
@@ -197,7 +232,7 @@ public class SliderControlTest {
         layoutX: 0.0
         layoutY: 0.0
         layoutInfo: __layoutInfo_verticalBox
-        content: [ gridInput, pnlSlider, gridOutput, ]
+        content: [ menuBar, gridInput, pnlSlider, gridOutput, ]
         spacing: 6.0
     }
     

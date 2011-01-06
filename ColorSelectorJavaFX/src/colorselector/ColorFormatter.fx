@@ -8,6 +8,10 @@ import java.lang.String;
 import java.util.Locale;
 import javafx.scene.paint.Color;
 
+function formatAlpha(alpha: Number): String {
+    String.format(Locale.US, "%.2f", alpha)
+}
+
 /**
  * @author rafael
  */
@@ -35,8 +39,16 @@ class Hexadecimal extends ColorFormatter {
 class Rgb extends ColorFormatter {
     override var description = "RGB";
 
-    override public function format (c : Color, hasAlpha : Boolean) : String {
+    function formatWithAlpha(c: Color): String {
+        "rgba({%03d Utils.colorValueToInt(c.red)}, {%03d Utils.colorValueToInt(c.green)}, {%03d Utils.colorValueToInt(c.blue)}, {formatAlpha(c.opacity)})";
+    }
+
+    function formatWithoutAlpha(c: Color): String {
         "rgb({%03d Utils.colorValueToInt(c.red)}, {%03d Utils.colorValueToInt(c.green)}, {%03d Utils.colorValueToInt(c.blue)})";
+    }
+
+    override public function format (c : Color, hasAlpha : Boolean) : String {
+        if(hasAlpha) formatWithAlpha(c) else formatWithoutAlpha(c)
     }
 }
 
@@ -51,10 +63,6 @@ class Percent extends ColorFormatter {
         "{%3.0f (n * 100)}%"
     }
 
-    function formatAlpha(alpha: Number): String {
-        String.format(Locale.US, "%.2f", alpha)
-    }
-
     function formatWithAlpha(c: Color): String {
         "rgba({formatPercent(c.red)}, {formatPercent(c.green)}, {formatPercent(c.blue)}, {formatAlpha(c.opacity)})"
     }
@@ -64,7 +72,7 @@ class Percent extends ColorFormatter {
     }
 
     override public function format (c : Color, hasAlpha : Boolean) : String {
-        if(hasAlpha) then formatWithAlpha(c) else formatWithoutAlpha(c)
+        if(hasAlpha) formatWithAlpha(c) else formatWithoutAlpha(c)
     }
 }
 

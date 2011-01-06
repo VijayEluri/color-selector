@@ -16,7 +16,7 @@ public class SliderControlTest {
     
     init {
         // see: http://netbeans.org/kb/docs/javafx/fragments.html
-        insert sliderControl.node after verticalBox.content[0];
+        insert sliderControl.node after verticalBox.content[1];
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:main
@@ -60,6 +60,10 @@ public class SliderControlTest {
         value: bind sliderControl.value with inverse
     }
     
+    public-read def lblInputColor: javafx.scene.control.Label = javafx.scene.control.Label {
+        text: "Color"
+    }
+    
     public-read def txbInputTitle: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
         text: bind sliderControl.title with inverse
     }
@@ -74,16 +78,6 @@ public class SliderControlTest {
     
     public-read def chbEnabled: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
         selected: bind sliderControl.disable with inverse
-    }
-    
-    def __layoutInfo_pnlSlider: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind scene.width
-        hfill: true
-        hgrow: javafx.scene.layout.Priority.ALWAYS
-        hshrink: javafx.scene.layout.Priority.ALWAYS
-    }
-    public-read def pnlSlider: javafx.scene.layout.Panel = javafx.scene.layout.Panel {
-        layoutInfo: __layoutInfo_pnlSlider
     }
     
     public-read def lblOuputTitle: javafx.scene.control.Label = javafx.scene.control.Label {
@@ -221,6 +215,9 @@ public class SliderControlTest {
             com.javafx.preview.layout.GridRow {
                 cells: [ lblInputValue, slider, lblInputEnabled, chbEnabled, ]
             }
+            com.javafx.preview.layout.GridRow {
+                cells: [ lblInputColor, ]
+            }
         ]
     }
     
@@ -232,7 +229,7 @@ public class SliderControlTest {
         layoutX: 0.0
         layoutY: 0.0
         layoutInfo: __layoutInfo_verticalBox
-        content: [ menuBar, gridInput, pnlSlider, gridOutput, ]
+        content: [ menuBar, gridInput, gridOutput, ]
         spacing: 6.0
     }
     

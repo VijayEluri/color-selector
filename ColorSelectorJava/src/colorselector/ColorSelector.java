@@ -594,6 +594,7 @@ public class ColorSelector {
             gridBagLblTitleColorFormat.gridy = 2;
             lblTitleColorFormat = new JLabel();
             lblTitleColorFormat.setText(Messages.getString("ColorSelector.title.colorformat")); //$NON-NLS-1$
+            
             GridBagConstraints gridBagLblTitleWebColor = new GridBagConstraints();
             gridBagLblTitleWebColor.gridx = 1;
             gridBagLblTitleWebColor.anchor = GridBagConstraints.EAST;
@@ -609,9 +610,7 @@ public class ColorSelector {
             gridBagLblTitleColorCode.gridy = 1;
             lblTitleColorCode = new JLabel();
             lblTitleColorCode.setText(Messages.getString("ColorSelector.title.colorcode")); //$NON-NLS-1$
-            GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
-            gridBagConstraints1.gridx = 1;
-            gridBagConstraints1.gridy = 0;
+            
             GridBagConstraints gridBagCmbWebColors = new GridBagConstraints();
             gridBagCmbWebColors.fill = GridBagConstraints.NONE;
             gridBagCmbWebColors.gridy = 0;

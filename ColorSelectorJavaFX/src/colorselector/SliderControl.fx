@@ -124,6 +124,7 @@ public class SliderControl {
     }
     
     def __layoutInfo_lblValue: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
+        width: 30.0
         vpos: javafx.geometry.VPos.TOP
         margin: getMarginDefault()
     }

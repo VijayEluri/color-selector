@@ -150,6 +150,7 @@
     </Instance>
     <Instance classID="LabelModel" instanceID="LabelModel2">
         <Reference name="instanceName" value="str:lblValue"/>
+        <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,4,null,15,anim:,,flt:30.0,4,null,"/>
         <Reference name="layoutInfoVPos" value="prop2:7,NOT_SET,4,null,4,null,15,anim:,,vpos:TOP,4,null,"/>
         <Reference name="layoutInfoMargin" value="prop2:7,NOT_SET,4,null,4,null,29,animcode:,,getMarginDefault(),4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>

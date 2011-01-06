@@ -123,24 +123,24 @@ public class ColorSelector {
                 layoutY: 0.0
                 menus: [
                     Menu {
-                        text: "File"
+                        text: ##[menu.file]"File"
                         items: [
                             MenuItem {
-                                text: "Random Color"
+                                text: ##[random_color]"Random Color"
                                 action: shuffleColors
                             }
                             Separator {}
                             MenuItem {
-                                text: "Exit"
+                                text: ##[menu.file.exit]"Exit"
                                 action: FX.exit
                             }
                         ]
                     },
                     Menu {
-                        text: "Options"
+                        text: ##[menu.options]"Options"
                         items: [
                             Menu {
-                                text: "Color Fomat"
+                                text: ##[color_format]"Color Fomat"
                                 items: for (formatter in ColorFormatter.formatters) {
                                     RadioMenuItem {
                                         action: itemMenuFormatSelected
@@ -150,18 +150,21 @@ public class ColorSelector {
                                 }
                             }
                             CheckMenuItem {
-                                text: "Enable Alpha"
+                                text: ##[enable_alpha]"Enable Alpha"
                                 selected: bind chbEnableAlpha.selected with inverse
                             }
                         ]
                     },
                     Menu {
-                        text: "Help"
+                        def aboutName = ##[about.name]"Color Selector";
+                        def aboutVersion = ##[about.version]"Version 1.0";
+                        def aboutCopyright = ##[about.copyright]"(c)Rafael Afonso - 2011]"
+                        text: ##[menu.help]"Help"
                         items: [
                             MenuItem {
-                                text: "About"
+                                text: ##[menu.help.about]"About"
                                 action: function(): Void {
-                                    Alert.inform("About", "Color Selector\nVersion 1.0\n(c)Rafael Afonso - 2011");
+                                    Alert.inform(##[about.title]"About", "{aboutName}\n{aboutVersion}\n{aboutCopyright}");
                                 }
                             }
                         ]
@@ -199,7 +202,7 @@ public class ColorSelector {
                     vpos: javafx.geometry.VPos.TOP
                     hpos: javafx.geometry.HPos.RIGHT
                 }
-                text: "Web Color:"
+                text: ##[web_color]"Web Color:"
                 textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
@@ -216,7 +219,7 @@ public class ColorSelector {
                     vpos: javafx.geometry.VPos.TOP
                     hpos: javafx.geometry.HPos.RIGHT
                 }
-                text: "Color Code:"
+                text: ##[color_code]"Color Code:"
                 textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
@@ -226,7 +229,7 @@ public class ColorSelector {
                     vpos: javafx.geometry.VPos.TOP
                     hpos: javafx.geometry.HPos.RIGHT
                 }
-                text: "Color Format:"
+                text: ##[color_format]"Color Format:"
                 textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
@@ -242,7 +245,7 @@ public class ColorSelector {
                     hspan: 2
                     vpos: javafx.geometry.VPos.TOP
                 }
-                text: "Enable Alpha"
+                text: ##[enable_alpha]"Enable Alpha"
             }
 
     public-read def fontColorValue: javafx.scene.text.Font = javafx.scene.text.Font {
@@ -390,7 +393,7 @@ function run(): Void {
     var design = ColorSelector {};
 
     javafx.stage.Stage {
-        title: "Color Selector"
+        title: ##[title]"Color Selector"
         scene: design.getDesignScene()
     }
 }

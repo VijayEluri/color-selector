@@ -1,0 +1,18 @@
+"title"="Seletor de Cores"
+
+"menu.file"="Arquivo"
+"menu.file.exit"="Sair"
+"menu.options"="Opções"
+"menu.help"="Ajuda"
+"menu.help.about"="Sobre"
+
+"about.title"="Sobre"
+"about.name"="Seletor de Cores"
+"about.version"="Versão 1.0"
+"about.copyright"="(c)Rafael Afonso - 2011"
+
+"random_color"="Cor Aleatória"
+"color_format"="Formatação de Cores"
+"enable_alpha"="Habilitar transparência"
+"web_color"="Cor Web"
+"color_code"="Código da Cor"

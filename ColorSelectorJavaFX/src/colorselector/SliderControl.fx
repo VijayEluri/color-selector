@@ -69,7 +69,7 @@ public class SliderControl {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:main
     public-read def rectangle: javafx.scene.shape.Rectangle = javafx.scene.shape.Rectangle {
         fill: bind backgroundColor
-        width: bind width with inverse
+        width: bind stack.width
         height: bind stack.height
     }
     

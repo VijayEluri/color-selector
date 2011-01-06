@@ -56,7 +56,7 @@
         <Map name="customProperties"/>
         <Reference name="customClass" value="null"/>
         <Reference name="fill" value="prop2:7,NOT_SET,4,null,24,str:bind backgroundColor,4,null,4,null,"/>
-        <Reference name="width" value="prop2:7,NOT_SET,4,null,27,str:bind width with inverse,4,null,4,null,"/>
+        <Reference name="width" value="prop2:7,NOT_SET,4,null,20,str:bind stack.width,4,null,4,null,"/>
         <Reference name="height" value="prop2:7,NOT_SET,4,null,21,str:bind stack.height,4,null,4,null,"/>
     </Instance>
     <Instance classID="HBoxModel" instanceID="HBoxModel1">

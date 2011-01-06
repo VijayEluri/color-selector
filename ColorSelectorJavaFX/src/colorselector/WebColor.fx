@@ -25,11 +25,11 @@ public class WebColor {
         name
     }
 
-    public function getColor(): Color { Color { red: this.red, green: this.green, blue: this.blue };}
+    public function getColor(): Color { Color.rgb(this.red, this.green, this.blue) }
 
 }
 public def values: WebColor[] = [
-            WebColor { name: "UNDEFINED", red: 0, green: 0, blue: 0, defined: false},
+            WebColor { name: "UNDEFINED", red: 0, green: 0, blue: 0, defined: false },
             WebColor { name: "ALICEBLUE", red: 240, green: 248, blue: 255 },
             WebColor { name: "ANTIQUEWHITE", red: 250, green: 235, blue: 215 },
             WebColor { name: "AQUA", red: 0, green: 255, blue: 255 },

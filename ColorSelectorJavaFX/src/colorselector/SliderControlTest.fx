@@ -12,12 +12,15 @@ import javafx.scene.layout.LayoutInfo;
  */
 public class SliderControlTest {
 
-    def sliderControl = SliderControl {}
-    
+    def sliderControl = SliderControl {
+                backgroundColor: bind (chbInputBackground.selectedItem as WebColor).getColor()
+                foregroundColor: bind (chbInputForeground.selectedItem as WebColor).getColor()
+            }
+
     init {
         // see: http://netbeans.org/kb/docs/javafx/fragments.html
         insert sliderControl.node after verticalBox.content[1];
-    }
+            }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:main
     public-read def separator: javafx.scene.control.Separator = javafx.scene.control.Separator {
@@ -60,8 +63,20 @@ public class SliderControlTest {
         value: bind sliderControl.value with inverse
     }
     
-    public-read def lblInputColor: javafx.scene.control.Label = javafx.scene.control.Label {
-        text: "Color"
+    public-read def lblInputBackground: javafx.scene.control.Label = javafx.scene.control.Label {
+        text: "Background"
+    }
+    
+    def __layoutInfo_chbInputForeground: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
+        hspan: 3
+    }
+    public-read def chbInputForeground: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
+        layoutInfo: __layoutInfo_chbInputForeground
+        items: chbInputColorItems ()
+    }
+    
+    public-read def lblInputForeground: javafx.scene.control.Label = javafx.scene.control.Label {
+        text: "Foreground"
     }
     
     public-read def txbInputTitle: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
@@ -80,6 +95,14 @@ public class SliderControlTest {
         selected: bind sliderControl.disable with inverse
     }
     
+    def __layoutInfo_chbInputBackground: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
+        hspan: 3
+    }
+    public-read def chbInputBackground: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
+        layoutInfo: __layoutInfo_chbInputBackground
+        items: chbInputColorItems ()
+    }
+    
     public-read def lblOuputTitle: javafx.scene.control.Label = javafx.scene.control.Label {
         text: "Title"
     }
@@ -87,6 +110,32 @@ public class SliderControlTest {
     public-read def txbOutputTitle: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
         text: bind sliderControl.title
         editable: false
+    }
+    
+    def __layoutInfo_txbOutputBackground: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
+        hspan: 3
+    }
+    public-read def txbOutputBackground: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
+        layoutInfo: __layoutInfo_txbOutputBackground
+        text: bind {sliderControl.backgroundColor.toString()}
+        editable: false
+    }
+    
+    def __layoutInfo_txtOutputForeground: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
+        hspan: 3
+    }
+    public-read def txtOutputForeground: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
+        layoutInfo: __layoutInfo_txtOutputForeground
+        text: bind {sliderControl.foregroundColor.toString()}
+        editable: false
+    }
+    
+    public-read def lblOutputForeground: javafx.scene.control.Label = javafx.scene.control.Label {
+        text: "Foreground"
+    }
+    
+    public-read def lblOutputBackground: javafx.scene.control.Label = javafx.scene.control.Label {
+        text: "Background"
     }
     
     public-read def lblOutputValue: javafx.scene.control.Label = javafx.scene.control.Label {
@@ -122,14 +171,14 @@ public class SliderControlTest {
     }
     
     public-read def fontPrimaryTitles: javafx.scene.text.Font = javafx.scene.text.Font {
-        oblique: false
+        oblique: true
         embolden: true
         autoKern: false
         ligatures: false
     }
     
     def __layoutInfo_lblOutput: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
-        hspan: 2
+        hspan: 4
     }
     public-read def lblOutput: javafx.scene.control.Label = javafx.scene.control.Label {
         layoutX: 0.0
@@ -156,11 +205,17 @@ public class SliderControlTest {
             com.javafx.preview.layout.GridRow {
                 cells: [ lblOutputValue, txbOutputValue, lblOutputEnabled, txbOutputEnabled, ]
             }
+            com.javafx.preview.layout.GridRow {
+                cells: [ lblOutputBackground, txbOutputBackground, ]
+            }
+            com.javafx.preview.layout.GridRow {
+                cells: [ lblOutputForeground, txtOutputForeground, ]
+            }
         ]
     }
     
     def __layoutInfo_lblInput: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
-        hspan: 2
+        hspan: 4
     }
     public-read def lblInput: javafx.scene.control.Label = javafx.scene.control.Label {
         layoutInfo: __layoutInfo_lblInput
@@ -216,7 +271,10 @@ public class SliderControlTest {
                 cells: [ lblInputValue, slider, lblInputEnabled, chbEnabled, ]
             }
             com.javafx.preview.layout.GridRow {
-                cells: [ lblInputColor, ]
+                cells: [ lblInputBackground, chbInputBackground, ]
+            }
+            com.javafx.preview.layout.GridRow {
+                cells: [ lblInputForeground, chbInputForeground, ]
             }
         ]
     }
@@ -235,7 +293,7 @@ public class SliderControlTest {
     
     public-read def scene: javafx.scene.Scene = javafx.scene.Scene {
         width: 319.0
-        height: 238.0
+        height: 457.0
         content: getDesignRootNodes ()
     }
     
@@ -250,6 +308,10 @@ public class SliderControlTest {
         scene
     }
     // </editor-fold>//GEN-END:main
+
+    function chbInputColorItems(): Object[] {
+        WebColor.values
+         }
 
 }
 

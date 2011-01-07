@@ -6,6 +6,7 @@
 package colorselector;
 
 import javafx.scene.layout.LayoutInfo;
+import java.lang.NumberFormatException;
 
 /**
  * @author rafael
@@ -18,9 +19,9 @@ public class SliderControlTest {
             }
 
     init {
-        // see: http://netbeans.org/kb/docs/javafx/fragments.html
+    // see: http://netbeans.org/kb/docs/javafx/fragments.html
         insert sliderControl.node after verticalBox.content[1];
-            }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:main
     public-read def separator: javafx.scene.control.Separator = javafx.scene.control.Separator {
@@ -28,6 +29,7 @@ public class SliderControlTest {
     
     public-read def exitMenuItem: com.javafx.preview.control.MenuItem = com.javafx.preview.control.MenuItem {
         text: "Exit"
+        action: FX.exit
     }
     
     public-read def fileMenu: com.javafx.preview.control.Menu = com.javafx.preview.control.Menu {
@@ -58,9 +60,20 @@ public class SliderControlTest {
         menus: [ fileMenu, editMenu, helpMenu, ]
     }
     
+    def __layoutInfo_slider: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
+        hfill: true
+    }
     public-read def slider: javafx.scene.control.Slider = javafx.scene.control.Slider {
-        max: 255.0
+        layoutInfo: __layoutInfo_slider
+        min: -50.0
+        max: 300.0
         value: bind sliderControl.value with inverse
+        clickToPosition: true
+        majorTickUnit: 50.0
+        minorTickCount: 2
+        showTickLabels: true
+        showTickMarks: true
+        labelFormatter: sliderLabelFormatter
     }
     
     public-read def lblInputBackground: javafx.scene.control.Label = javafx.scene.control.Label {
@@ -68,7 +81,7 @@ public class SliderControlTest {
     }
     
     def __layoutInfo_chbInputForeground: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
-        hspan: 3
+        hspan: 1
     }
     public-read def chbInputForeground: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
         layoutInfo: __layoutInfo_chbInputForeground
@@ -95,12 +108,24 @@ public class SliderControlTest {
         selected: bind sliderControl.disable with inverse
     }
     
+    def __layoutInfo_label: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
+        height: 15.0
+    }
+    public-read def label: javafx.scene.control.Label = javafx.scene.control.Label {
+        layoutInfo: __layoutInfo_label
+        text: "R\u00F3tulo"
+    }
+    
     def __layoutInfo_chbInputBackground: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
-        hspan: 3
+        hspan: 1
     }
     public-read def chbInputBackground: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
         layoutInfo: __layoutInfo_chbInputBackground
         items: chbInputColorItems ()
+    }
+    
+    public-read def txbInputValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
+        action: txbInputValueAction
     }
     
     public-read def lblOuputTitle: javafx.scene.control.Label = javafx.scene.control.Label {
@@ -271,7 +296,7 @@ public class SliderControlTest {
                 cells: [ lblInputValue, slider, lblInputEnabled, chbEnabled, ]
             }
             com.javafx.preview.layout.GridRow {
-                cells: [ lblInputBackground, chbInputBackground, ]
+                cells: [ lblInputBackground, chbInputBackground, label, txbInputValue, ]
             }
             com.javafx.preview.layout.GridRow {
                 cells: [ lblInputForeground, chbInputForeground, ]
@@ -292,8 +317,8 @@ public class SliderControlTest {
     }
     
     public-read def scene: javafx.scene.Scene = javafx.scene.Scene {
-        width: 319.0
-        height: 457.0
+        width: 476.0
+        height: 318.0
         content: getDesignRootNodes ()
     }
     
@@ -308,6 +333,24 @@ public class SliderControlTest {
         scene
     }
     // </editor-fold>//GEN-END:main
+
+    function txbInputValueAction(): Void {
+        try {
+            this.sliderControl.value = Float.valueOf(txbInputValue.text);
+            println("**{this.sliderControl.value}**")
+        } catch (e: NumberFormatException) {
+            e.printStackTrace();
+        }
+        txbInputValue.text = "";
+    }
+
+    function sliderLabelFormatter(value: Number): String {
+        "{
+
+
+
+%.0f value}"
+    }
 
     function chbInputColorItems(): Object[] {
         WebColor.values

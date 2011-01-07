@@ -25,7 +25,15 @@ public class SliderControl {
     /**
      * Valor do componente
      */
-    public var value: Number = 0 on replace {
+    public var value: Number = Utils.MIN on replace {
+//                print("ENTRADA: {value} - ");
+                if (value < Utils.MIN) {
+                    value = Utils.MIN;
+                } else if (value > Utils.MAX) {
+                    value = Utils.MAX;
+                }
+//                println("FINAL: {value}");
+
                 onChange();
             };
 
@@ -173,14 +181,7 @@ public class SliderControl {
     // </editor-fold>//GEN-END:main
 
     function changeValue(increment: Integer, delta: Number): Void {
-        var newValue = increment * delta + this.value;
-        if(newValue < Utils.MIN) {
-            newValue = Utils.MIN;
-        } else if(newValue > Utils.MAX) {
-            newValue = Utils.MAX;
-        }
-
-        this.value = newValue;
+        this.value = increment * delta + this.value;
     }
 
     function sldValueOnKeyPressed (event: javafx.scene.input.KeyEvent): Void {

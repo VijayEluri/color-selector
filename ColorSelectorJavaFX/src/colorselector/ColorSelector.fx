@@ -5,22 +5,24 @@
  */
 package colorselector;
 
-import javafx.scene.paint.Color;
-import javafx.util.Math;
-import javafx.scene.input.MouseEvent;
 import colorselector.ColorFormatter;
 import colorselector.WebColor;
-import javafx.scene.paint.Paint;
-import com.javafx.preview.control.MenuBar;
-import javafx.scene.layout.LayoutInfo;
 import com.javafx.preview.control.Menu;
+import com.javafx.preview.control.MenuBar;
 import com.javafx.preview.control.MenuItem;
-import javafx.scene.control.Separator;
 import com.javafx.preview.control.CheckMenuItem;
 import com.javafx.preview.control.RadioMenuItem;
-import javafx.scene.control.ToggleGroup;
-import javafx.stage.Alert;
 import com.javafx.preview.layout.GridLayoutInfo;
+import javafx.scene.paint.Color;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Separator;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.effect.Reflection;
+import javafx.scene.text.Font;
+import javafx.scene.paint.Paint;
+import javafx.scene.layout.LayoutInfo;
+import javafx.stage.Alert;
+import javafx.util.Math;
 
 /**
  * @author rafael
@@ -32,6 +34,13 @@ public class ColorSelector {
     var controlsWidht = bind 0.6 * scene.width;
 
     var syncronizedControls: SliderControl[] = [];
+
+    def titlesLayout = LayoutInfo {
+                hpos: javafx.geometry.HPos.RIGHT
+                hfill: true
+                vpos: javafx.geometry.VPos.TOP
+                width: bind width1
+            }
 
     var formatGroup = ToggleGroup {}
 
@@ -140,7 +149,7 @@ public class ColorSelector {
                         text: ##[menu.options]"Options"
                         items: [
                             Menu {
-                                text: ##[color_format]"Color Fomat"
+                                text: ##[color_format]"Color Format"
                                 items: for (formatter in ColorFormatter.formatters) {
                                     RadioMenuItem {
                                         action: itemMenuFormatSelected
@@ -150,7 +159,7 @@ public class ColorSelector {
                                 }
                             }
                             CheckMenuItem {
-                                text: ##[enable_alpha]"Enable Alpha"
+                                text: ##[enable_alpha]"Enable Tranparency"
                                 selected: bind chbEnableAlpha.selected with inverse
                             }
                         ]
@@ -158,7 +167,7 @@ public class ColorSelector {
                     Menu {
                         def aboutName = ##[about.name]"Color Selector";
                         def aboutVersion = ##[about.version]"Version 1.0";
-                        def aboutCopyright = ##[about.copyright]"(c)Rafael Afonso - 2011]"
+                        def aboutCopyright = ##[about.copyright]"(c)Rafael Afonso - 2011"
                         text: ##[menu.help]"Help"
                         items: [
                             MenuItem {
@@ -182,13 +191,14 @@ public class ColorSelector {
     }
 
     public-read def rectangle: javafx.scene.shape.Rectangle = javafx.scene.shape.Rectangle {
+                effect: Reflection {}
+                fill: bind this.currentColor
                 layoutInfo: LayoutInfo {
                     hgrow: javafx.scene.layout.Priority.ALWAYS
                     vgrow: javafx.scene.layout.Priority.ALWAYS
                 }
                 width: bind scene.width
                 height: bind scene.height / 2
-                fill: bind this.currentColor
                 onMouseClicked: function(event: MouseEvent): Void {
                     if (event.clickCount == 2) {
                         shuffleColors()
@@ -197,13 +207,9 @@ public class ColorSelector {
             }
 
     public-read def lblTitleWebColor: javafx.scene.control.Label = javafx.scene.control.Label {
-                layoutInfo: LayoutInfo {
-                    width: bind width1
-                    vpos: javafx.geometry.VPos.TOP
-                    hpos: javafx.geometry.HPos.RIGHT
-                }
-                text: ##[web_color]"Web Color:"
-                textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                layoutInfo: titlesLayout
+                text: "{##[web_color]'Web Color'}:"
+                   textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
     public-read def chbWebColors: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
@@ -213,24 +219,29 @@ public class ColorSelector {
                 items: WebColor.values
             }
 
-    public-read def lblTitleColor: javafx.scene.control.Label = javafx.scene.control.Label {
-                layoutInfo: LayoutInfo {
-                    width: bind width1
-                    vpos: javafx.geometry.VPos.TOP
-                    hpos: javafx.geometry.HPos.RIGHT
+    public-read def lblTitleColorValue: javafx.scene.control.Label = javafx.scene.control.Label {
+                layoutInfo: titlesLayout
+                text: "{##[color_code]'Color Code'}:"
+                   textAlignment: javafx.scene.text.TextAlignment.RIGHT
+            }
+
+    public-read def txbColorValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
+                editable: false
+                font: Font {
+                    name: "monospaced"
+                    size: 10
                 }
-                text: ##[color_code]"Color Code:"
-                textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                layoutInfo: GridLayoutInfo {
+                    vpos: javafx.geometry.VPos.TOP
+                    minWidth: bind 0.3 * scene.width
+                }
+                text: "rgb(255, 255, 255)"
             }
 
     public-read def lblTitleColorFormat: javafx.scene.control.Label = javafx.scene.control.Label {
-                layoutInfo: LayoutInfo {
-                    width: bind width1
-                    vpos: javafx.geometry.VPos.TOP
-                    hpos: javafx.geometry.HPos.RIGHT
-                }
-                text: ##[color_format]"Color Format:"
-                textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                layoutInfo: titlesLayout
+                text: "{##[color_format]'Color Format'}:"
+                   textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
     public-read def cmbColorFormat: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
@@ -245,22 +256,7 @@ public class ColorSelector {
                     hspan: 2
                     vpos: javafx.geometry.VPos.TOP
                 }
-                text: ##[enable_alpha]"Enable Alpha"
-            }
-
-    public-read def fontColorValue: javafx.scene.text.Font = javafx.scene.text.Font {
-                name: "monospaced"
-                size: 10
-            }
-
-    public-read def txbColorValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
-                layoutInfo: GridLayoutInfo {
-                    vpos: javafx.geometry.VPos.TOP
-                    minWidth: bind 0.3 * scene.width
-                }
-                text: "rgb(255, 255, 255)"
-                editable: false
-                font: fontColorValue
+                text: ##[enable_alpha]"Enable Tranparency"
             }
 
     public-read def grid: com.javafx.preview.layout.Grid = com.javafx.preview.layout.Grid {
@@ -271,7 +267,7 @@ public class ColorSelector {
                         cells: [this.sliderControlRed.node, lblTitleWebColor, chbWebColors,]
                     }
                     com.javafx.preview.layout.GridRow {
-                        cells: [this.sliderControlGreen.node, lblTitleColor, txbColorValue,]
+                        cells: [this.sliderControlGreen.node, lblTitleColorValue, txbColorValue,]
                     }
                     com.javafx.preview.layout.GridRow {
                         cells: [this.sliderControlBlue.node, lblTitleColorFormat, cmbColorFormat,]
@@ -315,7 +311,7 @@ public class ColorSelector {
         if (source.selected) {
             insert source into this.syncronizedControls;
 
-            var size = sizeof this.syncronizedControls;
+            def size = sizeof this.syncronizedControls;
             if (size > 1) {
                 var sum = 0.0;
                 for (control in this.syncronizedControls) {
@@ -356,7 +352,7 @@ public class ColorSelector {
             }
         }
 
-        var alpha = if (this.sliderControlAlpha.disable) 1.0 else (this.sliderControlAlpha.value / Utils.MAX);
+        def alpha = if (this.sliderControlAlpha.disable) 1.0 else (this.sliderControlAlpha.value / Utils.MAX);
         this.currentColor = Color.rgb(this.sliderControlRed.value,
                 this.sliderControlGreen.value,
                 this.sliderControlBlue.value, alpha);
@@ -370,7 +366,7 @@ public class ColorSelector {
         var index = 0;
         var found = false;
         for (item in this.chbWebColors.items) {
-            var webColor: WebColor = item as WebColor;
+            def webColor: WebColor = item as WebColor;
             if (webColor.defined
                     and (webColor.red == Utils.colorValueToInt((currentColor as Color).red))
                     and (webColor.green == Utils.colorValueToInt((currentColor as Color).green))

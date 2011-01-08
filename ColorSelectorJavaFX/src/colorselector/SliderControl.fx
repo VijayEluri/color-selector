@@ -26,13 +26,11 @@ public class SliderControl {
      * Valor do componente
      */
     public var value: Number = Utils.MIN on replace {
-//                print("ENTRADA: {value} - ");
                 if (value < Utils.MIN) {
                     value = Utils.MIN;
                 } else if (value > Utils.MAX) {
                     value = Utils.MAX;
                 }
-//                println("FINAL: {value}");
 
                 onChange();
             };
@@ -62,7 +60,7 @@ public class SliderControl {
     // TODO: Como alterar a cor da fonte das marcas do Slider?
     var cssForeground = bind "-fx-text-fill: rgb({Utils.colorValueToInt(this.foregroundColor.red)}, {Utils.colorValueToInt(this.foregroundColor.green)}, {Utils.colorValueToInt(this.foregroundColor.blue)})";
 
-    var cssStyle: String = bind "{cssBackground}; {cssForeground};";
+    var cssControls = bind "{cssForeground}; -fx-background-color: transparent;";
 
     public var onChange: function(): Void = function() {
             }
@@ -88,7 +86,7 @@ public class SliderControl {
     }
     public-read def chbSelected: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
         layoutInfo: __layoutInfo_chbSelected
-        style: bind cssStyle
+        style: bind cssControls
         onMouseWheelMoved: handleMouseWheelMoved
         text: ""
         selected: bind selected with inverse
@@ -100,7 +98,7 @@ public class SliderControl {
     }
     public-read def lblTitle: javafx.scene.control.Label = javafx.scene.control.Label {
         layoutInfo: __layoutInfo_lblTitle
-        style: bind cssStyle
+        style: bind cssControls
         onMouseWheelMoved: handleMouseWheelMoved
         text: bind title with inverse
     }
@@ -115,7 +113,7 @@ public class SliderControl {
     }
     public-read def sldValue: javafx.scene.control.Slider = javafx.scene.control.Slider {
         layoutInfo: __layoutInfo_sldValue
-        style: bind cssStyle
+        style: bind cssControls
         onKeyPressed: sldValueOnKeyPressed
         onMousePressed: null
         onMouseWheelMoved: handleMouseWheelMoved
@@ -138,7 +136,7 @@ public class SliderControl {
     }
     public-read def lblValue: javafx.scene.control.Label = javafx.scene.control.Label {
         layoutInfo: __layoutInfo_lblValue
-        style: bind cssStyle
+        style: bind cssControls
         onMouseWheelMoved: handleMouseWheelMoved
         text: bind "{%03.0f sldValue.value}"
     }
@@ -156,7 +154,7 @@ public class SliderControl {
         layoutX: 0.0
         layoutY: 0.0
         layoutInfo: __layoutInfo_hrbSliderControl
-        style: bind cssStyle
+        style: bind cssBackground
         onMousePressed: null
         onMouseWheelMoved: handleMouseWheelMoved
         content: [ chbSelected, lblTitle, sldValue, lblValue, ]

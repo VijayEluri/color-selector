@@ -38,6 +38,8 @@
     <Instance classID="StackModel" instanceID="StackModel1">
         <Reference name="instanceName" value="str:stack"/>
         <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,27,str:bind width with inverse,4,null,4,null,"/>
+        <Reference name="layoutInfoHeight" value="prop2:7,NOT_SET,4,null,15,str:bind height,4,null,4,null,"/>
+        <Reference name="layoutInfoMinHeight" value="prop2:7,NOT_SET,4,null,4,null,15,anim:,,flt:60.0,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
         <Reference name="clip" value="null"/>
@@ -65,11 +67,12 @@
         <Reference name="layoutX" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:0.0,4,null,"/>
         <Reference name="layoutY" value="prop2:7,NOT_SET,4,null,4,null,14,anim:,,flt:0.0,4,null,"/>
         <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,27,str:bind width with inverse,4,null,4,null,"/>
-        <Reference name="layoutInfoHeight" value="prop2:7,NOT_SET,4,null,4,null,15,anim:,,flt:60.0,4,null,"/>
+        <Reference name="layoutInfoHeight" value="prop2:7,NOT_SET,4,null,15,str:bind height,4,null,4,null,"/>
         <Reference name="layoutInfoHFill" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,bool:true,4,null,"/>
         <Reference name="layoutInfoVFill" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
         <Reference name="layoutInfoHGrow" value="prop2:7,NOT_SET,4,null,4,null,24,anim:,,lipriority:ALWAYS,4,null,"/>
         <Reference name="layoutInfoHShrink" value="prop2:7,NOT_SET,4,null,4,null,24,anim:,,lipriority:ALWAYS,4,null,"/>
+        <Reference name="layoutInfoMargin" value="prop2:7,NOT_SET,4,null,4,null,29,anim:,,insets:5.0,5.0,0.0,0.0,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
         <Reference name="onMousePressed" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,null,4,null,"/>

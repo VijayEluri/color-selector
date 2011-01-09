@@ -51,6 +51,8 @@ public class SliderControl {
 
     public var width: Number = 468.0;
 
+    public var height: Number = 60.0;
+
     public var backgroundColor: Color = Color.WHITE;
 
     public var foregroundColor: Color = Color.BLACK;
@@ -143,11 +145,12 @@ public class SliderControl {
     
     def __layoutInfo_hrbSliderControl: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         width: bind width with inverse
-        height: 60.0
+        height: bind height
         hfill: true
         vfill: false
         hgrow: javafx.scene.layout.Priority.ALWAYS
         hshrink: javafx.scene.layout.Priority.ALWAYS
+        margin: javafx.geometry.Insets { left: 5.0, top: 5.0, right: 0.0, bottom: 0.0 }
     }
     public-read def hrbSliderControl: javafx.scene.layout.HBox = javafx.scene.layout.HBox {
         disable: bind disable with inverse
@@ -163,6 +166,8 @@ public class SliderControl {
     
     def __layoutInfo_stack: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         width: bind width with inverse
+        height: bind height
+        minHeight: 60.0
     }
     public-read def stack: javafx.scene.layout.Stack = javafx.scene.layout.Stack {
         layoutInfo: __layoutInfo_stack

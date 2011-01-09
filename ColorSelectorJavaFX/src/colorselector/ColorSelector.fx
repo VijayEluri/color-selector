@@ -47,33 +47,33 @@ public class ColorSelector {
     var currentFormatter: ColorFormatter = bind (cmbColorFormat.selectedItem) as ColorFormatter on replace {
                 formatColor();
                 formatGroup.toggles[cmbColorFormat.selectedIndex].selected = true;
-            }
+                 }
 
     var currentWebColor: WebColor = bind (chbWebColors.selectedItem) as WebColor on replace {
                 if (currentWebColor.defined) {
                     sliderControlRed.value = currentWebColor.red;
                     sliderControlGreen.value = currentWebColor.green;
                     sliderControlBlue.value = currentWebColor.blue;
-                }
-            }
+                     }
+                 }
 
     var currentColor: Paint = Color.WHITE on replace {
                 this.formatColor();
                 this.handleChbWebColors();
-            }
+                 }
 
     init {
         changeColors(null);
-    }
+         }
 
     public-read def sliderControlRed: SliderControl = SliderControl {
                 title: 'R'
                 onChange: function() {
                     changeColors(sliderControlRed);
-                }
+                    }
                 onSelect: function() {
                     syncronizeControl(sliderControlRed);
-                }
+                    }
                 width: bind controlsWidht
                 backgroundColor: bind Color.rgb(sliderControlRed.value, 0, 0)
                 foregroundColor: bind getForegroundColor(sliderControlRed.value)
@@ -83,10 +83,10 @@ public class ColorSelector {
                 title: 'G'
                 onChange: function() {
                     changeColors(sliderControlGreen);
-                }
+                    }
                 onSelect: function() {
                     syncronizeControl(sliderControlGreen);
-                }
+                    }
                 width: bind controlsWidht
                 backgroundColor: bind Color.rgb(0, sliderControlGreen.value, 0)
                 foregroundColor: bind getForegroundColor(sliderControlGreen.value)
@@ -96,10 +96,10 @@ public class ColorSelector {
                 title: 'B'
                 onChange: function() {
                     changeColors(sliderControlBlue);
-                }
+                    }
                 onSelect: function() {
                     syncronizeControl(sliderControlBlue);
-                }
+                    }
                 width: bind controlsWidht
                 backgroundColor: bind Color.rgb(0, 0, sliderControlBlue.value)
                 foregroundColor: Color.WHITE
@@ -111,16 +111,16 @@ public class ColorSelector {
                 disable: bind (not this.chbEnableAlpha.selected)
                 onChange: function() {
                     changeColors(sliderControlAlpha);
-                }
+                    }
                 onDisable: function() {
                     changeColors(sliderControlAlpha);
                     if (sliderControlAlpha.disable) {
                         sliderControlAlpha.selected = false;
+                         }
                     }
-                }
                 onSelect: function() {
                     syncronizeControl(sliderControlAlpha);
-                }
+                    }
                 width: bind controlsWidht
             }
 
@@ -156,7 +156,7 @@ public class ColorSelector {
                                         text: formatter.description
                                         toggleGroup: formatGroup
                                     }
-                                }
+                                     }
                             }
                             CheckMenuItem {
                                 text: ##[enable_alpha]"Enable Tranparency"
@@ -174,7 +174,7 @@ public class ColorSelector {
                                 text: ##[menu.help.about]"About"
                                 action: function(): Void {
                                     Alert.inform(##[about.title]"About", "{aboutName}\n{aboutVersion}\n{aboutCopyright}");
-                                }
+                                    }
                             }
                         ]
                     }
@@ -186,9 +186,9 @@ public class ColorSelector {
             if (this.formatGroup.toggles[index].selected) {
                 this.cmbColorFormat.select(index);
                 break;
-            }
-        }
-    }
+                 }
+             }
+         }
 
     public-read def rectangle: javafx.scene.shape.Rectangle = javafx.scene.shape.Rectangle {
                 effect: Reflection {}
@@ -202,14 +202,14 @@ public class ColorSelector {
                 onMouseClicked: function(event: MouseEvent): Void {
                     if (event.clickCount == 2) {
                         shuffleColors()
+                         }
                     }
-                }
             }
 
     public-read def lblTitleWebColor: javafx.scene.control.Label = javafx.scene.control.Label {
                 layoutInfo: titlesLayout
                 text: "{##[web_color]'Web Color'}:"
-                   textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                    textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
     public-read def chbWebColors: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
@@ -222,7 +222,7 @@ public class ColorSelector {
     public-read def lblTitleColorValue: javafx.scene.control.Label = javafx.scene.control.Label {
                 layoutInfo: titlesLayout
                 text: "{##[color_code]'Color Code'}:"
-                   textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                    textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
     public-read def txbColorValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
@@ -241,7 +241,7 @@ public class ColorSelector {
     public-read def lblTitleColorFormat: javafx.scene.control.Label = javafx.scene.control.Label {
                 layoutInfo: titlesLayout
                 text: "{##[color_format]'Color Format'}:"
-                   textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                    textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
     public-read def cmbColorFormat: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
@@ -297,15 +297,15 @@ public class ColorSelector {
 
     public function getDesignRootNodes(): javafx.scene.Node[] {
         [verticalBox,]
-    }
+         }
 
     public function getDesignScene(): javafx.scene.Scene {
         scene
-    }
+         }
 
     function formatColor(): Void {
         this.txbColorValue.text = currentFormatter.format(this.currentColor as Color, not sliderControlAlpha.disable);
-    }
+         }
 
     function syncronizeControl(source: SliderControl): Void {
         if (source.selected) {
@@ -316,20 +316,20 @@ public class ColorSelector {
                 var sum = 0.0;
                 for (control in this.syncronizedControls) {
                     sum += control.value;
-                }
+                     }
                 def newValue = sum / size;
                 for (control in this.syncronizedControls) {
                     control.value = newValue;
-                }
-            }
-        } else {
+                     }
+                 }
+             } else {
             delete source from this.syncronizedControls;
-        }
-    }
+             }
+         }
 
     function getRandom(): Number {
         Math.random() * Utils.MAX;
-    }
+         }
 
     function shuffleColors(): Void {
         def hasSync = (sizeof this.syncronizedControls > 1);
@@ -340,27 +340,27 @@ public class ColorSelector {
         this.sliderControlBlue.value = if (hasSync and this.sliderControlBlue.selected) syncValue else this.getRandom();
         if (not this.sliderControlAlpha.disable) {
             this.sliderControlAlpha.value = if (hasSync and this.sliderControlAlpha.selected) syncValue else this.getRandom();
-        }
-    }
+             }
+         }
 
     function changeColors(source: SliderControl): Void {
         if ((source != null) and source.selected and (sizeof this.syncronizedControls > 1)) {
             for (control in this.syncronizedControls) {
                 if ((control != source) and (control.value != source.value)) {
                     control.value = source.value;
-                }
-            }
-        }
+                     }
+                 }
+             }
 
         def alpha = if (this.sliderControlAlpha.disable) 1.0 else (this.sliderControlAlpha.value / Utils.MAX);
         this.currentColor = Color.rgb(this.sliderControlRed.value,
                 this.sliderControlGreen.value,
                 this.sliderControlBlue.value, alpha);
-    }
+         }
 
     function getForegroundColor(value: Number): Color {
         if (value > (Utils.MAX) / 2) then Color.BLACK else Color.WHITE
-    }
+         }
 
     function handleChbWebColors(): Void {
         var index = 0;
@@ -374,14 +374,14 @@ public class ColorSelector {
                 this.chbWebColors.select(index);
                 found = true;
                 break;
-            }
+                 }
             index++;
-        }
+             }
 
         if (not found) {
             this.chbWebColors.select(0);
-        }
-    }
+             }
+         }
 
 }
 
@@ -392,4 +392,4 @@ function run(): Void {
         title: ##[title]"Color Selector"
         scene: design.getDesignScene()
     }
-}
+     }

@@ -72,7 +72,6 @@
         <Reference name="layoutInfoHShrink" value="prop2:7,NOT_SET,4,null,4,null,24,anim:,,lipriority:ALWAYS,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
-        <Reference name="style" value="prop2:7,NOT_SET,4,null,22,str:bind cssBackground,4,null,4,null,"/>
         <Reference name="onMousePressed" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,null,4,null,"/>
         <Reference name="onMouseWheelMoved" value="prop2:7,NOT_SET,4,null,4,null,32,anim:,,str:handleMouseWheelMoved,4,null,"/>
         <Reference name="clip" value="null"/>

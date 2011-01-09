@@ -154,7 +154,6 @@ public class SliderControl {
         layoutX: 0.0
         layoutY: 0.0
         layoutInfo: __layoutInfo_hrbSliderControl
-        style: bind cssBackground
         onMousePressed: null
         onMouseWheelMoved: handleMouseWheelMoved
         content: [ chbSelected, lblTitle, sldValue, lblValue, ]

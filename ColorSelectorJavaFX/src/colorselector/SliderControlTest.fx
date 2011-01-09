@@ -60,6 +60,17 @@ public class SliderControlTest {
         menus: [ fileMenu, editMenu, helpMenu, ]
     }
     
+    def __layoutInfo_lblInput: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
+        hspan: 4
+    }
+    public-read def lblInput: javafx.scene.control.Label = javafx.scene.control.Label {
+        layoutInfo: __layoutInfo_lblInput
+        text: "Input Data"
+        font: null
+        hpos: javafx.geometry.HPos.RIGHT
+        graphicHPos: javafx.geometry.HPos.RIGHT
+    }
+    
     def __layoutInfo_slider: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         hfill: true
     }
@@ -74,6 +85,14 @@ public class SliderControlTest {
         showTickLabels: true
         showTickMarks: true
         labelFormatter: sliderLabelFormatter
+    }
+    
+    public-read def lblInputTitle: javafx.scene.control.Label = javafx.scene.control.Label {
+        text: "Title"
+        font: null
+        textAlignment: javafx.scene.text.TextAlignment.RIGHT
+        hpos: javafx.geometry.HPos.RIGHT
+        graphicHPos: javafx.geometry.HPos.RIGHT
     }
     
     public-read def lblInputBackground: javafx.scene.control.Label = javafx.scene.control.Label {
@@ -92,8 +111,18 @@ public class SliderControlTest {
         text: "Foreground"
     }
     
+    public-read def lblInputValue: javafx.scene.control.Label = javafx.scene.control.Label {
+        text: "Value"
+        font: null
+    }
+    
     public-read def txbInputTitle: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
         text: bind sliderControl.title with inverse
+    }
+    
+    public-read def lblInputSelected: javafx.scene.control.Label = javafx.scene.control.Label {
+        text: "Selected"
+        font: null
     }
     
     public-read def chbSelected: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
@@ -102,6 +131,11 @@ public class SliderControlTest {
         hpos: null
         graphicHPos: null
         selected: bind sliderControl.selected with inverse
+    }
+    
+    public-read def lblInputEnabled: javafx.scene.control.Label = javafx.scene.control.Label {
+        text: "Disabled"
+        font: null
     }
     
     public-read def chbEnabled: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
@@ -126,6 +160,43 @@ public class SliderControlTest {
     
     public-read def txbInputValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
         action: txbInputValueAction
+    }
+    
+    def __layoutInfo_gridInput: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
+        width: bind scene.width
+    }
+    public-read def gridInput: com.javafx.preview.layout.Grid = com.javafx.preview.layout.Grid {
+        layoutInfo: __layoutInfo_gridInput
+        hgap: 6.0
+        vgap: 6.0
+        rows: [
+            com.javafx.preview.layout.GridRow {
+                cells: [ lblInput, ]
+            }
+            com.javafx.preview.layout.GridRow {
+                cells: [ lblInputTitle, txbInputTitle, lblInputSelected, chbSelected, ]
+            }
+            com.javafx.preview.layout.GridRow {
+                cells: [ lblInputValue, slider, lblInputEnabled, chbEnabled, ]
+            }
+            com.javafx.preview.layout.GridRow {
+                cells: [ lblInputBackground, chbInputBackground, label, txbInputValue, ]
+            }
+            com.javafx.preview.layout.GridRow {
+                cells: [ lblInputForeground, chbInputForeground, ]
+            }
+        ]
+    }
+    
+    def __layoutInfo_lblOutput: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
+        hspan: 4
+    }
+    public-read def lblOutput: javafx.scene.control.Label = javafx.scene.control.Label {
+        layoutX: 0.0
+        layoutY: 0.0
+        layoutInfo: __layoutInfo_lblOutput
+        text: "Output Values"
+        font: null
     }
     
     public-read def lblOuputTitle: javafx.scene.control.Label = javafx.scene.control.Label {
@@ -195,24 +266,6 @@ public class SliderControlTest {
         editable: false
     }
     
-    public-read def fontPrimaryTitles: javafx.scene.text.Font = javafx.scene.text.Font {
-        oblique: true
-        embolden: true
-        autoKern: false
-        ligatures: false
-    }
-    
-    def __layoutInfo_lblOutput: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
-        hspan: 4
-    }
-    public-read def lblOutput: javafx.scene.control.Label = javafx.scene.control.Label {
-        layoutX: 0.0
-        layoutY: 0.0
-        layoutInfo: __layoutInfo_lblOutput
-        text: "Output Values"
-        font: fontPrimaryTitles
-    }
-    
     def __layoutInfo_gridOutput: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
         width: bind scene.width
     }
@@ -235,71 +288,6 @@ public class SliderControlTest {
             }
             com.javafx.preview.layout.GridRow {
                 cells: [ lblOutputForeground, txtOutputForeground, ]
-            }
-        ]
-    }
-    
-    def __layoutInfo_lblInput: com.javafx.preview.layout.GridLayoutInfo = com.javafx.preview.layout.GridLayoutInfo {
-        hspan: 4
-    }
-    public-read def lblInput: javafx.scene.control.Label = javafx.scene.control.Label {
-        layoutInfo: __layoutInfo_lblInput
-        text: "Input Data"
-        font: fontPrimaryTitles
-        hpos: javafx.geometry.HPos.RIGHT
-        graphicHPos: javafx.geometry.HPos.RIGHT
-    }
-    
-    public-read def fontSecondTitles: javafx.scene.text.Font = javafx.scene.text.Font {
-        oblique: false
-        ligatures: false
-    }
-    
-    public-read def lblInputEnabled: javafx.scene.control.Label = javafx.scene.control.Label {
-        text: "Disabled"
-        font: fontSecondTitles
-    }
-    
-    public-read def lblInputSelected: javafx.scene.control.Label = javafx.scene.control.Label {
-        text: "Selected"
-        font: fontSecondTitles
-    }
-    
-    public-read def lblInputValue: javafx.scene.control.Label = javafx.scene.control.Label {
-        text: "Value"
-        font: fontSecondTitles
-    }
-    
-    public-read def lblInputTitle: javafx.scene.control.Label = javafx.scene.control.Label {
-        text: "Title"
-        font: fontSecondTitles
-        textAlignment: javafx.scene.text.TextAlignment.RIGHT
-        hpos: javafx.geometry.HPos.RIGHT
-        graphicHPos: javafx.geometry.HPos.RIGHT
-    }
-    
-    def __layoutInfo_gridInput: javafx.scene.layout.LayoutInfo = javafx.scene.layout.LayoutInfo {
-        width: bind scene.width
-    }
-    public-read def gridInput: com.javafx.preview.layout.Grid = com.javafx.preview.layout.Grid {
-        layoutInfo: __layoutInfo_gridInput
-        hgap: 6.0
-        vgap: 6.0
-        rows: [
-            com.javafx.preview.layout.GridRow {
-                cells: [ lblInput, ]
-            }
-            com.javafx.preview.layout.GridRow {
-                cells: [ lblInputTitle, txbInputTitle, lblInputSelected, chbSelected, ]
-            }
-            com.javafx.preview.layout.GridRow {
-                cells: [ lblInputValue, slider, lblInputEnabled, chbEnabled, ]
-            }
-            com.javafx.preview.layout.GridRow {
-                cells: [ lblInputBackground, chbInputBackground, label, txbInputValue, ]
-            }
-            com.javafx.preview.layout.GridRow {
-                cells: [ lblInputForeground, chbInputForeground, ]
             }
         ]
     }

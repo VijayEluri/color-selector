@@ -4,10 +4,7 @@
         <List name="stateVariables">
             <Item value="inst:StateVariableModel1"/>
         </List>
-        <List name="resources">
-            <Item value="inst:FontModel1"/>
-            <Item value="inst:FontModel2"/>
-        </List>
+        <List name="resources"/>
         <List name="dataSources"/>
         <List name="templates"/>
         <List name="customClasses"/>
@@ -26,18 +23,6 @@
         <Reference name="defaultInterpolator" value="interpolator:DISCRETE"/>
         <Reference name="defaultDuration" value="int:0"/>
         <Reference name="onTransitionFinished" value="null"/>
-    </Instance>
-    <Instance classID="FontModel" instanceID="FontModel1">
-        <Reference name="instanceName" value="str:fontPrimaryTitles"/>
-        <Reference name="autoKern" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
-        <Reference name="embolden" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,bool:true,4,null,"/>
-        <Reference name="ligatures" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
-        <Reference name="oblique" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,bool:true,4,null,"/>
-    </Instance>
-    <Instance classID="FontModel" instanceID="FontModel2">
-        <Reference name="instanceName" value="str:fontSecondTitles"/>
-        <Reference name="ligatures" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
-        <Reference name="oblique" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,bool:false,4,null,"/>
     </Instance>
     <Instance classID="SceneModel" instanceID="SceneModel1">
         <Reference name="instanceName" value="str:scene"/>
@@ -198,7 +183,7 @@
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
         <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,21,anim:,,str:Input Data,4,null,"/>
-        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,inst:FontModel1,4,null,"/>
+        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,null,4,null,"/>
         <Reference name="hpos" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,hpos:RIGHT,4,null,"/>
         <Reference name="graphicHPos" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,hpos:RIGHT,4,null,"/>
         <Reference name="graphic" value="null"/>
@@ -231,7 +216,7 @@
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
         <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,str:Title,4,null,"/>
-        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,inst:FontModel2,4,null,"/>
+        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,null,4,null,"/>
         <Reference name="textAlignment" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,textalign:RIGHT,4,null,"/>
         <Reference name="hpos" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,hpos:RIGHT,4,null,"/>
         <Reference name="graphicHPos" value="prop2:7,NOT_SET,4,null,4,null,17,anim:,,hpos:RIGHT,4,null,"/>
@@ -279,7 +264,7 @@
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
         <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,16,anim:,,str:Value,4,null,"/>
-        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,inst:FontModel2,4,null,"/>
+        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,null,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
     <Instance classID="TextBoxModel" instanceID="TextBoxModel1">
@@ -301,7 +286,7 @@
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
         <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,19,anim:,,str:Selected,4,null,"/>
-        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,inst:FontModel2,4,null,"/>
+        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,null,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
     <Instance classID="CheckBoxModel" instanceID="CheckBoxModel1">
@@ -328,7 +313,7 @@
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
         <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,19,anim:,,str:Disabled,4,null,"/>
-        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,inst:FontModel2,4,null,"/>
+        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,null,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
     <Instance classID="CheckBoxModel" instanceID="CheckBoxModel2">
@@ -415,7 +400,7 @@
         <Reference name="customClass" value="null"/>
         <Reference name="tooltip" value="null"/>
         <Reference name="text" value="prop2:7,NOT_SET,4,null,4,null,24,anim:,,str:Output Values,4,null,"/>
-        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,22,anim:,,inst:FontModel1,4,null,"/>
+        <Reference name="font" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,null,4,null,"/>
         <Reference name="graphic" value="null"/>
     </Instance>
     <Instance classID="LabelModel" instanceID="LabelModel10">

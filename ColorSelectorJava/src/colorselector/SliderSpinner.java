@@ -94,15 +94,18 @@ public class SliderSpinner extends JPanel {
         Insets insets = new Insets(0, 5, 0, 5);
 
         GridBagConstraints gridBagChbSelected = new GridBagConstraints();
+        gridBagChbSelected.anchor = GridBagConstraints.ABOVE_BASELINE;
         gridBagChbSelected.insets = insets;
 
         GridBagConstraints gridBagSpnValue = new GridBagConstraints();
+        gridBagSpnValue.anchor = GridBagConstraints.ABOVE_BASELINE;
         gridBagSpnValue.gridx = 3;
         gridBagSpnValue.ipady = 0;
         gridBagSpnValue.insets = insets;
         gridBagSpnValue.gridy = 0;
 
         GridBagConstraints gridBagSldValue = new GridBagConstraints();
+        gridBagSldValue.anchor = GridBagConstraints.ABOVE_BASELINE;
         gridBagSldValue.fill = GridBagConstraints.HORIZONTAL;
         gridBagSldValue.gridy = 0;
         gridBagSldValue.ipadx = 0;
@@ -112,6 +115,7 @@ public class SliderSpinner extends JPanel {
         gridBagSldValue.gridx = 2;
 
         GridBagConstraints gridBagLblTitle = new GridBagConstraints();
+        gridBagLblTitle.anchor = GridBagConstraints.ABOVE_BASELINE;
         gridBagLblTitle.gridx = 1;
         gridBagLblTitle.ipady = 0;
         gridBagLblTitle.insets = insets;

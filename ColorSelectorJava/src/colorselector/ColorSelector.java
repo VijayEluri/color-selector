@@ -59,7 +59,7 @@ public class ColorSelector {
     private JMenuItem mniExit = null;
     private JMenuItem aboutMenuItem = null;
     private JMenuItem mniRandomColor = null;
-    private JDialog aboutDialog = null;  //  @jve:decl-index=0:visual-constraint="846,10"
+    private JDialog aboutDialog = null; // @jve:decl-index=0:visual-constraint="846,10"
     private JPanel aboutContentPane = null;
     private JLabel lblProgramVersion = null;
     private JPanel pnlColor = null;
@@ -83,7 +83,7 @@ public class ColorSelector {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if (evt.getPropertyName().equals(SliderSpinner.PROP_VALUE)) {
-                changeSliderColor((SliderSpinner) evt.getSource());  //  @jve:decl-index=0:
+                changeSliderColor((SliderSpinner) evt.getSource()); // @jve:decl-index=0:
             }
         }
     };
@@ -119,13 +119,14 @@ public class ColorSelector {
     }
 
     private void changeSliderColor(SliderSpinner source) {
-        if(source == this.getSlspRed()) {
+        if (source == this.getSlspRed()) {
             source.setBackground(new Color(source.getValue(), 0, 0));
-        } else if(source == this.getSlspGreen()) {
+        } else if (source == this.getSlspGreen()) {
             source.setBackground(new Color(0, source.getValue(), 0));
-        } if(source == this.getSlspBlue()) {
+        }
+        if (source == this.getSlspBlue()) {
             source.setBackground(new Color(0, 0, source.getValue()));
-        } 
+        }
     }
 
     private void generateRandomColor() {
@@ -145,10 +146,12 @@ public class ColorSelector {
                 this.getSlspBlue(),
                 this.syncronizedSliders.contains(this.getSlspBlue()) ? syncronizedValue
                         : random.nextInt(max));
-        this.changeSliderSpinnerValue(
-                this.getSlspAlpha(),
-                this.syncronizedSliders.contains(this.getSlspAlpha()) ? syncronizedValue
-                        : random.nextInt(max));
+        if (this.getSlspAlpha().isEnabled()) {
+            this.changeSliderSpinnerValue(
+                    this.getSlspAlpha(),
+                    this.syncronizedSliders.contains(this.getSlspAlpha()) ? syncronizedValue
+                            : random.nextInt(max));
+        }
 
         this.changeColor(this.getPnlColor());
     }
@@ -162,7 +165,7 @@ public class ColorSelector {
                 }
             }
         }
-        
+
         this.changeColor(source);
     }
 
@@ -282,9 +285,10 @@ public class ColorSelector {
             frmColorSelector.setPreferredSize(new Dimension(800, 600));
             frmColorSelector.setMinimumSize(new Dimension(200, 150));
             frmColorSelector.setJMenuBar(getJJMenuBar());
-            frmColorSelector.setSize(792, 341);
+            frmColorSelector.setSize(792, 405);
             frmColorSelector.setContentPane(getJContentPane());
-            frmColorSelector.setTitle(Messages.getString("ColorSelector.title")); //$NON-NLS-1$
+            frmColorSelector
+                    .setTitle(Messages.getString("ColorSelector.title")); //$NON-NLS-1$
         }
         return frmColorSelector;
     }
@@ -297,6 +301,7 @@ public class ColorSelector {
     private JPanel getJContentPane() {
         if (jContentPane == null) {
             GridLayout gridLayout = new GridLayout();
+            gridLayout.setVgap(5);
             gridLayout.setRows(2);
             gridLayout.setColumns(1);
             GridBagConstraints gridBagConstraints = new GridBagConstraints();
@@ -348,7 +353,8 @@ public class ColorSelector {
     private JMenu getMnuOptions() {
         if (mnuOptions == null) {
             mnuOptions = new JMenu();
-            mnuOptions.setText(Messages.getString("ColorSelector.menu.options")); //$NON-NLS-1$
+            mnuOptions
+                    .setText(Messages.getString("ColorSelector.menu.options")); //$NON-NLS-1$
             mnuOptions.add(getMnuFormat());
             mnuOptions.add(getMniEnableAlpha());
         }
@@ -395,7 +401,8 @@ public class ColorSelector {
     private JMenuItem getAboutMenuItem() {
         if (aboutMenuItem == null) {
             aboutMenuItem = new JMenuItem();
-            aboutMenuItem.setText(Messages.getString("ColorSelector.menu.about")); //$NON-NLS-1$
+            aboutMenuItem.setText(Messages
+                    .getString("ColorSelector.menu.about")); //$NON-NLS-1$
             aboutMenuItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     JDialog aboutDialog = getAboutDialog();
@@ -418,7 +425,8 @@ public class ColorSelector {
     private JDialog getAboutDialog() {
         if (aboutDialog == null) {
             aboutDialog = new JDialog(getFrmColorSelector(), true);
-            aboutDialog.setTitle(Messages.getString("ColorSelector.aboutDialog.title")); //$NON-NLS-1$
+            aboutDialog.setTitle(Messages
+                    .getString("ColorSelector.aboutDialog.title")); //$NON-NLS-1$
             aboutDialog.setSize(new Dimension(161, 128));
             aboutDialog.setContentPane(getAboutContentPane());
         }
@@ -436,39 +444,43 @@ public class ColorSelector {
             gridBagBtnAboutOk.gridx = 0;
             gridBagBtnAboutOk.insets = new Insets(5, 5, 5, 5);
             gridBagBtnAboutOk.gridy = 3;
-            
+
             GridBagConstraints gridBagLblProgramCopyright = new GridBagConstraints();
             gridBagLblProgramCopyright.gridx = 0;
             gridBagLblProgramCopyright.fill = GridBagConstraints.HORIZONTAL;
             gridBagLblProgramCopyright.insets = new Insets(1, 5, 1, 5);
             gridBagLblProgramCopyright.gridy = 2;
-            
+
             lblProgramCopyright = new JLabel();
-            lblProgramCopyright.setText(Messages.getString("ColorSelector.aboutDialog.copyright")); //$NON-NLS-1$
+            lblProgramCopyright.setText(Messages
+                    .getString("ColorSelector.aboutDialog.copyright")); //$NON-NLS-1$
             lblProgramCopyright.setDisplayedMnemonic(KeyEvent.VK_UNDEFINED);
             lblProgramCopyright.setHorizontalAlignment(SwingConstants.CENTER);
-            
+
             GridBagConstraints gridBagLblProgramName = new GridBagConstraints();
             gridBagLblProgramName.gridx = 0;
             gridBagLblProgramName.fill = GridBagConstraints.HORIZONTAL;
             gridBagLblProgramName.insets = new Insets(1, 5, 1, 5);
             gridBagLblProgramName.gridy = 0;
-            
+
             lblProgramName = new JLabel();
-            lblProgramName.setText(Messages.getString("ColorSelector.aboutDialog.name")); //$NON-NLS-1$
+            lblProgramName.setText(Messages
+                    .getString("ColorSelector.aboutDialog.name")); //$NON-NLS-1$
             lblProgramName.setHorizontalAlignment(SwingConstants.CENTER);
-            
+
             GridBagConstraints gridBagLblProgramVersion = new GridBagConstraints();
             gridBagLblProgramVersion.gridx = 0;
             gridBagLblProgramVersion.fill = GridBagConstraints.HORIZONTAL;
             gridBagLblProgramVersion.insets = new Insets(1, 5, 1, 5);
             gridBagLblProgramVersion.gridy = 1;
-            
+
             aboutContentPane = new JPanel();
             aboutContentPane.setLayout(new GridBagLayout());
-            aboutContentPane.add(getLblProgramVersion(), gridBagLblProgramVersion);
+            aboutContentPane.add(getLblProgramVersion(),
+                    gridBagLblProgramVersion);
             aboutContentPane.add(lblProgramName, gridBagLblProgramName);
-            aboutContentPane.add(lblProgramCopyright, gridBagLblProgramCopyright);
+            aboutContentPane.add(lblProgramCopyright,
+                    gridBagLblProgramCopyright);
             aboutContentPane.add(getBtnAboutOk(), gridBagBtnAboutOk);
         }
         return aboutContentPane;
@@ -482,7 +494,8 @@ public class ColorSelector {
     private JLabel getLblProgramVersion() {
         if (lblProgramVersion == null) {
             lblProgramVersion = new JLabel();
-            lblProgramVersion.setText(Messages.getString("ColorSelector.aboutDialog.version")); //$NON-NLS-1$
+            lblProgramVersion.setText(Messages
+                    .getString("ColorSelector.aboutDialog.version")); //$NON-NLS-1$
             lblProgramVersion.setHorizontalAlignment(SwingConstants.CENTER);
         }
         return lblProgramVersion;
@@ -496,7 +509,8 @@ public class ColorSelector {
     private JMenuItem getMniRandomColor() {
         if (mniRandomColor == null) {
             mniRandomColor = new JMenuItem();
-            mniRandomColor.setText(Messages.getString("ColorSelector.menu.random_color")); //$NON-NLS-1$
+            mniRandomColor.setText(Messages
+                    .getString("ColorSelector.menu.random_color")); //$NON-NLS-1$
             mniRandomColor
                     .addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -540,7 +554,8 @@ public class ColorSelector {
     private SliderSpinner getSlspRed() {
         if (slspRed == null) {
             slspRed = new SliderSpinner();
-            slspRed.setTitle(Messages.getString("ColorSelector.sliderspinner.r.title")); //$NON-NLS-1$
+            slspRed.setTitle(Messages
+                    .getString("ColorSelector.sliderspinner.r.title")); //$NON-NLS-1$
             slspRed.addPropertyChangeListener(this.sliderListener);
             slspRed.addPropertyChangeListener(this.sliderColorListener);
             slspRed.setContrastTitleFont(true);
@@ -556,7 +571,8 @@ public class ColorSelector {
     private SliderSpinner getSlspGreen() {
         if (slspGreen == null) {
             slspGreen = new SliderSpinner();
-            slspGreen.setTitle(Messages.getString("ColorSelector.sliderapinner.g.title")); //$NON-NLS-1$
+            slspGreen.setTitle(Messages
+                    .getString("ColorSelector.sliderapinner.g.title")); //$NON-NLS-1$
             slspGreen.addPropertyChangeListener(this.sliderListener);
             slspGreen.addPropertyChangeListener(this.sliderColorListener);
             slspGreen.setContrastTitleFont(true);
@@ -572,7 +588,8 @@ public class ColorSelector {
     private SliderSpinner getSlspBlue() {
         if (slspBlue == null) {
             slspBlue = new SliderSpinner();
-            slspBlue.setTitle(Messages.getString("ColorSelector.sliderapinner.b.title")); //$NON-NLS-1$
+            slspBlue.setTitle(Messages
+                    .getString("ColorSelector.sliderapinner.b.title")); //$NON-NLS-1$
             slspBlue.addPropertyChangeListener(this.sliderListener);
             slspBlue.addPropertyChangeListener(this.sliderColorListener);
             slspBlue.setContrastTitleFont(true);
@@ -593,15 +610,19 @@ public class ColorSelector {
             gridBagLblTitleColorFormat.insets = new Insets(5, 10, 5, 5);
             gridBagLblTitleColorFormat.gridy = 2;
             lblTitleColorFormat = new JLabel();
-            lblTitleColorFormat.setText(Messages.getString("ColorSelector.title.colorformat")); //$NON-NLS-1$
-            
+            lblTitleColorFormat.setLabelFor(getCmbFormat());
+            lblTitleColorFormat.setText(Messages
+                    .getString("ColorSelector.title.colorformat")); //$NON-NLS-1$
+
             GridBagConstraints gridBagLblTitleWebColor = new GridBagConstraints();
             gridBagLblTitleWebColor.gridx = 1;
-            gridBagLblTitleWebColor.anchor = GridBagConstraints.EAST;
+            gridBagLblTitleWebColor.anchor = GridBagConstraints.ABOVE_BASELINE_TRAILING;
             gridBagLblTitleWebColor.insets = new Insets(5, 10, 5, 5);
             gridBagLblTitleWebColor.gridy = 0;
             lblTitleWebColor = new JLabel();
-            lblTitleWebColor.setText(Messages.getString("ColorSelector.title.webcolor")); //$NON-NLS-1$
+            lblTitleWebColor.setLabelFor(getCmbWebColors());
+            lblTitleWebColor.setText(Messages
+                    .getString("ColorSelector.title.webcolor")); //$NON-NLS-1$
 
             GridBagConstraints gridBagLblTitleColorCode = new GridBagConstraints();
             gridBagLblTitleColorCode.gridx = 1;
@@ -609,25 +630,28 @@ public class ColorSelector {
             gridBagLblTitleColorCode.insets = new Insets(5, 10, 5, 5);
             gridBagLblTitleColorCode.gridy = 1;
             lblTitleColorCode = new JLabel();
-            lblTitleColorCode.setText(Messages.getString("ColorSelector.title.colorcode")); //$NON-NLS-1$
-            
+            lblTitleColorCode.setLabelFor(getTxfColorValue());
+            lblTitleColorCode.setText(Messages
+                    .getString("ColorSelector.title.colorcode")); //$NON-NLS-1$
+
             GridBagConstraints gridBagCmbWebColors = new GridBagConstraints();
-            gridBagCmbWebColors.fill = GridBagConstraints.NONE;
+            gridBagCmbWebColors.fill = GridBagConstraints.HORIZONTAL;
             gridBagCmbWebColors.gridy = 0;
             gridBagCmbWebColors.weightx = 1.0;
-            gridBagCmbWebColors.anchor = GridBagConstraints.WEST;
+            gridBagCmbWebColors.anchor = GridBagConstraints.ABOVE_BASELINE;
             gridBagCmbWebColors.insets = new Insets(5, 5, 5, 5);
             gridBagCmbWebColors.gridx = 2;
 
             GridBagConstraints gridBagCmbFormat = new GridBagConstraints();
-            gridBagCmbFormat.fill = GridBagConstraints.NONE;
+            gridBagCmbFormat.fill = GridBagConstraints.HORIZONTAL;
             gridBagCmbFormat.gridy = 2;
             gridBagCmbFormat.weightx = 1.0;
             gridBagCmbFormat.insets = new Insets(5, 5, 5, 5);
-            gridBagCmbFormat.anchor = GridBagConstraints.WEST;
+            gridBagCmbFormat.anchor = GridBagConstraints.ABOVE_BASELINE;
             gridBagCmbFormat.gridx = 2;
 
             GridBagConstraints gridBagSlspBlue = new GridBagConstraints();
+            gridBagSlspBlue.anchor = GridBagConstraints.ABOVE_BASELINE;
             gridBagSlspBlue.gridx = 0;
             gridBagSlspBlue.fill = GridBagConstraints.HORIZONTAL;
             gridBagSlspBlue.insets = new Insets(5, 5, 5, 5);
@@ -639,7 +663,7 @@ public class ColorSelector {
             gridBagEnableAlpha.gridy = 3;
             gridBagEnableAlpha.ipadx = 0;
             gridBagEnableAlpha.ipady = 0;
-            gridBagEnableAlpha.anchor = GridBagConstraints.WEST;
+            gridBagEnableAlpha.anchor = GridBagConstraints.ABOVE_BASELINE;
             gridBagEnableAlpha.gridwidth = 2;
             gridBagEnableAlpha.fill = GridBagConstraints.HORIZONTAL;
             gridBagEnableAlpha.gridx = 1;
@@ -651,10 +675,11 @@ public class ColorSelector {
             gridBagTxfColorValue.ipadx = 0;
             gridBagTxfColorValue.ipady = 0;
             gridBagTxfColorValue.weightx = 1.0;
-            gridBagTxfColorValue.anchor = GridBagConstraints.WEST;
+            gridBagTxfColorValue.anchor = GridBagConstraints.ABOVE_BASELINE;
             gridBagTxfColorValue.insets = new Insets(5, 5, 5, 5);
 
             GridBagConstraints gridBagSlspAlpha = new GridBagConstraints();
+            gridBagSlspAlpha.anchor = GridBagConstraints.ABOVE_BASELINE;
             gridBagSlspAlpha.insets = new Insets(5, 5, 5, 5);
             gridBagSlspAlpha.gridy = 3;
             gridBagSlspAlpha.ipadx = 0;
@@ -665,6 +690,7 @@ public class ColorSelector {
             gridBagSlspAlpha.gridx = 0;
 
             GridBagConstraints gridBagSlspGreen = new GridBagConstraints();
+            gridBagSlspGreen.anchor = GridBagConstraints.ABOVE_BASELINE;
             gridBagSlspGreen.insets = new Insets(5, 5, 5, 5);
             gridBagSlspGreen.gridy = 1;
             gridBagSlspGreen.ipadx = 0;
@@ -674,6 +700,7 @@ public class ColorSelector {
             gridBagSlspGreen.gridx = 0;
 
             GridBagConstraints gridBagSlspRed = new GridBagConstraints();
+            gridBagSlspRed.anchor = GridBagConstraints.ABOVE_BASELINE;
             gridBagSlspRed.insets = new Insets(5, 5, 5, 5);
             gridBagSlspRed.gridy = 0;
             gridBagSlspRed.ipadx = 0;
@@ -684,7 +711,9 @@ public class ColorSelector {
             gridBagSlspRed.gridx = 0;
 
             pnlControls = new JPanel();
-            pnlControls.setLayout(new GridBagLayout());
+            GridBagLayout gbl_pnlControls = new GridBagLayout();
+            gbl_pnlControls.columnWeights = new double[] { 0.0, 0.0, 1.0 };
+            pnlControls.setLayout(gbl_pnlControls);
             pnlControls.add(getSlspRed(), gridBagSlspRed);
             pnlControls.add(getSlspGreen(), gridBagSlspGreen);
             pnlControls.add(getSlspBlue(), gridBagSlspBlue);
@@ -708,7 +737,8 @@ public class ColorSelector {
     private SliderSpinner getSlspAlpha() {
         if (slspAlpha == null) {
             slspAlpha = new SliderSpinner();
-            slspAlpha.setTitle(Messages.getString("ColorSelector.sliderapinner.a.title")); //$NON-NLS-1$
+            slspAlpha.setTitle(Messages
+                    .getString("ColorSelector.sliderapinner.a.title")); //$NON-NLS-1$
             slspAlpha.addPropertyChangeListener(this.sliderListener);
             slspAlpha.setEnabled(false);
         }
@@ -739,11 +769,11 @@ public class ColorSelector {
     private JCheckBox getChbEnableAlpha() {
         if (chbEnableAlpha == null) {
             chbEnableAlpha = new JCheckBox();
-            chbEnableAlpha.setText(Messages.getString("ColorSelector.title.enablealpha")); //$NON-NLS-1$
+            chbEnableAlpha.setText(Messages
+                    .getString("ColorSelector.title.enablealpha")); //$NON-NLS-1$
             chbEnableAlpha.addItemListener(new java.awt.event.ItemListener() {
                 public void itemStateChanged(java.awt.event.ItemEvent e) {
-                    enableAlpha(chbEnableAlpha.isSelected(),
-                            chbEnableAlpha);
+                    enableAlpha(chbEnableAlpha.isSelected(), chbEnableAlpha);
                 }
             });
         }
@@ -790,7 +820,8 @@ public class ColorSelector {
     private JMenu getMnuFormat() {
         if (mnuFormat == null) {
             mnuFormat = new JMenu();
-            mnuFormat.setText(Messages.getString("ColorSelector.menu.colorformat")); //$NON-NLS-1$
+            mnuFormat.setText(Messages
+                    .getString("ColorSelector.menu.colorformat")); //$NON-NLS-1$
 
             // Formats
             ButtonGroup group = new ButtonGroup();
@@ -818,7 +849,8 @@ public class ColorSelector {
      */
     private JCheckBoxMenuItem getMniEnableAlpha() {
         if (mniEnableAlpha == null) {
-            mniEnableAlpha = new JCheckBoxMenuItem(Messages.getString("ColorSelector.menu.enablealpha")); //$NON-NLS-1$
+            mniEnableAlpha = new JCheckBoxMenuItem(
+                    Messages.getString("ColorSelector.menu.enablealpha")); //$NON-NLS-1$
             mniEnableAlpha.addItemListener(new java.awt.event.ItemListener() {
                 public void itemStateChanged(java.awt.event.ItemEvent e) {
                     enableAlpha(mniEnableAlpha.isSelected(), mniEnableAlpha);
@@ -829,9 +861,9 @@ public class ColorSelector {
     }
 
     /**
-     * This method initializes btnAboutOk	
-     * 	
-     * @return javax.swing.JButton	
+     * This method initializes btnAboutOk
+     * 
+     * @return javax.swing.JButton
      */
     private JButton getBtnAboutOk() {
         if (btnAboutOk == null) {

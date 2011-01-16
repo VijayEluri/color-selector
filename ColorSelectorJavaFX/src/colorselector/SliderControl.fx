@@ -168,6 +168,9 @@ public class SliderControl {
         width: bind width with inverse
         height: bind height
         minHeight: 60.0
+        hgrow: null
+        vgrow: javafx.scene.layout.Priority.NEVER
+        vshrink: javafx.scene.layout.Priority.NEVER
     }
     public-read def stack: javafx.scene.layout.Stack = javafx.scene.layout.Stack {
         layoutInfo: __layoutInfo_stack

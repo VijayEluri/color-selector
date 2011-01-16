@@ -28,6 +28,8 @@ public class WebColor {
     public function getColor(): Color { Color.rgb(this.red, this.green, this.blue) }
 
 }
+
+// http://www.w3.org/TR/css3-color/#svg-color
 public def values: WebColor[] = [
             WebColor { name: "UNDEFINED", red: 0, green: 0, blue: 0, defined: false },
             WebColor { name: "ALICEBLUE", red: 240, green: 248, blue: 255 },

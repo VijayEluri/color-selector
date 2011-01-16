@@ -40,6 +40,9 @@
         <Reference name="layoutInfoWidth" value="prop2:7,NOT_SET,4,null,27,str:bind width with inverse,4,null,4,null,"/>
         <Reference name="layoutInfoHeight" value="prop2:7,NOT_SET,4,null,15,str:bind height,4,null,4,null,"/>
         <Reference name="layoutInfoMinHeight" value="prop2:7,NOT_SET,4,null,4,null,15,anim:,,flt:60.0,4,null,"/>
+        <Reference name="layoutInfoHGrow" value="prop2:7,NOT_SET,4,null,4,null,11,anim:,,null,4,null,"/>
+        <Reference name="layoutInfoVGrow" value="prop2:7,NOT_SET,4,null,4,null,23,anim:,,lipriority:NEVER,4,null,"/>
+        <Reference name="layoutInfoVShrink" value="prop2:7,NOT_SET,4,null,4,null,23,anim:,,lipriority:NEVER,4,null,"/>
         <Reference name="gridLayoutInfoHLocation" value="int:0"/>
         <Reference name="gridLayoutInfoVLocation" value="int:0"/>
         <Reference name="clip" value="null"/>

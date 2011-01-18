@@ -1,6 +1,9 @@
 "title"="Seletor de Cores"
 
 "menu.file"="Arquivo"
+"menu.file.webcolorcontrol.goto.text"="Ir para Filtro"
+"menu.file.webcolorcontrol.goto.combo"="Ir para Seletor"
+"menu.file.webcolorcontrol.clean"="Limpar Filtro"
 "menu.file.exit"="Sair"
 "menu.options"="Opções"
 "menu.help"="Ajuda"

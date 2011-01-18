@@ -49,11 +49,9 @@ public class ColorSelector {
                 width: width1
             }
 
-    var gridWebColor: com.javafx.preview.layout.GridRow;
-
     var visibleControlWebColor: Control;
 
-    var selectedWebColors: Object[] = [];
+    var selectedWebColors = WebColor.values;
 
     var containerWebColors: Parent = javafx.scene.layout.Flow {
                 content: bind visibleControlWebColor
@@ -85,6 +83,10 @@ public class ColorSelector {
                 this.formatColor();
                 this.handleChbWebColors();
             }
+
+    var filterPattern = bind this.txbColorFilter.text.toUpperCase();
+
+    var selectedFilter = bind ((filterPattern != null) and (filterPattern.length() > 0));
 
     init {
         changeColors(null);
@@ -164,8 +166,13 @@ public class ColorSelector {
                                 action: shuffleColors
                             }
                             MenuItem {
-                                text: "Trocar componente"
+                                text: bind if (visibleControlWebColor == chbWebColors) ##[menu.file.webcolorcontrol.goto.text]"Go to filter" else ##[menu.file.webcolorcontrol.goto.combo]"Go to selector"
                                 action: swapWebColorComponent
+                            }
+                            MenuItem {
+                                text: ##[menu.file.webcolorcontrol.clean]"Clean Filter"
+                                action: cleanWebColorfilter
+                                disable: bind not this.selectedFilter
                             }
                             Separator {}
                             MenuItem {
@@ -194,14 +201,15 @@ public class ColorSelector {
                         ]
                     },
                     Menu {
-                        def aboutName = ##[about.name]"Color Selector";
-                        def aboutVersion = ##[about.version]"Version 1.0";
-                        def aboutCopyright = ##[about.copyright]"(c)Rafael Afonso - 2011"
                         text: ##[menu.help]"Help"
                         items: [
                             MenuItem {
                                 text: ##[menu.help.about]"About"
                                 action: function(): Void {
+                                    def aboutName = ##[about.name]"Color Selector";
+                                    def aboutVersion = ##[about.version]"Version 1.0";
+                                    def aboutCopyright = ##[about.copyright]"(c)Rafael Afonso - 2011";
+
                                     Alert.inform(##[about.title]"About", "{aboutName}\n{aboutVersion}\n{aboutCopyright}");
                                 }
                             }
@@ -224,7 +232,7 @@ public class ColorSelector {
                     topOpacity: 0.95
                 }
                 fill: bind this.currentColor
-                height: bind Math.max((scene.height - menuBar.height - grid.height), (scene.height /2))
+                height: bind Math.max((scene.height - menuBar.height - grid.height), (scene.height / 2))
                 layoutInfo: LayoutInfo {
                     hgrow: javafx.scene.layout.Priority.ALWAYS
                     vgrow: javafx.scene.layout.Priority.ALWAYS
@@ -242,7 +250,7 @@ public class ColorSelector {
                 layoutInfo: titlesLayout
                 onMouseClicked: webColorComponentMouseClick
                 text: "{##[web_color]'Web Color'}:"
-                textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                    textAlignment: javafx.scene.text.TextAlignment.RIGHT
                 textFill: bind labelColor(currentColor as Color)
             }
 
@@ -252,10 +260,6 @@ public class ColorSelector {
                 layoutInfo: LayoutInfo {
                     vpos: javafx.geometry.VPos.TOP
                 }
-                onKeyPressed: function(me: KeyEvent): Void {
-                    filterWebColor()
-                }
-                onMouseClicked: webColorComponentMouseClick
                 selectOnFocus: true
                 text: ""
             }
@@ -264,8 +268,7 @@ public class ColorSelector {
                 layoutInfo: LayoutInfo {
                     vpos: javafx.geometry.VPos.TOP
                 }
-                items: WebColor.values
-                onMouseClicked: webColorComponentMouseClick
+                items: bind selectedWebColors
                 tooltip: Tooltip {
                     text: "Cor pré-definiida pelo W3C."
                 }
@@ -274,7 +277,7 @@ public class ColorSelector {
     public-read def lblTitleColorValue: javafx.scene.control.Label = javafx.scene.control.Label {
                 layoutInfo: titlesLayout
                 text: "{##[color_code]'Color Code'}:"
-                           textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                               textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
     public-read def txbColorValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
@@ -286,7 +289,7 @@ public class ColorSelector {
                 layoutInfo: GridLayoutInfo {
                     vpos: javafx.geometry.VPos.TOP
                     hgrow: Priority.NEVER
-             //       minWidth: bind 0.3 * scene.width
+                //       minWidth: bind 0.3 * scene.width
                 }
                 text: "rgb(255, 255, 255)"
             }
@@ -294,7 +297,7 @@ public class ColorSelector {
     public-read def lblTitleColorFormat: javafx.scene.control.Label = javafx.scene.control.Label {
                 layoutInfo: titlesLayout
                 text: "{##[color_format]'Color Format'}:"
-                           textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                               textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
     public-read def cmbColorFormat: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
@@ -314,15 +317,14 @@ public class ColorSelector {
 
     public-read def grid: com.javafx.preview.layout.Grid = com.javafx.preview.layout.Grid {
                 layoutInfo: LayoutInfo {
-                    //                    height: bind panelsHeight
                     vfill: false
                     vgrow: Priority.NEVER
                 }
                 hgap: 6.0
                 rows: [
-                    gridWebColor = com.javafx.preview.layout.GridRow {
-                                cells: [this.sliderControlRed.node, lblTitleWebColor, containerWebColors,]
-                            }
+                    com.javafx.preview.layout.GridRow {
+                        cells: [this.sliderControlRed.node, lblTitleWebColor, containerWebColors,]
+                    }
                     com.javafx.preview.layout.GridRow {
                         cells: [this.sliderControlGreen.node, lblTitleColorValue, txbColorValue,]
                     }
@@ -388,13 +390,21 @@ public class ColorSelector {
     }
 
     function filterWebColor(): Void {
-        def pattern = this.txbColorFilter.text.toUpperCase();
+        this.selectedWebColors =
+                if (selectedFilter) {
+                    WebColor.values[webColor | (webColor.name.indexOf(filterPattern) >= 0) or not webColor.defined];
+                } else {
+                    WebColor.values;
+                }
 
-        if (pattern == null or pattern.length() == 0) {
-            this.selectedWebColors = WebColor.values;
-        } else {
-            this.selectedWebColors = WebColor.values[webColor | webColor.name.indexOf(pattern) >= 0];
-        }
+        this.swapWebColorComponent();
+        this.handleChbWebColors();
+    }
+
+    function cleanWebColorfilter(): Void {
+        this.selectedWebColors = WebColor.values;
+        this.visibleControlWebColor = this.chbWebColors;
+        this.handleChbWebColors();
     }
 
     function formatColor(): Void {

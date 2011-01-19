@@ -27,6 +27,7 @@ import javafx.util.Math;
 import javafx.scene.control.TextBox;
 import javafx.scene.control.Control;
 import javafx.scene.Parent;
+import javafx.animation.transition.FadeTransition;
 import javafx.scene.layout.Priority;
 
 /**
@@ -93,6 +94,7 @@ public class ColorSelector {
     init {
         changeColors(null);
         this.visibleControlWebColor = this.chbWebColors;
+        this.txbColorFilter.opacity = 0.0;
     }
 
     public-read def sliderControlRed: SliderControl = SliderControl {
@@ -175,7 +177,9 @@ public class ColorSelector {
                                 text: ##[menu.file.webcolorcontrol.clean]"Clean Filter"
                                 action: function(): Void {
                                     this.txbColorFilter.text = null;
-                                    this.visibleControlWebColor = this.chbWebColors;
+                                    if(this.visibleControlWebColor == this.txbColorFilter) {
+                                        swapWebColorComponent();
+                                    }
                                 }
                                 disable: bind not this.selectedFilter
                             }
@@ -255,7 +259,7 @@ public class ColorSelector {
                 layoutInfo: titlesLayout
                 onMouseClicked: webColorComponentMouseClick
                 text: "{##[web_color]'Web Color'}:"
-                         textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                           textAlignment: javafx.scene.text.TextAlignment.RIGHT
                 textFill: bind labelColor(currentColor as Color)
             }
 
@@ -282,7 +286,7 @@ public class ColorSelector {
     public-read def lblTitleColorValue: javafx.scene.control.Label = javafx.scene.control.Label {
                 layoutInfo: titlesLayout
                 text: "{##[color_code]'Color Code'}:"
-                                    textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                                      textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
     public-read def txbColorValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
@@ -302,7 +306,7 @@ public class ColorSelector {
     public-read def lblTitleColorFormat: javafx.scene.control.Label = javafx.scene.control.Label {
                 layoutInfo: titlesLayout
                 text: "{##[color_format]'Color Format'}:"
-                                    textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                                      textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
     public-read def cmbColorFormat: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
@@ -375,11 +379,23 @@ public class ColorSelector {
     }
 
     function swapWebColorComponent(): Void {
+        var transition = FadeTransition {
+                    fromValue: 1.0
+                    toValue: 0.0
+                    duration: 0.5s
+                    node: bind this.visibleControlWebColor
+                }
+        transition.play();
+
         this.visibleControlWebColor = if (this.visibleControlWebColor == this.chbWebColors) {
                     this.txbColorFilter
                 } else {
                     this.chbWebColors
                 }
+
+        transition.fromValue = 0.0;
+        transition.toValue = 1.0;
+        transition.play();
     }
 
     /*bound */

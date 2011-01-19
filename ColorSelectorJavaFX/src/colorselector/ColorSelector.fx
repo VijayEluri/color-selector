@@ -25,7 +25,6 @@ import javafx.scene.layout.LayoutInfo;
 import javafx.stage.Alert;
 import javafx.util.Math;
 import javafx.scene.control.TextBox;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Control;
 import javafx.scene.Parent;
 import javafx.scene.layout.Priority;
@@ -51,7 +50,14 @@ public class ColorSelector {
 
     var visibleControlWebColor: Control;
 
-    var selectedWebColors = WebColor.values;
+    var filterPattern = bind this.txbColorFilter.text.toUpperCase();
+
+    var selectedFilter = bind ((filterPattern != null) and (filterPattern.length() > 0));
+
+    var selectedWebColors: Object[] = bind if (selectedFilter) WebColor.values[webColor | (webColor.name.indexOf(filterPattern) >= 0) or not webColor.defined] else WebColor.values
+            on replace {
+                handleChbWebColors();
+            };
 
     var containerWebColors: Parent = javafx.scene.layout.Flow {
                 content: bind visibleControlWebColor
@@ -83,10 +89,6 @@ public class ColorSelector {
                 this.formatColor();
                 this.handleChbWebColors();
             }
-
-    var filterPattern = bind this.txbColorFilter.text.toUpperCase();
-
-    var selectedFilter = bind ((filterPattern != null) and (filterPattern.length() > 0));
 
     init {
         changeColors(null);
@@ -171,7 +173,10 @@ public class ColorSelector {
                             }
                             MenuItem {
                                 text: ##[menu.file.webcolorcontrol.clean]"Clean Filter"
-                                action: cleanWebColorfilter
+                                action: function(): Void {
+                                    this.txbColorFilter.text = null;
+                                    this.visibleControlWebColor = this.chbWebColors;
+                                }
                                 disable: bind not this.selectedFilter
                             }
                             Separator {}
@@ -250,12 +255,12 @@ public class ColorSelector {
                 layoutInfo: titlesLayout
                 onMouseClicked: webColorComponentMouseClick
                 text: "{##[web_color]'Web Color'}:"
-                    textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                         textAlignment: javafx.scene.text.TextAlignment.RIGHT
                 textFill: bind labelColor(currentColor as Color)
             }
 
     public-read def txbColorFilter: TextBox = TextBox {
-                action: filterWebColor
+                action: swapWebColorComponent
                 columns: 12
                 layoutInfo: LayoutInfo {
                     vpos: javafx.geometry.VPos.TOP
@@ -277,7 +282,7 @@ public class ColorSelector {
     public-read def lblTitleColorValue: javafx.scene.control.Label = javafx.scene.control.Label {
                 layoutInfo: titlesLayout
                 text: "{##[color_code]'Color Code'}:"
-                               textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                                    textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
     public-read def txbColorValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
@@ -297,7 +302,7 @@ public class ColorSelector {
     public-read def lblTitleColorFormat: javafx.scene.control.Label = javafx.scene.control.Label {
                 layoutInfo: titlesLayout
                 text: "{##[color_format]'Color Format'}:"
-                               textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                                    textAlignment: javafx.scene.text.TextAlignment.RIGHT
             }
 
     public-read def cmbColorFormat: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
@@ -370,11 +375,11 @@ public class ColorSelector {
     }
 
     function swapWebColorComponent(): Void {
-        if (this.visibleControlWebColor == this.chbWebColors) {
-            this.visibleControlWebColor = this.txbColorFilter
-        } else {
-            this.visibleControlWebColor = this.chbWebColors
-        }
+        this.visibleControlWebColor = if (this.visibleControlWebColor == this.chbWebColors) {
+                    this.txbColorFilter
+                } else {
+                    this.chbWebColors
+                }
     }
 
     /*bound */
@@ -387,24 +392,6 @@ public class ColorSelector {
         } else {
             Color.BLACK
         }
-    }
-
-    function filterWebColor(): Void {
-        this.selectedWebColors =
-                if (selectedFilter) {
-                    WebColor.values[webColor | (webColor.name.indexOf(filterPattern) >= 0) or not webColor.defined];
-                } else {
-                    WebColor.values;
-                }
-
-        this.swapWebColorComponent();
-        this.handleChbWebColors();
-    }
-
-    function cleanWebColorfilter(): Void {
-        this.selectedWebColors = WebColor.values;
-        this.visibleControlWebColor = this.chbWebColors;
-        this.handleChbWebColors();
     }
 
     function formatColor(): Void {

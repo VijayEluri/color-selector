@@ -241,7 +241,7 @@ public class ColorSelector {
                     topOpacity: 0.95
                 }
                 fill: bind this.currentColor
-                height: bind Math.max((scene.height - menuBar.height - grid.height), (scene.height / 2))
+                height: bind Math.max((scene.height - menuBar.height - grid.height), (scene.height / 3))
                 layoutInfo: LayoutInfo {
                     hgrow: javafx.scene.layout.Priority.ALWAYS
                     vgrow: javafx.scene.layout.Priority.ALWAYS
@@ -298,7 +298,6 @@ public class ColorSelector {
                 layoutInfo: GridLayoutInfo {
                     vpos: javafx.geometry.VPos.TOP
                     hgrow: Priority.NEVER
-                //       minWidth: bind 0.3 * scene.width
                 }
                 text: "rgb(255, 255, 255)"
             }
@@ -358,19 +357,11 @@ public class ColorSelector {
                 spacing: 6.0
             }
 
-    public function getDesignRootNodes(): javafx.scene.Node[] {
-        [verticalBox,]
-    }
-
     public-read def scene: javafx.scene.Scene = javafx.scene.Scene {
                 width: 600.0
                 height: 500.0
-                content: getDesignRootNodes()
+                content: verticalBox
             }
-
-    public function getDesignScene(): javafx.scene.Scene {
-        scene
-    }
 
     function webColorComponentMouseClick(me: MouseEvent): Void {
         if (me.clickCount == 2) {
@@ -398,7 +389,6 @@ public class ColorSelector {
         transition.play();
     }
 
-    /*bound */
     function labelColor(color: Color): Paint {
         if (color.opacity < 0.5) {
             Color.BLACK
@@ -497,6 +487,6 @@ function run(): Void {
 
     javafx.stage.Stage {
         title: ##[title]"Color Selector"
-        scene: design.getDesignScene()
+        scene: design.scene
     }
 }

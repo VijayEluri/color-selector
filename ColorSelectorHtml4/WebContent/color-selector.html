@@ -12,13 +12,15 @@
 	<!-- flm:table -->
 	<tbody>
 		<tr style="height: 50%">
-			<td colspan="5" id="canvas"></td>
+			<td colspan="5" id="canvas" ondblclick="randomColor();"></td>
 		</tr>
 		<tr id="redRow">
 			<td width="5%"><input type="checkbox" id="selectRed" onclick="synchronizeValues('redValue', this.checked);"/></td>
 			<td width="5%" class="label-color"><label for="redValue">R</label></td>
-			<td width="10%"><select id="redValue" onchange="valueChanged(this);">
-			</select></td>
+			<td width="10%">
+				<select id="redValue" onchange="valueChanged(this);">
+				</select>
+			</td>
 
 			<td width="30%" align="right"><label for="webColor" class="label-title">Web Color</label></td>
 			<td width="50%" align="left"><select class="control" id="webColor"></select></td>
@@ -26,8 +28,10 @@
 		<tr id="greenRow">
 			<td width="5%"><input type="checkbox" id="selectGreen" onclick="synchronizeValues('greenValue', this.checked);"/></td>
 			<td width="5%" class="label-color"><label for="greenValue">G</label></td>
-			<td width="10%"><select id="greenValue" onchange="valueChanged(this);">
-			</select></td>
+			<td width="10%">
+				<select id="greenValue" onchange="valueChanged(this);">
+				</select>
+			</td>
 
 			<td width="30%" align="right"><label for="colorValue" class="label-title">Color Value</label></td>
 			<td width="50%" align="left"><input class="control" readonly="readonly" id="colorValue"></input></td>
@@ -35,17 +39,21 @@
 		<tr id="blueRow">
 			<td width="5%"><input type="checkbox" id="selectBlue" onclick="synchronizeValues('blueValue', this.checked);"/></td>
 			<td width="5%" class="label-color"><label for="blueValue">B</label></td>
-			<td width="10%"><select id="blueValue" onchange="valueChanged(this);">
-			</select></td>
+			<td width="10%">
+				<select id="blueValue" onchange="valueChanged(this);">
+				</select>
+			</td>
 
-			<td width="30%" align="right"><label for="colorValue" class="label-title">Color Format</label></td>
+			<td width="30%" align="right"><label for="formatType" class="label-title">Color Format</label></td>
 			<td width="50%" align="left"><select class="control" id="formatType"></select></td>
 		</tr>
 		<tr id="alphaRow">
 			<td width="5%"><input type="checkbox" id="selectAlpha" disabled="disabled" onclick="synchronizeValues('alphaValue', this.checked);"/></td>
 			<td width="5%" class="label-color"><label for="alphaValue" >A</label></td>
-			<td width="10%"><select disabled="disabled" id="alphaValue" onchange="valueChanged(this);">
-			</select></td>
+			<td width="10%">
+				<select disabled="disabled" id="alphaValue" onchange="valueChanged(this);">
+				</select>
+			</td>
 
 			<td width="30%" align="right"><label for="enableAlpha" class="label-title">Enable Alpha</label></td>
 			<td width="50%" align="left"><input class="control" id="enableAlpha" type="checkbox" onclick="enableAlpha(this)"></td>

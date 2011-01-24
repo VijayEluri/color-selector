@@ -44,14 +44,6 @@ public class ColorSelector {
 
     var syncronizedControls: SliderControl[] = [];
 
-    def titlesLayout = LayoutInfo {
-                hpos: javafx.geometry.HPos.RIGHT
-                hfill: true
-                minWidth: width1
-                vpos: javafx.geometry.VPos.TOP
-                width: width1
-            }
-
     var visibleControlWebColor: Control;
 
     var filterPattern = bind this.txbColorFilter.text.toUpperCase();
@@ -68,15 +60,6 @@ public class ColorSelector {
     this.scene.cursor = Cursor.WAIT;
     }
      */
-
-    var containerWebColors: Parent = javafx.scene.layout.Flow {
-                content: bind visibleControlWebColor
-                nodeVPos: javafx.geometry.VPos.TOP
-                nodeHPos: javafx.geometry.HPos.RIGHT
-                layoutInfo: LayoutInfo {
-                    hgrow: Priority.ALWAYS
-                }
-            };
 
     var formatGroup = ToggleGroup {}
 
@@ -235,6 +218,21 @@ public class ColorSelector {
 
     // COMPONENTES - INÍCIO
 
+    def titlesLayout = LayoutInfo {
+                hpos: javafx.geometry.HPos.RIGHT
+                hfill: true
+                hgrow: Priority.SOMETIMES
+                minWidth: width1
+                vpos: javafx.geometry.VPos.TOP
+                width: width1
+            }
+
+    def controlsLayout = LayoutInfo {
+        vpos: javafx.geometry.VPos.TOP
+        hgrow: Priority.NEVER
+    }
+
+
     public-read def menuBar: MenuBar = MenuBar {
                 layoutInfo: LayoutInfo {
                     width: bind scene.width
@@ -354,22 +352,25 @@ public class ColorSelector {
     public-read def txbColorFilter: TextBox = TextBox {
                 action: swapWebColorComponent
                 columns: 12
-                layoutInfo: LayoutInfo {
-                    vpos: javafx.geometry.VPos.TOP
-                }
+                layoutInfo: controlsLayout
                 selectOnFocus: true
                 text: ""
             }
 
     public-read def chbWebColors: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
-                layoutInfo: LayoutInfo {
-                    vpos: javafx.geometry.VPos.TOP
-                }
                 items: bind selectedWebColors
+                layoutInfo: controlsLayout
                 tooltip: Tooltip {
                     text: "Cor pré-definiida pelo W3C."
                 }
             }
+
+    var containerWebColors: Parent = javafx.scene.layout.Flow {
+                content: bind visibleControlWebColor
+                nodeVPos: javafx.geometry.VPos.TOP
+                nodeHPos: javafx.geometry.HPos.RIGHT
+                layoutInfo: controlsLayout
+            };
 
     public-read def sliderControlGreen: SliderControl = SliderControl {
                 title: 'G'
@@ -391,15 +392,13 @@ public class ColorSelector {
             }
 
     public-read def txbColorValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
+                columns: 10
                 editable: false
                 font: Font {
                     name: "monospaced"
                     size: 10
                 }
-                layoutInfo: GridLayoutInfo {
-                    vpos: javafx.geometry.VPos.TOP
-                    hgrow: Priority.NEVER
-                }
+                layoutInfo: controlsLayout
                 text: "rgb(255, 255, 255)"
             }
 
@@ -423,9 +422,7 @@ public class ColorSelector {
             }
 
     public-read def cmbColorFormat: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
-                layoutInfo: LayoutInfo {
-                    vpos: javafx.geometry.VPos.TOP
-                }
+                layoutInfo: controlsLayout
                 items: ColorFormatter.formatters
             }
 
@@ -448,12 +445,14 @@ public class ColorSelector {
                 width: bind controlsWidht
             }
 
+    public-read def lblTitleEnableAlpha: javafx.scene.control.Label = javafx.scene.control.Label {
+                layoutInfo: titlesLayout
+                text: "{##[enable_alpha]'Enable Tranparency'}:"
+                textAlignment: javafx.scene.text.TextAlignment.RIGHT
+            }
+
     public-read def chbEnableAlpha: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
-                layoutInfo: GridLayoutInfo {
-                    hspan: 2
-                    vpos: javafx.geometry.VPos.TOP
-                }
-                text: ##[enable_alpha]"Enable Tranparency"
+                layoutInfo: controlsLayout
             }
 
     public-read def grid: com.javafx.preview.layout.Grid = com.javafx.preview.layout.Grid {
@@ -473,7 +472,7 @@ public class ColorSelector {
                         cells: [this.sliderControlBlue.node, lblTitleColorFormat, cmbColorFormat,]
                     }
                     com.javafx.preview.layout.GridRow {
-                        cells: [this.sliderControlAlpha.node, chbEnableAlpha,]
+                        cells: [this.sliderControlAlpha.node, lblTitleEnableAlpha, chbEnableAlpha,]
                     }
                 ]
                 vgap: 6.0

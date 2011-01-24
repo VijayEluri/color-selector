@@ -29,11 +29,14 @@ import javafx.scene.control.Control;
 import javafx.scene.Parent;
 import javafx.animation.transition.FadeTransition;
 import javafx.scene.layout.Priority;
+import javafx.scene.Cursor;
 
 /**
  * @author rafael
  */
 public class ColorSelector {
+
+    // VARIÁVEIS - INÍCIO
 
     var width1 = 100;
 
@@ -58,7 +61,13 @@ public class ColorSelector {
     var selectedWebColors: Object[] = bind if (selectedFilter) WebColor.values[webColor | (webColor.name.indexOf(filterPattern) >= 0) or not webColor.defined] else WebColor.values
             on replace {
                 handleChbWebColors();
-            };
+                this.scene.cursor = Cursor.DEFAULT;
+            }
+    /*
+    on invalidate {
+    this.scene.cursor = Cursor.WAIT;
+    }
+     */
 
     var containerWebColors: Parent = javafx.scene.layout.Flow {
                 content: bind visibleControlWebColor
@@ -70,8 +79,6 @@ public class ColorSelector {
             };
 
     var formatGroup = ToggleGroup {}
-
-    var panelsHeight: Number = bind (scene.height - menuBar.height) / 2;
 
     var currentFormatter: ColorFormatter = bind (cmbColorFormat.selectedItem) as ColorFormatter on replace {
                 formatColor();
@@ -91,141 +98,18 @@ public class ColorSelector {
                 this.handleChbWebColors();
             }
 
+    // VARIÁVEIS - FINAL
+
+    /**
+     * Construtor
+     */
     init {
         changeColors(null);
         this.visibleControlWebColor = this.chbWebColors;
         this.txbColorFilter.opacity = 0.0;
     }
 
-    public-read def sliderControlRed: SliderControl = SliderControl {
-                title: 'R'
-                onChange: function() {
-                    changeColors(sliderControlRed);
-                }
-                onSelect: function() {
-                    syncronizeControl(sliderControlRed);
-                }
-                width: bind controlsWidht
-                backgroundColor: bind Color.rgb(sliderControlRed.value, 0, 0)
-                foregroundColor: bind getForegroundColor(sliderControlRed.value)
-            }
-
-    public-read def sliderControlGreen: SliderControl = SliderControl {
-                title: 'G'
-                onChange: function() {
-                    changeColors(sliderControlGreen);
-                }
-                onSelect: function() {
-                    syncronizeControl(sliderControlGreen);
-                }
-                width: bind controlsWidht
-                backgroundColor: bind Color.rgb(0, sliderControlGreen.value, 0)
-                foregroundColor: bind getForegroundColor(sliderControlGreen.value)
-            }
-
-    public-read def sliderControlBlue: SliderControl = SliderControl {
-                title: 'B'
-                onChange: function() {
-                    changeColors(sliderControlBlue);
-                }
-                onSelect: function() {
-                    syncronizeControl(sliderControlBlue);
-                }
-                width: bind controlsWidht
-                backgroundColor: bind Color.rgb(0, 0, sliderControlBlue.value)
-                foregroundColor: Color.WHITE
-            }
-
-    public-read def sliderControlAlpha: SliderControl = SliderControl {
-                title: 'A'
-                value: Utils.MAX
-                disable: bind (not this.chbEnableAlpha.selected)
-                onChange: function() {
-                    changeColors(sliderControlAlpha);
-                }
-                onDisable: function() {
-                    changeColors(sliderControlAlpha);
-                    if (sliderControlAlpha.disable) {
-                        sliderControlAlpha.selected = false;
-                    }
-                }
-                onSelect: function() {
-                    syncronizeControl(sliderControlAlpha);
-                }
-                width: bind controlsWidht
-            }
-
-    public-read def menuBar: MenuBar = MenuBar {
-                layoutInfo: LayoutInfo {
-                    width: bind scene.width
-                }
-                layoutX: 0.0
-                layoutY: 0.0
-                menus: [
-                    Menu {
-                        text: ##[menu.file]"File"
-                        items: [
-                            MenuItem {
-                                text: ##[random_color]"Random Color"
-                                action: shuffleColors
-                            }
-                            MenuItem {
-                                text: bind if (visibleControlWebColor == chbWebColors) ##[menu.file.webcolorcontrol.goto.text]"Go to filter" else ##[menu.file.webcolorcontrol.goto.combo]"Go to selector"
-                                action: swapWebColorComponent
-                            }
-                            MenuItem {
-                                text: ##[menu.file.webcolorcontrol.clean]"Clean Filter"
-                                action: function(): Void {
-                                    this.txbColorFilter.text = null;
-                                    if(this.visibleControlWebColor == this.txbColorFilter) {
-                                        swapWebColorComponent();
-                                    }
-                                }
-                                disable: bind not this.selectedFilter
-                            }
-                            Separator {}
-                            MenuItem {
-                                text: ##[menu.file.exit]"Exit"
-                                action: FX.exit
-                            }
-                        ]
-                    },
-                    Menu {
-                        text: ##[menu.options]"Options"
-                        items: [
-                            Menu {
-                                text: ##[color_format]"Color Format"
-                                items: for (formatter in ColorFormatter.formatters) {
-                                    RadioMenuItem {
-                                        action: itemMenuFormatSelected
-                                        text: formatter.description
-                                        toggleGroup: formatGroup
-                                    }
-                                }
-                            }
-                            CheckMenuItem {
-                                text: ##[enable_alpha]"Enable Tranparency"
-                                selected: bind chbEnableAlpha.selected with inverse
-                            }
-                        ]
-                    },
-                    Menu {
-                        text: ##[menu.help]"Help"
-                        items: [
-                            MenuItem {
-                                text: ##[menu.help.about]"About"
-                                action: function(): Void {
-                                    def aboutName = ##[about.name]"Color Selector";
-                                    def aboutVersion = ##[about.version]"Version 1.0";
-                                    def aboutCopyright = ##[about.copyright]"(c)Rafael Afonso - 2011";
-
-                                    Alert.inform(##[about.title]"About", "{aboutName}\n{aboutVersion}\n{aboutCopyright}");
-                                }
-                            }
-                        ]
-                    }
-                ]
-            }
+    // FUNÇÕES - INÍCIO
 
     function itemMenuFormatSelected(): Void {
         for (index in [0..(sizeof this.formatGroup.toggles)]) {
@@ -233,139 +117,6 @@ public class ColorSelector {
                 this.cmbColorFormat.select(index);
                 break;
             }
-        }
-    }
-
-    public-read def rectangle: javafx.scene.shape.Rectangle = javafx.scene.shape.Rectangle {
-                effect: Reflection {
-                    topOpacity: 0.95
-                }
-                fill: bind this.currentColor
-                height: bind Math.max((scene.height - menuBar.height - grid.height), (scene.height / 3))
-                layoutInfo: LayoutInfo {
-                    hgrow: javafx.scene.layout.Priority.ALWAYS
-                    vgrow: javafx.scene.layout.Priority.ALWAYS
-                    vfill: true
-                }
-                onMouseClicked: function(event: MouseEvent): Void {
-                    if (event.clickCount == 2) {
-                        shuffleColors()
-                    }
-                }
-                width: bind scene.width
-            }
-
-    public-read def lblTitleWebColor: javafx.scene.control.Label = javafx.scene.control.Label {
-                layoutInfo: titlesLayout
-                onMouseClicked: webColorComponentMouseClick
-                text: "{##[web_color]'Web Color'}:"
-                           textAlignment: javafx.scene.text.TextAlignment.RIGHT
-                textFill: bind labelColor(currentColor as Color)
-            }
-
-    public-read def txbColorFilter: TextBox = TextBox {
-                action: swapWebColorComponent
-                columns: 12
-                layoutInfo: LayoutInfo {
-                    vpos: javafx.geometry.VPos.TOP
-                }
-                selectOnFocus: true
-                text: ""
-            }
-
-    public-read def chbWebColors: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
-                layoutInfo: LayoutInfo {
-                    vpos: javafx.geometry.VPos.TOP
-                }
-                items: bind selectedWebColors
-                tooltip: Tooltip {
-                    text: "Cor pré-definiida pelo W3C."
-                }
-            }
-
-    public-read def lblTitleColorValue: javafx.scene.control.Label = javafx.scene.control.Label {
-                layoutInfo: titlesLayout
-                text: "{##[color_code]'Color Code'}:"
-                                      textAlignment: javafx.scene.text.TextAlignment.RIGHT
-            }
-
-    public-read def txbColorValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
-                editable: false
-                font: Font {
-                    name: "monospaced"
-                    size: 10
-                }
-                layoutInfo: GridLayoutInfo {
-                    vpos: javafx.geometry.VPos.TOP
-                    hgrow: Priority.NEVER
-                }
-                text: "rgb(255, 255, 255)"
-            }
-
-    public-read def lblTitleColorFormat: javafx.scene.control.Label = javafx.scene.control.Label {
-                layoutInfo: titlesLayout
-                text: "{##[color_format]'Color Format'}:"
-                                      textAlignment: javafx.scene.text.TextAlignment.RIGHT
-            }
-
-    public-read def cmbColorFormat: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
-                layoutInfo: LayoutInfo {
-                    vpos: javafx.geometry.VPos.TOP
-                }
-                items: ColorFormatter.formatters
-            }
-
-    public-read def chbEnableAlpha: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
-                layoutInfo: GridLayoutInfo {
-                    hspan: 2
-                    vpos: javafx.geometry.VPos.TOP
-                }
-                text: ##[enable_alpha]"Enable Tranparency"
-            }
-
-    public-read def grid: com.javafx.preview.layout.Grid = com.javafx.preview.layout.Grid {
-                layoutInfo: LayoutInfo {
-                    vfill: false
-                    vgrow: Priority.NEVER
-                }
-                hgap: 6.0
-                rows: [
-                    com.javafx.preview.layout.GridRow {
-                        cells: [this.sliderControlRed.node, lblTitleWebColor, containerWebColors,]
-                    }
-                    com.javafx.preview.layout.GridRow {
-                        cells: [this.sliderControlGreen.node, lblTitleColorValue, txbColorValue,]
-                    }
-                    com.javafx.preview.layout.GridRow {
-                        cells: [this.sliderControlBlue.node, lblTitleColorFormat, cmbColorFormat,]
-                    }
-                    com.javafx.preview.layout.GridRow {
-                        cells: [this.sliderControlAlpha.node, chbEnableAlpha,]
-                    }
-                ]
-                vgap: 6.0
-            }
-
-    public-read def verticalBox: javafx.scene.layout.VBox = javafx.scene.layout.VBox {
-                layoutX: 0.0
-                layoutY: 0.0
-                layoutInfo: LayoutInfo {
-                    width: bind scene.width
-                    height: bind scene.height
-                }
-                content: [menuBar, rectangle, grid,]
-                spacing: 6.0
-            }
-
-    public-read def scene: javafx.scene.Scene = javafx.scene.Scene {
-                width: 600.0
-                height: 500.0
-                content: verticalBox
-            }
-
-    function webColorComponentMouseClick(me: MouseEvent): Void {
-        if (me.clickCount == 2) {
-            swapWebColorComponent();
         }
     }
 
@@ -479,6 +230,273 @@ public class ColorSelector {
             this.chbWebColors.select(0);
         }
     }
+
+    // FUNÇÕES - FINAL
+
+    // COMPONENTES - INÍCIO
+
+    public-read def menuBar: MenuBar = MenuBar {
+                layoutInfo: LayoutInfo {
+                    width: bind scene.width
+                }
+                layoutX: 0.0
+                layoutY: 0.0
+                menus: [
+                    Menu {
+                        text: ##[menu.file]"File"
+                        items: [
+                            MenuItem {
+                                text: ##[random_color]"Random Color"
+                                action: shuffleColors
+                            }
+                            MenuItem {
+                                text: bind if (visibleControlWebColor == chbWebColors) ##[menu.file.webcolorcontrol.goto.text]"Go to filter" else ##[menu.file.webcolorcontrol.goto.combo]"Go to selector"
+                                action: swapWebColorComponent
+                            }
+                            MenuItem {
+                                text: ##[menu.file.webcolorcontrol.clean]"Clean Filter"
+                                action: function(): Void {
+                                    this.txbColorFilter.text = null;
+                                    if (this.visibleControlWebColor == this.txbColorFilter) {
+                                        swapWebColorComponent();
+                                    }
+                                }
+                                disable: bind not this.selectedFilter
+                            }
+                            Separator {}
+                            MenuItem {
+                                text: ##[menu.file.exit]"Exit"
+                                action: FX.exit
+                            }
+                        ]
+                    },
+                    Menu {
+                        text: ##[menu.options]"Options"
+                        items: [
+                            Menu {
+                                text: ##[color_format]"Color Format"
+                                items: for (formatter in ColorFormatter.formatters) {
+                                    RadioMenuItem {
+                                        action: itemMenuFormatSelected
+                                        text: formatter.description
+                                        toggleGroup: formatGroup
+                                    }
+                                }
+                            }
+                            CheckMenuItem {
+                                text: ##[enable_alpha]"Enable Tranparency"
+                                selected: bind chbEnableAlpha.selected with inverse
+                            }
+                        ]
+                    },
+                    Menu {
+                        text: ##[menu.help]"Help"
+                        items: [
+                            MenuItem {
+                                text: ##[menu.help.about]"About"
+                                action: function(): Void {
+                                    def aboutName = ##[about.name]"Color Selector";
+                                    def aboutVersion = ##[about.version]"Version 1.0";
+                                    def aboutCopyright = ##[about.copyright]"(c)Rafael Afonso - 2011";
+
+                                    Alert.inform(##[about.title]"About", "{aboutName}\n{aboutVersion}\n{aboutCopyright}");
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+
+    public-read def rectangle: javafx.scene.shape.Rectangle = javafx.scene.shape.Rectangle {
+                effect: Reflection {
+                    topOpacity: 0.95
+                }
+                fill: bind this.currentColor
+                height: bind Math.max((scene.height - menuBar.height - grid.height), (scene.height / 3))
+                layoutInfo: LayoutInfo {
+                    hgrow: javafx.scene.layout.Priority.ALWAYS
+                    vgrow: javafx.scene.layout.Priority.ALWAYS
+                    vfill: true
+                }
+                onMouseClicked: function(event: MouseEvent): Void {
+                    if (event.clickCount == 2) {
+                        shuffleColors()
+                    }
+                }
+                width: bind scene.width
+            }
+
+    public-read def sliderControlRed: SliderControl = SliderControl {
+                title: 'R'
+                onChange: function() {
+                    changeColors(sliderControlRed);
+                }
+                onSelect: function() {
+                    syncronizeControl(sliderControlRed);
+                }
+                width: bind controlsWidht
+                backgroundColor: bind Color.rgb(sliderControlRed.value, 0, 0)
+                foregroundColor: bind getForegroundColor(sliderControlRed.value)
+            }
+
+    public-read def lblTitleWebColor: javafx.scene.control.Label = javafx.scene.control.Label {
+                layoutInfo: titlesLayout
+                onMouseClicked: function(me: MouseEvent): Void {
+                    if (me.clickCount == 2) {
+                        swapWebColorComponent();
+                    }
+                }
+                text: "{##[web_color]'Web Color'}:"
+                textAlignment: javafx.scene.text.TextAlignment.RIGHT
+                textFill: bind labelColor(currentColor as Color)
+            }
+
+    public-read def txbColorFilter: TextBox = TextBox {
+                action: swapWebColorComponent
+                columns: 12
+                layoutInfo: LayoutInfo {
+                    vpos: javafx.geometry.VPos.TOP
+                }
+                selectOnFocus: true
+                text: ""
+            }
+
+    public-read def chbWebColors: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
+                layoutInfo: LayoutInfo {
+                    vpos: javafx.geometry.VPos.TOP
+                }
+                items: bind selectedWebColors
+                tooltip: Tooltip {
+                    text: "Cor pré-definiida pelo W3C."
+                }
+            }
+
+    public-read def sliderControlGreen: SliderControl = SliderControl {
+                title: 'G'
+                onChange: function() {
+                    changeColors(sliderControlGreen);
+                }
+                onSelect: function() {
+                    syncronizeControl(sliderControlGreen);
+                }
+                width: bind controlsWidht
+                backgroundColor: bind Color.rgb(0, sliderControlGreen.value, 0)
+                foregroundColor: bind getForegroundColor(sliderControlGreen.value)
+            }
+
+    public-read def lblTitleColorValue: javafx.scene.control.Label = javafx.scene.control.Label {
+                layoutInfo: titlesLayout
+                text: "{##[color_code]'Color Code'}:"
+                textAlignment: javafx.scene.text.TextAlignment.RIGHT
+            }
+
+    public-read def txbColorValue: javafx.scene.control.TextBox = javafx.scene.control.TextBox {
+                editable: false
+                font: Font {
+                    name: "monospaced"
+                    size: 10
+                }
+                layoutInfo: GridLayoutInfo {
+                    vpos: javafx.geometry.VPos.TOP
+                    hgrow: Priority.NEVER
+                }
+                text: "rgb(255, 255, 255)"
+            }
+
+    public-read def sliderControlBlue: SliderControl = SliderControl {
+                title: 'B'
+                onChange: function() {
+                    changeColors(sliderControlBlue);
+                }
+                onSelect: function() {
+                    syncronizeControl(sliderControlBlue);
+                }
+                width: bind controlsWidht
+                backgroundColor: bind Color.rgb(0, 0, sliderControlBlue.value)
+                foregroundColor: Color.WHITE
+            }
+
+    public-read def lblTitleColorFormat: javafx.scene.control.Label = javafx.scene.control.Label {
+                layoutInfo: titlesLayout
+                text: "{##[color_format]'Color Format'}:"
+                textAlignment: javafx.scene.text.TextAlignment.RIGHT
+            }
+
+    public-read def cmbColorFormat: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
+                layoutInfo: LayoutInfo {
+                    vpos: javafx.geometry.VPos.TOP
+                }
+                items: ColorFormatter.formatters
+            }
+
+    public-read def sliderControlAlpha: SliderControl = SliderControl {
+                title: 'A'
+                value: Utils.MAX
+                disable: bind (not this.chbEnableAlpha.selected)
+                onChange: function() {
+                    changeColors(sliderControlAlpha);
+                }
+                onDisable: function() {
+                    changeColors(sliderControlAlpha);
+                    if (sliderControlAlpha.disable) {
+                        sliderControlAlpha.selected = false;
+                    }
+                }
+                onSelect: function() {
+                    syncronizeControl(sliderControlAlpha);
+                }
+                width: bind controlsWidht
+            }
+
+    public-read def chbEnableAlpha: javafx.scene.control.CheckBox = javafx.scene.control.CheckBox {
+                layoutInfo: GridLayoutInfo {
+                    hspan: 2
+                    vpos: javafx.geometry.VPos.TOP
+                }
+                text: ##[enable_alpha]"Enable Tranparency"
+            }
+
+    public-read def grid: com.javafx.preview.layout.Grid = com.javafx.preview.layout.Grid {
+                layoutInfo: LayoutInfo {
+                    vfill: false
+                    vgrow: Priority.NEVER
+                }
+                hgap: 6.0
+                rows: [
+                    com.javafx.preview.layout.GridRow {
+                        cells: [this.sliderControlRed.node, lblTitleWebColor, containerWebColors,]
+                    }
+                    com.javafx.preview.layout.GridRow {
+                        cells: [this.sliderControlGreen.node, lblTitleColorValue, txbColorValue,]
+                    }
+                    com.javafx.preview.layout.GridRow {
+                        cells: [this.sliderControlBlue.node, lblTitleColorFormat, cmbColorFormat,]
+                    }
+                    com.javafx.preview.layout.GridRow {
+                        cells: [this.sliderControlAlpha.node, chbEnableAlpha,]
+                    }
+                ]
+                vgap: 6.0
+            }
+
+    public-read def verticalBox: javafx.scene.layout.VBox = javafx.scene.layout.VBox {
+                layoutX: 0.0
+                layoutY: 0.0
+                layoutInfo: LayoutInfo {
+                    width: bind scene.width
+                    height: bind scene.height
+                }
+                content: [menuBar, rectangle, grid,]
+                spacing: 6.0
+            }
+
+    public-read def scene: javafx.scene.Scene = javafx.scene.Scene {
+                width: 600.0
+                height: 500.0
+                content: verticalBox
+            }
+
+    // COMPONENTES - FINAL
 
 }
 

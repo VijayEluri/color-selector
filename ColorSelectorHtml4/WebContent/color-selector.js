@@ -44,6 +44,12 @@ function init() {
 			$("canvas").style.backgroundColor = "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
 		};
 	
+	// Initialize Color Format Combo
+	var selectFormat = $("formatType");
+	for(var i = 0; i < formatters.length; i ++) {
+		selectFormat.options[i] = new Option(formatters[i].name);
+	}
+
 	valueChanged(null);
 }
 
@@ -54,6 +60,8 @@ function enableAlpha(checkAlpha) {
 		$("selectAlpha").checked = false;
 		synchronizeValues("alphaValue", false);
 	}
+	
+	formatValue();
 }
 
 function roundNumber(value) {
@@ -113,6 +121,7 @@ function valueChanged(selectSource) {
 	
 	var alpha = $("alphaValue").disabled? COLOR_MAX: ($("alphaValue").selectedIndex / COLOR_MAX);
 	changeColor($("redValue").selectedIndex, $("greenValue").selectedIndex, $("blueValue").selectedIndex, alpha);
+	formatValue();
 }
 
 function randomColor() {
@@ -131,4 +140,12 @@ function randomColor() {
 	}
 	
 	valueChanged(null);
+}
+
+function formatValue() {
+	var formatter = formatters[$("formatType").selectedIndex];
+	
+	$("colorValue").value = formatter.format($("redValue").selectedIndex, 
+			$("greenValue").selectedIndex, $("blueValue").selectedIndex, 
+			$("alphaValue").selectedIndex, $("enableAlpha").checked);
 }

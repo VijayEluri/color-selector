@@ -6,6 +6,7 @@
 		<link type="text/css" rel="stylesheet" media="all" href="color-selector.css" />
 		<script type="text/javascript" src="color-selector.js"></script>
 		<script type="text/javascript" src="formatter.js"></script>
+		<script type="text/javascript" src="web-color.js"></script>
 	</head>
 <body onload="init()">
 <div align="center">
@@ -24,7 +25,7 @@
 			</td>
 
 			<td width="30%" align="right"><label for="webColor" class="label-title">Web Color</label></td>
-			<td width="50%" align="left"><select class="control" id="webColor"></select></td>
+			<td width="50%" align="left"><select class="control" id="webColor" onchange="changeWebColor()"></select></td>
 		</tr>
 		<tr id="greenRow">
 			<td width="5%"><input type="checkbox" id="selectGreen" onclick="synchronizeValues('greenValue', this.checked);"/></td>

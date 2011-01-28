@@ -21,14 +21,40 @@ function init() {
 		}
 	}
 
-	fillColorValues("redValue");
-	fillColorValues("greenValue");
-	fillColorValues("blueValue");
-	fillColorValues("alphaValue");
+	function initSelectValues(selectId, backgroundFunction, foregroundFunction) {
+		var selectValue = $(selectId);
+		fillColorValues(selectId);
+		selectValue.selectedIndex = 0;
 
-	$("redValue").selectedIndex = $("redValue").selectedIndex = $("redValue").selectedIndex = 0;
+		selectValue.changeColors = function() {
+			var tdSelect = selectValue.parentNode;
+			/* tdSelect.previousSibling.nodeType == 3 -> TEXT_NODE (FF, CHROME)
+			 * tdSelect.previousSibling.nodeType == 1 -> ELEMENT_NODE (IE)
+			 */ 
+			var tdLabel = (tdSelect.previousSibling.nodeType == 3)? tdSelect.previousSibling.previousSibling: tdSelect.previousSibling;
+			var label = tdLabel.firstChild;
+			var tdCheck = (tdLabel.previousSibling.nodeType == 3)? tdLabel.previousSibling.previousSibling: tdLabel.previousSibling;
+
+			tdSelect.style.background = tdLabel.style.background = 
+				label.style.background = tdCheck.style.background = 
+				backgroundFunction(selectValue.selectedIndex);
+			label.style.color = foregroundFunction(selectValue.selectedIndex);
+		};
+	}
+
+	initSelectValues("redValue", 
+			function(value){ return "rgb(" + value + ", 0, 0)";}, 
+			function(value){ return (value > (COLOR_MAX / 2))? "black" : "white"; });
+	initSelectValues("greenValue", 
+			function(value){ return "rgb(0, " + value + ", 0)";}, 
+			function(value){ return (value > (COLOR_MAX / 2))? "black" : "white"; });
+	initSelectValues("blueValue", 
+			function(value){ return "rgb(0, 0, " + value + ")";}, 
+			function(value){ return "white"; });
+	
+	fillColorValues("alphaValue");
 	$("alphaValue").selectedIndex = COLOR_MAX;
-	$("selectRed").checked = $("selectGreen").checked = $("selectBlue").checked = $("selectAlpha").checked = $("enableAlpha").checked = false;
+	$("selectAlpha").checked = $("enableAlpha").checked = false;
 	$("alphaValue").disabled = $("selectAlpha").disabled = true;
 
 	changeColor = $("canvas").filters ? function(r, g, b, a) { // IE
@@ -43,7 +69,10 @@ function init() {
 	var selectWebColor = $("webColor");
 	for ( var i = 0; i < WEB_COLORS.length; i++) {
 		var webColor = WEB_COLORS[i];
-		selectWebColor.options[i] = new Option(webColor.name);
+		var option = new Option(webColor.name);
+		option.style.background = webColor.name;
+		option.style.color = ((webColor.red + webColor.green + webColor.blue) > (COLOR_MAX * 1.5)) ? "black" : "white";
+		selectWebColor.options[i] = option;
 	}
 
 	// Initialize Color Format Combo
@@ -132,11 +161,14 @@ function valueChanged(selectSource) {
 			break;
 		}
 	}
-	$("webColor").selectedIndex = webColorIndex; 
+	$("webColor").selectedIndex = webColorIndex;
 
 	var alpha = $("alphaValue").disabled ? COLOR_MAX
 			: ($("alphaValue").selectedIndex / COLOR_MAX);
 	changeColor(red, green, blue, alpha);
+	$("redValue").changeColors();
+	$("greenValue").changeColors();
+	$("blueValue").changeColors();
 	formatValue();
 }
 

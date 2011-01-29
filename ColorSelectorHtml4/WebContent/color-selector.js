@@ -133,20 +133,6 @@ function enableAlpha(checkAlpha) {
 	formatValue();
 }
 
-function roundNumber(value) {
-	var result;
-
-	if (value >= 100) {
-		result = value.toPrecision(3);
-	} else if (value >= 10) {
-		result = value.toPrecision(2);
-	} else {
-		result = value.toPrecision(1);
-	}
-
-	return result;
-}
-
 function synchronizeValues(selectId, synchronize) {
 	var select = $(selectId);
 	select.synchronized = synchronize;
@@ -291,8 +277,6 @@ function filterWebColorKeyEvent(event) {
 	if((keyCode == 9) || (keyCode == 13)) {
 		filterWebColors();
 	}
-	
-//	alert(keyCode);
 	
 	return true; 
 }

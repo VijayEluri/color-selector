@@ -8,6 +8,9 @@ var synchronizedSelects = [];
  */
 var changeColor;
 
+var webColorControlVisible;
+var webColorsOptions = new Array();
+
 function $(id) {
 	return document.getElementById(id);
 }
@@ -20,6 +23,14 @@ function init() {
 			selectObject.options[i] = new Option(i);
 		}
 	}
+	
+	function previousNode(node) {
+		/* node.previousSibling.nodeType == 3 -> TEXT_NODE (FF, CHROME)
+		 * node.previousSibling.nodeType == 1 -> ELEMENT_NODE (IE)
+		 */ 
+		return (node.previousSibling.nodeType == 3)? 
+				node.previousSibling.previousSibling: node.previousSibling;
+	}
 
 	function initSelectValues(selectId, backgroundFunction, foregroundFunction) {
 		var selectValue = $(selectId);
@@ -28,12 +39,9 @@ function init() {
 
 		selectValue.changeColors = function() {
 			var tdSelect = selectValue.parentNode;
-			/* tdSelect.previousSibling.nodeType == 3 -> TEXT_NODE (FF, CHROME)
-			 * tdSelect.previousSibling.nodeType == 1 -> ELEMENT_NODE (IE)
-			 */ 
-			var tdLabel = (tdSelect.previousSibling.nodeType == 3)? tdSelect.previousSibling.previousSibling: tdSelect.previousSibling;
+			var tdLabel = previousNode(tdSelect);
 			var label = tdLabel.firstChild;
-			var tdCheck = (tdLabel.previousSibling.nodeType == 3)? tdLabel.previousSibling.previousSibling: tdLabel.previousSibling;
+			var tdCheck = previousNode(tdLabel);
 
 			tdSelect.style.background = tdLabel.style.background = 
 				label.style.background = tdCheck.style.background = 
@@ -57,12 +65,13 @@ function init() {
 	$("selectAlpha").checked = $("enableAlpha").checked = false;
 	$("alphaValue").disabled = $("selectAlpha").disabled = true;
 
-	changeColor = $("canvas").filters ? function(r, g, b, a) { // IE
-		$("canvas").style.backgroundColor = "rgb(" + r + ", " + g + ", " + b
+	var canvas = $("canvas");
+	changeColor = canvas.filters ? function(r, g, b, a) { // IE
+		canvas.style.backgroundColor = "rgb(" + r + ", " + g + ", " + b
 				+ ")";
-		$("canvas").style.filter = "alpha(opacity=" + (100 * a) + ")";
+		canvas.style.filter = "alpha(opacity=" + (100 * a) + ")";
 	} : function(r, g, b, a) { // W3C
-		$("canvas").style.backgroundColor = "rgba(" + r + ", " + g + ", " + b
+		canvas.style.backgroundColor = "rgba(" + r + ", " + g + ", " + b
 				+ ", " + a + ")";
 	};
 
@@ -72,8 +81,36 @@ function init() {
 		var option = new Option(webColor.name);
 		option.style.background = webColor.name;
 		option.style.color = ((webColor.red + webColor.green + webColor.blue) > (COLOR_MAX * 1.5)) ? "black" : "white";
-		selectWebColor.options[i] = option;
+		option.webColor = webColor;
+		selectWebColor.options[i] = webColorsOptions[i] = option;
 	}
+	
+	var webColorFilter = $("webColorFilter");
+	webColorFilter.value = "";
+	if(webColorFilter.addEventListener) {
+		webColorFilter.addEventListener("keypress", filterWebColorKeyEvent, false);
+	} else if(webColorFilter.attachEvent) {
+		webColorFilter.attachEvent("onkeypress", filterWebColorKeyEvent);
+		webColorFilter.attachEvent("onkeydown", function(event) {
+			if(event.keyCode == 9) { // Tratamento do TAB para IE.
+				filterWebColorKeyEvent(event);
+			}
+			
+			return true;
+		});
+	}
+	
+	webColorControlVisible = selectWebColor;
+	selectWebColor.swap = function() {
+		selectWebColor.style.display = "none";
+		webColorFilter.style.display = "block";
+		webColorControlVisible = webColorFilter;
+	};
+	webColorFilter.swap = function() {
+		webColorFilter.style.display = "none";
+		selectWebColor.style.display = "block";
+		webColorControlVisible = selectWebColor;
+	};
 
 	// Initialize Color Format Combo
 	var selectFormat = $("formatType");
@@ -82,6 +119,7 @@ function init() {
 	}
 
 	valueChanged(null);
+	
 }
 
 function enableAlpha(checkAlpha) {
@@ -155,8 +193,9 @@ function valueChanged(selectSource) {
 	var blue = $("blueValue").selectedIndex;
 
 	var webColorIndex = 0;
-	for ( var i = 1; i < WEB_COLORS.length; i++) {
-		if (WEB_COLORS[i].isSameColor(red, green, blue)) {
+	var webColorOptions = $("webColor").options;
+	for ( var i = 1; i < webColorOptions.length; i++) {
+		if (webColorOptions[i].webColor.isSameColor(red, green, blue)) {
 			webColorIndex = i;
 			break;
 		}
@@ -200,7 +239,7 @@ function formatValue() {
 }
 
 function changeWebColor() {
-	var selectedWebColor = WEB_COLORS[$("webColor").selectedIndex];
+	var selectedWebColor = $("webColor").options[[$("webColor").selectedIndex]].webColor;
 
 	if (selectedWebColor.defined) {
 		$("redValue").selectedIndex = selectedWebColor.red;
@@ -209,4 +248,51 @@ function changeWebColor() {
 
 		valueChanged();
 	}
+	
+	return true;
+}
+
+function swapWebColorControl() {
+	webColorControlVisible.swap();
+	webColorControlVisible.focus();
+	$("webColorLabel").htmlFor = webColorControlVisible.id;
+}
+
+function filterWebColors() {
+	var webColorFilter = $("webColorFilter");
+	var selectWebColor = $("webColor");
+	selectWebColor.options.length = 0;
+	
+	if(webColorFilter.value && !/\s+/.test(webColorFilter.value)) {
+		selectWebColor.options[0] = webColorsOptions[0];
+		j = 1;
+		for (var i = 1; i < webColorsOptions.length; i++) {
+			if(webColorsOptions[i].text.indexOf(webColorFilter.value) >= 0) {
+				selectWebColor.options[j] = webColorsOptions[i];
+				j ++;
+			}
+		}
+	} else {
+		for (var i = 0; i < webColorsOptions.length; i++) {
+			selectWebColor.options[i] = webColorsOptions[i];
+		}
+	}
+	
+	swapWebColorControl();
+}
+
+function filterWebColorKeyEvent(event) {
+	// event: FF & Chrome & IE >= 8; window.event: IE < 7
+	if(!event) event = window.event;
+	// 
+	var keyCode = event.keyCode || event.which;
+	
+	// keyCode == 9: ENTER && keyCode == 13: TAB
+	if((keyCode == 9) || (keyCode == 13)) {
+		filterWebColors();
+	}
+	
+//	alert(keyCode);
+	
+	return true; 
 }

@@ -24,8 +24,11 @@
 				</select>
 			</td>
 
-			<td width="30%" align="right"><label for="webColor" class="label-title">Web Color</label></td>
-			<td width="50%" align="left"><select class="control" id="webColor" onchange="changeWebColor()"></select></td>
+			<td width="30%" align="right"><label class="label-title" for="webColor" id="webColorLabel" ondblclick="swapWebColorControl();">Web Color</label></td>
+			<td width="50%" align="left">
+				<select class="control" id="webColor" onchange="return changeWebColor()"></select>
+				<input class="control" id="webColorFilter" style="display: none;" onchange="filterWebColors"/>
+			</td>
 		</tr>
 		<tr id="greenRow">
 			<td width="5%"><input type="checkbox" id="selectGreen" onclick="synchronizeValues('greenValue', this.checked);"/></td>

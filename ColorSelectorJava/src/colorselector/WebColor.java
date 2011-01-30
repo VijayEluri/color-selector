@@ -8,7 +8,12 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
 public enum WebColor {
 
-    UNDEFINED(0,0,0), //
+    UNDEFINED(0, 0, 0) {
+        @Override
+        public String toString() {
+            return "";
+        }
+    },
     ALICEBLUE(240, 248, 255), //
     ANTIQUEWHITE(250, 235, 215), //
     AQUA(0, 255, 255), //
@@ -158,14 +163,14 @@ public enum WebColor {
     YELLOWGREEN(154, 205, 50);
 
     private int red, green, blue;
-    
+
     private Color color;
 
     private WebColor(int red, int green, int blue) {
         this.red = red;
         this.green = green;
         this.blue = blue;
-        
+
         this.color = new Color(this.red, this.green, this.blue);
     }
 
@@ -185,6 +190,11 @@ public enum WebColor {
         return this.color;
     }
 
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase();
+    }
+
 }
 
 class ColorEnumRenderer extends BasicComboBoxRenderer {
@@ -201,7 +211,7 @@ class ColorEnumRenderer extends BasicComboBoxRenderer {
                 index, isSelected, cellHasFocus);
 
         WebColor colorEnum = (WebColor) value;
-        
+
         int lightness = (colorEnum.getRed() + colorEnum.getGreen() + colorEnum
                 .getBlue()) / 3;
         Color contrast = (lightness < 128) ? Color.WHITE : Color.BLACK;

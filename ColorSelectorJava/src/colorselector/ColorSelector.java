@@ -118,6 +118,8 @@ public class ColorSelector {
     private JTextField txfFilterWebColors;
     private JComponent cmpWebColorActive;
     private JSeparator separator;
+    private JMenuItem mniWebColorComponent;
+    private JMenuItem mniCleanWebColorFilter;
 
     private void changeSliderSpinnerValue(SliderSpinner sliderSpinner, int value) {
         sliderSpinner.removePropertyChangeListener(this.sliderListener);
@@ -363,6 +365,8 @@ public class ColorSelector {
             fileMenu = new JMenu();
             fileMenu.setText(Messages.getString("ColorSelector.menu.file")); //$NON-NLS-1$
             fileMenu.add(getMniRandomColor());
+            fileMenu.add(getMniWebColorComponent());
+            fileMenu.add(getMniCleanWebColorFilter());
             fileMenu.add(getSeparator());
             fileMenu.add(getMniExit());
         }
@@ -771,6 +775,10 @@ public class ColorSelector {
         this.getCmbWebColors().setVisible(!comboVisivel);
         this.cmpWebColorActive = comboVisivel ? this.getTxfFilterWebColors()
                 : this.getCmbWebColors();
+        final String menuMsg = comboVisivel ? "menu.file.webcolorcontrol.goto.combo"
+                : "menu.file.webcolorcontrol.goto.text";
+        this.getMniWebColorComponent().setText(Messages.getString(menuMsg));
+        this.cmpWebColorActive.requestFocusInWindow();
     }
 
     /**
@@ -960,16 +968,13 @@ public class ColorSelector {
         return txfFilterWebColors;
     }
 
-    private void filterWebColor() {
+    private boolean applyFilter() {
         this.getCmbWebColors().removeItemListener(webColorListener);
-        String pattern = this.getTxfFilterWebColors().getText().toUpperCase();
         this.getCmbWebColors().removeAllItems();
-
-        if (pattern.length() == 0) {
-            for (WebColor webColor : WebColor.values()) {
-                this.getCmbWebColors().addItem(webColor);
-            }
-        } else {
+        
+        String pattern = this.getTxfFilterWebColors().getText().toUpperCase();
+        final boolean hasPattern = pattern.length() > 0;
+        if (hasPattern) {
             this.getCmbWebColors().addItem(WebColor.values()[0]);
             for (int i = 1; i < WebColor.values().length; i++) {
                 WebColor webColor = WebColor.values()[i];
@@ -977,9 +982,31 @@ public class ColorSelector {
                     this.getCmbWebColors().addItem(webColor);
                 }
             }
+        } else {
+            for (WebColor webColor : WebColor.values()) {
+                this.getCmbWebColors().addItem(webColor);
+            }
         }
-
+        
         this.getCmbWebColors().addItemListener(webColorListener);
+        
+        return hasPattern;
+    }
+
+    private void cleanFilter() {
+        this.getTxfFilterWebColors().setText("");
+        this.applyFilter();
+        this.changeCmbWebColors(this.getPnlColor().getBackground());
+        this.getMniCleanWebColorFilter().setEnabled(false);
+        if(this.cmpWebColorActive == this.getTxfFilterWebColors()) {
+            this.swapWebColorComponent();
+        }
+    }
+
+    private void filterWebColor() {
+        final boolean hasPattern = applyFilter();
+
+        this.getMniCleanWebColorFilter().setEnabled(hasPattern);
         changeCmbWebColors(this.getPnlColor().getBackground());
         this.swapWebColorComponent();
     }
@@ -1000,10 +1027,39 @@ public class ColorSelector {
             }
         });
     }
+
     private JSeparator getSeparator() {
         if (separator == null) {
-        	separator = new JSeparator();
+            separator = new JSeparator();
         }
         return separator;
     }
+
+    private JMenuItem getMniWebColorComponent() {
+        if (mniWebColorComponent == null) {
+            mniWebColorComponent = new JMenuItem(
+                    Messages.getString("menu.file.webcolorcontrol.goto.text")); //$NON-NLS-1$
+            mniWebColorComponent.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent event) {
+                    swapWebColorComponent();
+                }
+            });
+        }
+        return mniWebColorComponent;
+    }
+
+    private JMenuItem getMniCleanWebColorFilter() {
+        if (mniCleanWebColorFilter == null) {
+            mniCleanWebColorFilter = new JMenuItem(
+                    Messages.getString("menu.file.webcolorcontrol.clean")); //$NON-NLS-1$
+            mniCleanWebColorFilter.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent event) {
+                    cleanFilter();
+                }
+            });
+            mniCleanWebColorFilter.setEnabled(false);
+        }
+        return mniCleanWebColorFilter;
+    }
+
 }

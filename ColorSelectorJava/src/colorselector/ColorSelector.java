@@ -648,6 +648,8 @@ public class ColorSelector {
             gridBagLblTitleWebColor.insets = new Insets(5, 10, 5, 5);
             gridBagLblTitleWebColor.gridy = 0;
             lblTitleWebColor = new JLabel();
+            lblTitleWebColor.setToolTipText(Messages
+                    .getString("lblTitleWebColor.tip.goto.combo")); //$NON-NLS-1$
             lblTitleWebColor.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent mouseEvent) {
@@ -778,6 +780,9 @@ public class ColorSelector {
         final String menuMsg = comboVisivel ? "menu.file.webcolorcontrol.goto.combo"
                 : "menu.file.webcolorcontrol.goto.text";
         this.getMniWebColorComponent().setText(Messages.getString(menuMsg));
+        final String lblWebColorTip = comboVisivel ? "lblTitleWebColor.tip.goto.combo"
+                : "lblTitleWebColor.tip.goto.text";
+        this.lblTitleWebColor.setToolTipText(Messages.getString(lblWebColorTip));
         this.cmpWebColorActive.requestFocusInWindow();
     }
 
@@ -857,6 +862,7 @@ public class ColorSelector {
     private JComboBox getCmbWebColors() {
         if (cmbWebColors == null) {
             cmbWebColors = new JComboBox(WebColor.values());
+            cmbWebColors.setToolTipText(Messages.getString("cmbWebColors.tip")); //$NON-NLS-1$
             cmbWebColors.setRenderer(new ColorEnumRenderer());
             cmbWebColors.addItemListener(webColorListener);
         }
@@ -954,6 +960,8 @@ public class ColorSelector {
     private JTextField getTxfFilterWebColors() {
         if (txfFilterWebColors == null) {
             txfFilterWebColors = new JTextField();
+            txfFilterWebColors.setToolTipText(Messages
+                    .getString("txbColorFilter.tip")); //$NON-NLS-1$
             txfFilterWebColors.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent actionEvent) {
                     filterWebColor();
@@ -971,7 +979,7 @@ public class ColorSelector {
     private boolean applyFilter() {
         this.getCmbWebColors().removeItemListener(webColorListener);
         this.getCmbWebColors().removeAllItems();
-        
+
         String pattern = this.getTxfFilterWebColors().getText().toUpperCase();
         final boolean hasPattern = pattern.length() > 0;
         if (hasPattern) {
@@ -987,9 +995,9 @@ public class ColorSelector {
                 this.getCmbWebColors().addItem(webColor);
             }
         }
-        
+
         this.getCmbWebColors().addItemListener(webColorListener);
-        
+
         return hasPattern;
     }
 
@@ -998,7 +1006,7 @@ public class ColorSelector {
         this.applyFilter();
         this.changeCmbWebColors(this.getPnlColor().getBackground());
         this.getMniCleanWebColorFilter().setEnabled(false);
-        if(this.cmpWebColorActive == this.getTxfFilterWebColors()) {
+        if (this.cmpWebColorActive == this.getTxfFilterWebColors()) {
             this.swapWebColorComponent();
         }
     }

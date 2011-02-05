@@ -29,21 +29,19 @@ import javax.swing.SpinnerNumberModel;
 public class SliderSpinner extends JPanel {
 
     private static final long serialVersionUID = 1545098305938L;
+    public static final int MIN_VALUE = 0;
+    public static final int MAX_VALUE = 255;
+    public static final String PROP_VALUE = "value"; // @jve:decl-index=0:
+    public static final String PROP_SELECTED = "selected"; // @jve:decl-index=0:
+    
+    private JCheckBox chbSelected = null;
     private JLabel lblTitle = null;
     private JSlider sldValue = null;
     private JSpinner spnValue = null;
+    
     private int value = 0;
 
     private boolean contrastTitleFont;
-
-    public static int MIN_VALUE = 0;
-    public static int MAX_VALUE = 255;
-
-    public static final String PROP_VALUE = "value"; // @jve:decl-index=0:
-
-    public static final String PROP_SELECTED = "selected"; // @jve:decl-index=0:
-
-    private JCheckBox chbSelected = null;
 
     /**
      * This is the default constructor
@@ -52,37 +50,6 @@ public class SliderSpinner extends JPanel {
         super();
         initialize();
         this.setValue(MIN_VALUE);
-    }
-
-    private void incrementValue(boolean addValue, boolean control) {
-        if ((addValue && (this.getValue() == MAX_VALUE))
-                || (!addValue && (this.getValue() == MIN_VALUE))) {
-            return;
-        }
-
-        int delta = (addValue ? +1 : -1) * (control ? 10 : 1);
-        int newValue = this.getValue() + delta;
-        if (newValue < MIN_VALUE) {
-            newValue = MIN_VALUE;
-        } else if (newValue > MAX_VALUE) {
-            newValue = MAX_VALUE;
-        }
-
-        this.changeValue(newValue, null);
-    }
-
-    private void changeValue(int newValue, Object source) {
-        int oldValue = this.value;
-        this.value = newValue;
-
-        if ((source == null) || (source == this.sldValue)) {
-            this.spnValue.setValue(this.value);
-        }
-        if ((source == null) || (source == this.spnValue)) {
-            this.sldValue.setValue(this.value);
-        }
-
-        super.firePropertyChange(PROP_VALUE, oldValue, newValue);
     }
 
     /**
@@ -140,6 +107,25 @@ public class SliderSpinner extends JPanel {
                 // http://www.exampledepot.com/egs/java.awt.event/MouseEvents.html
             }
         });
+    }
+
+    /**
+     * This method initializes chbSelected
+     * 
+     * @return javax.swing.JCheckBox
+     */
+    private JCheckBox getChbSelected() {
+        if (chbSelected == null) {
+            chbSelected = new JCheckBox();
+            chbSelected.addItemListener(new java.awt.event.ItemListener() {
+                public void itemStateChanged(java.awt.event.ItemEvent e) {
+                    boolean selected = (e.getStateChange() == ItemEvent.SELECTED);
+                    SliderSpinner.this.firePropertyChange(PROP_SELECTED,
+                            !selected, selected);
+                }
+            });
+        }
+        return chbSelected;
     }
 
     /**
@@ -216,23 +202,35 @@ public class SliderSpinner extends JPanel {
         return spnValue;
     }
 
-    /**
-     * This method initializes chbSelected
-     * 
-     * @return javax.swing.JCheckBox
-     */
-    private JCheckBox getChbSelected() {
-        if (chbSelected == null) {
-            chbSelected = new JCheckBox();
-            chbSelected.addItemListener(new java.awt.event.ItemListener() {
-                public void itemStateChanged(java.awt.event.ItemEvent e) {
-                    boolean selected = (e.getStateChange() == ItemEvent.SELECTED);
-                    SliderSpinner.this.firePropertyChange(PROP_SELECTED,
-                            !selected, selected);
-                }
-            });
+    private void changeValue(int newValue, Object source) {
+        int oldValue = this.value;
+        this.value = newValue;
+    
+        if ((source == null) || (source == this.sldValue)) {
+            this.spnValue.setValue(this.value);
         }
-        return chbSelected;
+        if ((source == null) || (source == this.spnValue)) {
+            this.sldValue.setValue(this.value);
+        }
+    
+        super.firePropertyChange(PROP_VALUE, oldValue, newValue);
+    }
+
+    private void incrementValue(boolean addValue, boolean control) {
+        if ((addValue && (this.getValue() == MAX_VALUE))
+                || (!addValue && (this.getValue() == MIN_VALUE))) {
+            return;
+        }
+    
+        int delta = (addValue ? +1 : -1) * (control ? 10 : 1);
+        int newValue = this.getValue() + delta;
+        if (newValue < MIN_VALUE) {
+            newValue = MIN_VALUE;
+        } else if (newValue > MAX_VALUE) {
+            newValue = MAX_VALUE;
+        }
+    
+        this.changeValue(newValue, null);
     }
 
     @Override

@@ -17,46 +17,53 @@ import javax.swing.plaf.basic.BasicComboBoxRenderer;
  */
 public enum Formatter {
 
+    /**
+     * @see <a
+     *      href="http://www.w3.org/TR/css3-color/#numerical">http://www.w3.org/TR/css3-color/#numerical</a>
+     */
     HEX("Hexadecimal") {
         private static final String HEXADECIMAL_FORMAT = "#%02x%02x%02x";
 
         @Override
-        public String format(Color c, boolean hasAlpha) {
+        protected String formatWithAlpha(Color c) {
+            return formatWithoutAlpha(c);
+        }
+
+        @Override
+        protected String formatWithoutAlpha(Color c) {
             return String.format(HEXADECIMAL_FORMAT, c.getRed(), c.getGreen(),
                     c.getBlue()).toUpperCase();
         }
     },
+    /**
+     * @see <a
+     *      href="http://www.w3.org/TR/css3-color/#rgba-color">http://www.w3.org/TR/css3-color/#rgba-color</a>
+     * @see <a
+     *      href="http://www.w3.org/TR/css3-color/#rgb-color">http://www.w3.org/TR/css3-color/#rgb-color</a>
+     */
     RGB("RGB") {
         private static final String RGB_FORMAT = "rgb(%3d, %3d, %3d)";
         private static final String RGBA_FORMAT = "rgba(%3d, %3d, %3d, %.2f)";
 
-        /**
-         * See http://www.w3.org/TR/css3-color/#rgba-color
-         * 
-         * @param c
-         * @return
-         */
-        private String formatWithAlpha(Color c) {
+        @Override
+        protected String formatWithAlpha(Color c) {
             return String.format(Locale.US, RGBA_FORMAT, c.getRed(),
                     c.getGreen(), c.getBlue(), toHexProportion(c.getAlpha()));
         }
 
-        /**
-         * See http://www.w3.org/TR/css3-color/#rgb-color
-         * 
-         * @param c
-         * @return
-         */
-        private String formatWithOutAlpha(Color c) {
+        @Override
+        protected String formatWithoutAlpha(Color c) {
             return String.format(Locale.US, RGB_FORMAT, c.getRed(),
                     c.getGreen(), c.getBlue());
         }
 
-        @Override
-        public String format(Color c, boolean hasAlpha) {
-            return hasAlpha ? formatWithAlpha(c) : formatWithOutAlpha(c);
-        }
     },
+    /**
+     * @see <a
+     *      href="http://www.w3.org/TR/css3-color/#rgba-color">http://www.w3.org/TR/css3-color/#rgba-color</a>
+     * @see <a
+     *      href="http://www.w3.org/TR/css3-color/#rgb-color">http://www.w3.org/TR/css3-color/#rgb-color</a>
+     */
     PERCENT("Percent") {
         private final String RGB_FORMAT = "rgb(%3d%%, %3d%%, %3d%%)";
         private final String RGBA_FORMAT = "rgba(%3d%%, %3d%%, %3d%%, %.2f)";
@@ -65,55 +72,56 @@ public enum Formatter {
             return (int) (100 * toHexProportion(value));
         }
 
-        /**
-         * See http://www.w3.org/TR/css3-color/#rgba-color
-         * 
-         * @param c
-         * @return
-         */
-        private String formatWithAlpha(Color c) {
+        @Override
+        protected String formatWithAlpha(Color c) {
             return String.format(Locale.US, RGBA_FORMAT,
                     toHexPercent(c.getRed()), toHexPercent(c.getGreen()),
                     toHexPercent(c.getBlue()), toHexProportion(c.getAlpha()));
         }
 
-        /**
-         * See http://www.w3.org/TR/css3-color/#rgb-color
-         * 
-         * @param c
-         * @return
-         */
-        private String formatWithOutAlpha(Color c) {
+        @Override
+        protected String formatWithoutAlpha(Color c) {
             return String.format(Locale.US, RGB_FORMAT,
                     toHexPercent(c.getRed()), toHexPercent(c.getGreen()),
                     toHexPercent(c.getBlue()));
         }
 
-        @Override
-        public String format(Color c, boolean hasAlpha) {
-            return hasAlpha ? formatWithAlpha(c) : formatWithOutAlpha(c);
-        }
     },
-    HSL("HSL") {
+    /**
+     * @see <a
+     *      href="http://www.w3.org/TR/css3-color/#hsl-color">http://www.w3.org/TR/css3-color/#hsl-color</a>
+     * @see <a
+     *      href="http://www.w3.org/TR/css3-color/#hsla-color">http://www.w3.org/TR/css3-color/#hsla-color</a>
+     * @see <a
+     *      href="http://en.wikipedia.org/wiki/HSL_and_HSV">http://en.wikipedia.org/wiki/HSL_and_HSV</a>
+     * @see Color#RGBtoHSB(int, int, int, float[])
+     */
+    HSB("HSB (HSV)") {
+        private final String HSL_FORMAT = "hsl(%3d, %3d%%, %3d%%)";
+        private final String HSLA_FORMAT = "hsla(%3d, %3d%%, %3d%%, %.2f)";
 
-        private final String HSL_FORMAT = "hsl(%.2f, %.2f, %.2f)";
-        private final String HSLA_FORMAT = "hsla(%.2f, %.2f, %.2f, %.2f)";
-
-        private String formatWithoutAlpha(float[] hsl) {
-            return String.format(Locale.US, HSL_FORMAT, hsl[0], hsl[1], hsl[2]);
-        }
-
-        private String formatWithAlpha(Color c, float[] hsl) {
-            return String.format(Locale.US, HSLA_FORMAT, hsl[0], hsl[1],
-                    hsl[2], super.toHexProportion(c.getAlpha()));
-        }
-
-        @Override
-        public String format(Color c, boolean hasAlpha) {
+        private int[] colorToHsbValues(Color c) {
             float[] hsl = Color.RGBtoHSB(c.getRed(), c.getGreen(), c.getBlue(),
                     null);
+            
+            return new int[] { (int) (hsl[0] * 360), (int) (hsl[1] * 100),
+                    (int) (hsl[2] * 100) };
+        }
 
-            return hasAlpha ? formatWithAlpha(c, hsl) : formatWithoutAlpha(hsl);
+        @Override
+        protected String formatWithAlpha(Color c) {
+            int[] hsbValues = this.colorToHsbValues(c);
+
+            return String.format(Locale.US, HSLA_FORMAT, hsbValues[0],
+                    hsbValues[1], hsbValues[2], toHexProportion(c.getAlpha()));
+        }
+
+        @Override
+        protected String formatWithoutAlpha(Color c) {
+            int[] hsbValues = this.colorToHsbValues(c);
+
+            return String.format(Locale.US, HSL_FORMAT, hsbValues[0],
+                    hsbValues[1], hsbValues[2]);
         }
 
     };
@@ -128,7 +136,13 @@ public enum Formatter {
         return ((float) value) / 255;
     }
 
-    public abstract String format(Color c, boolean hasAlpha);
+    protected abstract String formatWithAlpha(Color c);
+
+    protected abstract String formatWithoutAlpha(Color c);
+
+    public String format(Color c, boolean hasAlpha) {
+        return hasAlpha ? formatWithAlpha(c) : formatWithoutAlpha(c);
+    }
 
     public String getDescription() {
         return description;

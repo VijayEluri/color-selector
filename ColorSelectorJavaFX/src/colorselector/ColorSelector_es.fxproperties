@@ -19,3 +19,8 @@
 "enable_alpha"="Habilitar transparencia"
 "web_color"="Color Web"
 "color_code"="Codigo de Color"
+
+"lblTitleWebColor.tip.goto.text"="Clique duas veces para abrir el filtro"
+"lblTitleWebColor.tip.goto.combo"="Clique duas veces para abrir el combo"
+"txbColorFilter.tip"="Filtrar Color Web."
+"chbWebColors.tip"="Cor pré-definiida pelo W3C."

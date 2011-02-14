@@ -18,10 +18,45 @@ import scala.swing.FlowPanel._
 object ColorSelectorStub extends SimpleSwingApplication {
   import BorderPanel._
 
+  val mniRandomColor = new MenuItem("Random Color") {
+    enabled = false
+  }
+
+  val mniWebColorComponent = new MenuItem("Go to Filter") {
+    enabled = false
+  }
+
+  val mniCleanWebColorFilter = new MenuItem("Clean Filter") {
+    enabled = false
+  }
+
+  val mnuFormat = new Menu("Color Format") {
+    enabled = false
+  }
+
   val myMenuBar = new MenuBar {
-    contents += new Menu("File")
-    contents += new Menu("Options")
-    contents += new Menu("Help")
+    contents += new Menu("File") {
+      contents += mniRandomColor
+      contents += mniWebColorComponent
+      contents += mniCleanWebColorFilter
+      contents += new Separator
+      contents += new MenuItem("Exit") {
+        action = Action("Exit") {
+          System.exit(0)
+        }
+      }
+    } // 003.110.449.193.139
+    contents += new Menu("Options") {
+      contents += new CheckMenuItem("Enable Alpha") {
+        enabled = false
+      }
+      contents += mnuFormat
+    }
+    contents += new Menu("Help") {
+      contents += new MenuItem("About") {
+        enabled = false
+      }
+    }
   }
 
   val pnlSliderR = new BorderPanel {
@@ -46,7 +81,9 @@ object ColorSelectorStub extends SimpleSwingApplication {
 
   val lblTitleColorFormat = new Label("Color Format")
 
-  val chbEnableAlpha = new CheckBox("Enable Alpha")
+  val lblTitleEnableAlpha = new Label("Enable Alpha")
+
+  val chbEnableAlpha = new CheckBox
 
   val cmbWebColor = new ComboBox(List("UNDEFINED"))
 
@@ -72,11 +109,12 @@ object ColorSelectorStub extends SimpleSwingApplication {
     layout(lblTitleWebColor) = new Constraints(1, 0, 1, 1, 0, 0, Anchor.East.id, Fill.None.id, new Insets(5, 10, 5, 5), 0, 0)
     layout(lblTitleColorCode) = new Constraints(1, 1, 1, 1, 0, 0, Anchor.East.id, Fill.None.id, new Insets(5, 10, 5, 5), 0, 0)
     layout(lblTitleColorFormat) = new Constraints(1, 2, 1, 1, 0, 0, Anchor.East.id, Fill.None.id, new Insets(5, 10, 5, 5), 0, 0)
-    layout(chbEnableAlpha) = new Constraints(1, 3, 2, 1, 0, 0, Anchor.West.id, Fill.None.id, new Insets(5, 10, 5, 5), 0, 0)
+    layout(lblTitleEnableAlpha) = new Constraints(1, 3, 1, 1, 0, 0, Anchor.West.id, Fill.None.id, new Insets(5, 10, 5, 5), 0, 0)
 
     layout(cmbWebColor) = new Constraints(2, 0, 1, 1, 1.0, 0, Anchor.West.id, Fill.None.id, new Insets(5, 10, 5, 5), 0, 0)
     layout(txfColorValue) = new Constraints(2, 1, 1, 1, 1.0, 0, Anchor.West.id, Fill.Horizontal.id, new Insets(5, 10, 5, 5), 0, 0)
     layout(cmbFormat) = new Constraints(2, 2, 1, 1, 1.0, 0, Anchor.West.id, Fill.None.id, new Insets(5, 10, 5, 5), 0, 0)
+    layout(chbEnableAlpha) = new Constraints(2, 3, 1, 1, 0, 0, Anchor.West.id, Fill.None.id, new Insets(5, 10, 5, 5), 0, 0)
   }
 
   lazy val pnlColor = new BorderPanel {

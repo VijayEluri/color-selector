@@ -347,6 +347,12 @@ public class ColorSelector {
                 text: "{##[web_color]'Web Color'}:"
                 textAlignment: javafx.scene.text.TextAlignment.RIGHT
                 textFill: bind labelColor(currentColor as Color)
+                tooltip: Tooltip {
+                    text: bind if(visibleControlWebColor == chbWebColors)
+                            ##[lblTitleWebColor.tip.goto.text]"Cick twice to open filter"
+                        else
+                            ##[lblTitleWebColor.tip.goto.combo]"Click twice to open combo"
+                }
             }
 
     public-read def txbColorFilter: TextBox = TextBox {
@@ -355,13 +361,16 @@ public class ColorSelector {
                 layoutInfo: controlsLayout
                 selectOnFocus: true
                 text: ""
+                tooltip: Tooltip {
+                    text: ##[txbColorFilter.tip]"Filter Web Color"
+                }
             }
 
     public-read def chbWebColors: javafx.scene.control.ChoiceBox = javafx.scene.control.ChoiceBox {
                 items: bind selectedWebColors
                 layoutInfo: controlsLayout
                 tooltip: Tooltip {
-                    text: "Cor pré-definiida pelo W3C."
+                    text: ##[chbWebColors.tip]"Predefined W3C Color"
                 }
             }
 
@@ -400,6 +409,9 @@ public class ColorSelector {
                 }
                 layoutInfo: controlsLayout
                 text: "rgb(255, 255, 255)"
+                tooltip: Tooltip {
+                    text: ##[chbWebColors.tip]"Predefined W3C Color"
+                }
             }
 
     public-read def sliderControlBlue: SliderControl = SliderControl {

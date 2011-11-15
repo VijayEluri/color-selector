@@ -16,9 +16,9 @@
                     <td colspan="5" id="canvas" ondblclick="randomColor();"></td>
                 </tr>
                 <tr id="redRow">
-                    <td width="5%"><input type="checkbox" id="selectRed" onclick="synchronizeValues('redValue', this.checked);" tabindex="1" /></td>
-                    <td width="5%" class="label-color"><label for="redValue">R</label></td>
-                    <td width="10%"><input id="redValue" type="number" min="0" max="255" tabindex="2" value="0" oninput="valueChanged(this);"
+                    <td width="5%"><input type="checkbox" id="redSync" onclick="synchronizeValues(this);" tabindex="1" /></td>
+                    <td width="5%" class="label-color"><label id="redLabel" for="redSpinner">R</label></td>
+                    <td width="10%"><input id="redSpinner" type="number" min="0" max="255" tabindex="2" value="0" oninput="valueChanged(this);"
                         style="text-align: right;"></td>
 
                     <td width="30%" align="right"><label class="label-title" for="webColor" id="webColorLabel" ondblclick="swapWebColorControl();">Web
@@ -26,33 +26,35 @@
                     <td width="50%" align="left"><select class="control" id="webColor" onchange="return changeWebColor()"></select> <input class="control"
                         id="webColorFilter" style="display: none;" onchange="filterWebColors" /></td>
                 </tr>
+
                 <tr id="greenRow">
-                    <td width="5%"><input type="checkbox" id="selectGreen" onclick="synchronizeValues('greenValue', this.checked);" tabindex="3" /></td>
-                    <td width="5%" class="label-color"><label for="greenValue">G</label></td>
-                    <td width="10%"><input id="greenValue" type="number" min="0" max="255" tabindex="4" value="0" oninput="valueChanged(this);"
+                    <td width="5%"><input type="checkbox" id="greenSync" onclick="synchronizeValues(this);" tabindex="3" /></td>
+                    <td width="5%" class="label-color"><label id="greenLabel" for="greenValue">G</label></td>
+                    <td width="10%"><input id="greenSpinner" type="number" min="0" max="255" tabindex="4" value="0" oninput="valueChanged(this);"
                         style="text-align: right;"></td>
 
                     <td width="30%" align="right"><label for="colorValue" class="label-title">Color Value</label></td>
                     <td width="50%" align="left"><input class="control" readonly="readonly" id="colorValue"></input></td>
                 </tr>
                 <tr id="blueRow">
-                    <td width="5%"><input type="checkbox" id="selectBlue" onclick="synchronizeValues('blueValue', this.checked);" tabindex="5" /></td>
-                    <td width="5%" class="label-color"><label for="blueValue">B</label></td>
-                    <td width="10%"><input id="blueValue" type="number" min="0" max="255" tabindex="6" value="0" oninput="valueChanged(this);"
+                    <td width="5%"><input type="checkbox" id="blueSync" onclick="synchronizeValues(this);" tabindex="5" /></td>
+                    <td width="5%" class="label-color"><label id="blueLabel" for="blueValue">B</label></td>
+                    <td width="10%"><input id="blueSpinner" type="number" min="0" max="255" tabindex="6" value="0" oninput="valueChanged(this);"
                         style="text-align: right;"></td>
+
                     <td width="30%" align="right"><label for="formatType" class="label-title">Color Format</label></td>
                     <td width="50%" align="left"><select class="control" id="formatType" onchange="formatValue();"></select></td>
                 </tr>
                 <tr id="alphaRow">
-                    <td width="5%"><input type="checkbox" id="selectAlpha" disabled="disabled" onclick="synchronizeValues('alphaValue', this.checked);"
-                        tabindex="7" /></td>
-                    <td width="5%" class="label-color"><label for="alphaValue">A</label></td>
-                    <td width="10%"><input id="alphaValue" type="number" min="0" max="255" tabindex="8" value="0" oninput="valueChanged(this);"
+                    <td width="5%"><input type="checkbox" id="alphaSync" disabled="disabled" onclick="synchronizeValues(this);" tabindex="7" /></td>
+                    <td width="5%" class="label-color"><label id="alphaLabel" for="alphaValue">A</label></td>
+                    <td width="10%"><input id="alphaSpinner" type="number" min="0" max="255" tabindex="8" value="0" oninput="valueChanged(this);"
                         style="text-align: right;" disabled="disabled"></td>
 
                     <td width="30%" align="right"><label for="enableAlpha" class="label-title">Enable Alpha</label></td>
-                    <td width="50%" align="left"><input class="control" id="enableAlpha" type="checkbox" onclick="enableAlpha(this)"></td>
+                    <td width="50%" align="left"><input class="control" id="alphaEnabler" type="checkbox" onclick="enableAlpha(this)"></td>
                 </tr>
+
             </tbody>
         </table>
     </div>

@@ -14,91 +14,6 @@ var synchronizedControls = [];
 
 var controlsByColor = [];
 
-/**
- * 
- * @param name
- * @param foregroundFunction
- * @param backgroundFunction
- * @returns
- */
-function ColorControl(name, foregroundFunction, backgroundFunction) {
-
-	// Variáveis Internas
-
-	var id = name;
-	var syncronizer = $(name + "Sync");
-	syncronizer.colorControl = this;
-	var label = $(name + "Label");
-	var spinner = $(name + "Spinner");
-	spinner.colorControl = this;
-	var value = spinner.valueAsNumber;
-	var cells = [ syncronizer.parentNode, label.parentNode, spinner.parentNode ];
-	spinner.colorName = syncronizer.colorName = name;
-
-	// Funções privadas
-
-	var changeControlColor = function() {
-		var backColor = backgroundFunction(value);
-		for ( var int = 0; int < cells.length; int++) {
-			var cell = cells[int];
-			cell.style.background = backColor;
-		}
-		label.style.color = foregroundFunction(value);
-	}
-
-	// Funções Públicas
-
-	this.setValue = function(v) {
-		if (typeof (v) == "number") {
-			value = spinner.value = v;
-		} else if (v.type && v.type == "number") {
-			value = v.valueAsNumber;
-		} else {
-			throw new Error("Valor indefinido para alterar o valor de " + id);
-		}
-
-		if (id != ALPHA) {
-			changeControlColor();
-		}
-	}
-
-	this.getValue = function() {
-		return value;
-	}
-
-	this.getLabel = function() {
-		return label;
-	}
-
-	this.getSyncronyzer = function() {
-		return syncronizer;
-	}
-
-	this.getSpinner = function() {
-		return spinner;
-	}
-
-	this.isSyncronized = function() {
-		return syncronizer.checked;
-	}
-	
-	this.getId = function() {
-		return id;
-	}
-
-	this.changeValue = function(source) {
-		throw new Error("Acesso inválido para alterar o valor de " + id);
-
-		if (source == spinner) {
-			value = source.valueAsNumber;
-		}
-
-		if (id != ALPHA) {
-			changeControlColor();
-		}
-	}
-}
-
 var redControl, greenControl, blueControl, alphaControl;
 
 /**
@@ -131,18 +46,7 @@ function init() {
 			return "rgb(0, 0, " + value + ")";
 		});
 
-		alphaControl = controlsByColor[ALPHA] = new ColorControl(ALPHA, null,
-				null);
-		alphaControl.setValue(COLOR_MAX);
-		alphaControl.enabler = $("alphaEnabler");
-		alphaControl.enable = function() {
-			this.getSyncronizer().disabled = this.getSpinner().disabled = !enabler.checked;
-			this.getLabel().style.color = enabler.checked ? "black" : "grey";
-		}
-		alphaControl.isEnabled = function() {
-			return enabler.checked;
-		}
-		alphaControl.getLabel().style.color = "grey";
+		alphaControl = new AlphaControl(ALPHA);
 	}
 
 	function initCanvas() {
@@ -218,7 +122,9 @@ function init() {
 		redControl.setValue(redControl.getValue());
 		greenControl.setValue(greenControl.getValue());
 		blueControl.setValue(blueControl.getValue());
-		// alphaControl.changeValue(alphaControl.getValue());
+		if (alphaControl.isEnabled()) {
+			alphaControl.changeValue(alphaControl.getValue());
+		}
 	}
 
 	initColorControls();
@@ -232,45 +138,58 @@ function init() {
 }
 
 function enableAlpha(checkAlpha) {
-	alphaControl.enable();
-	// $("selectAlpha").disabled = $("alphaValue").disabled = !enabled;
-	if (!alphaControl.isEnabled()) {
-		// $("selectAlpha").checked = false;
-		// synchronizeValues("alphaValue", false);
+	
+	function resyncronyze() {
+		if(alphaControl.isEnabled() && alphaControl.isSyncronized() && hasSynchronizeValues()) {
+			// Ressincronizar com os outros valores
+			for ( var i = 0; i < synchronizedControls.length; i++) {
+				if(synchronizedControls[i].getId() != ALPHA) {
+					alphaControl.setValue(synchronizedControls[i].getValue());
+					break;
+				}
+			}
+		}
 	}
-
+	
+	alphaControl.enable();
+	resyncronyze();
+	valueChanged();
 	formatValue();
 }
 
-function synchronizeValueOld(selectId, synchronize) {
-	var select = $(selectId);
-	select.synchronized = synchronize;
-	var i = -1;
-
-	if (select.synchronized) {
-		synchronizedControls.push(select);
-		if (synchronizedControls.length > 1) {
-			// Calcula o valor m�dio.
-			var sum = 0;
-			for (i = 0; i < synchronizedControls.length; i++) {
-				sum += parseInt(synchronizedControls[i].valueAsNumber);
-			}
-
-			var media = Math.round(sum / synchronizedControls.length);
-
-			for (i = 0; i < synchronizedControls.length; i++) {
-				synchronizedControls[i].valueAsNumber = media;
-			}
-		}
-	} else {
-		for (i = 0; i < synchronizedControls.length; i++) {
-			if (synchronizedControls[i].id == select.id) {
-				synchronizedControls.splice(i, 1);
-				break;
-			}
-		}
-	}
+function hasSynchronizeValues() {
+	return (synchronizedControls.length > 1);
 }
+
+//function synchronizeValueOld(selectId, synchronize) {
+//	var select = $(selectId);
+//	select.synchronized = synchronize;
+//	var i = -1;
+//
+//	if (select.synchronized) {
+//		synchronizedControls.push(select);
+//		if (hasSynchronizeValues()) {
+//			// Calcula o valor m�dio.
+//			var sum = 0;
+//			for (i = 0; i < synchronizedControls.length; i++) {
+//				sum += parseInt(synchronizedControls[i].valueAsNumber);
+//			}
+//
+//			var media = Math.round(sum / synchronizedControls.length);
+//
+//			for (i = 0; i < synchronizedControls.length; i++) {
+//				synchronizedControls[i].valueAsNumber = media;
+//			}
+//		}
+//	} else {
+//		for (i = 0; i < synchronizedControls.length; i++) {
+//			if (synchronizedControls[i].id == select.id) {
+//				synchronizedControls.splice(i, 1);
+//				break;
+//			}
+//		}
+//	}
+//}
 
 function synchronizeValues(source) {
 
@@ -300,7 +219,7 @@ function synchronizeValues(source) {
 	var colorControl = source.colorControl;
 	if (colorControl.isSyncronized()) {
 		synchronizedControls.push(colorControl);
-		if (synchronizedControls.length > 1) {
+		if (hasSynchronizeValues()) {
 			var syncValue = getSyncValue();
 			fillSyncValue(syncValue);
 			valueChanged();
@@ -313,7 +232,7 @@ function synchronizeValues(source) {
 function valueChanged(source) {
 
 	function syncronizeValues(control) {
-		if (control.isSyncronized() && synchronizedControls.length > 1) {
+		if (control.isSyncronized() && hasSynchronizeValues()) {
 			for ( var i = 0; i < synchronizedControls.length; i++) {
 				if (synchronizedControls[i].getId() != control.getId()) {
 					synchronizedControls[i].setValue(control.getValue());
@@ -346,10 +265,8 @@ function valueChanged(source) {
 
 	changeWebColor(red, green, blue);
 
-	// var alpha = alphaControl.isEnabled() ? (alphaControl.getValue() /
-	// COLOR_MAX)
-	// : COLOR_MAX;
-	var alpha = COLOR_MAX;
+	var alpha = alphaControl.isEnabled() ? (alphaControl.getValue() / COLOR_MAX)
+			: COLOR_MAX;
 	changeColor(red, green, blue, alpha);
 	formatValue();
 }
@@ -369,9 +286,10 @@ function randomColor() {
 	setValue(redControl);
 	setValue(greenControl);
 	setValue(blueControl);
-	/*
-	 * if (!alphaControl.isEnabled()) { setValue(alphaControl); }
-	 */
+	if (alphaControl.isEnabled()) {
+		setValue(alphaControl);
+	}
+
 	valueChanged();
 }
 
@@ -380,8 +298,7 @@ function formatValue() {
 
 	$("colorValue").value = formatter.format(redControl.getValue(),
 			greenControl.getValue(), blueControl.getValue(), alphaControl
-					.getValue(), false);
-	// alphaControl.isEnabled());
+					.getValue(), alphaControl.isEnabled());
 }
 
 function changeWebColor() {

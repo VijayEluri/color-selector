@@ -1,9 +1,9 @@
 /**
+ * Agrupa os componentes relacionados a determinada cor.
  * 
- * @param name
- * @param foregroundFunction
- * @param backgroundFunction
- * @returns
+ * @param name Identificação do controle.
+ * @param foregroundFunction Função para alterar a cor da fonte do label.
+ * @param backgroundFunction Função para alterar a cor da fonte dos campos.
  */
 function ColorControl(name, foregroundFunction, backgroundFunction) {
 
@@ -73,18 +73,6 @@ function ColorControl(name, foregroundFunction, backgroundFunction) {
 		return id;
 	}
 
-	this.changeValue = function(source) {
-		throw new Error("Acesso inválido para alterar o valor de " + id);
-
-		if (source == spinner) {
-			value = source.valueAsNumber;
-		}
-
-		if (id != ALPHA) {
-			changeControlColor();
-		}
-	}
-
 	this.toString = function() {
 		return this.getId() + "[value = " + this.getValue()
 				+ ", syncronized = " + this.isSyncronized() + "]";
@@ -92,7 +80,13 @@ function ColorControl(name, foregroundFunction, backgroundFunction) {
 
 }
 
+/**
+ * Agrupa os componentes relacionados ao controle da transparência (Alpha).
+ * 
+ * @param name Identificação do controle.
+ */
 function AlphaControl(name) {
+	// Inheritance Strategy: See http://www.cs.rit.edu/~atk/JavaScript/manuals/jsobj/index.htm#1044609
 	this.colorControl = ColorControl;
 	this.colorControl(name);
 

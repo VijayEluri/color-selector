@@ -30,8 +30,9 @@ table {
 }
 
 #colorValue {
-	width: 75%;
+	width: 95%;
 	font-family: monospace;
+	font-size: xx-small;
 }
 
 input[type=number] {

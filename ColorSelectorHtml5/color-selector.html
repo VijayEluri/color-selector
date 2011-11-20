@@ -7,6 +7,7 @@
 <script type="text/javascript" src="color-selector.js"></script>
 <script type="text/javascript" src="ColorControl.js"></script>
 <script type="text/javascript" src="formatter.js"></script>
+<script type="text/javascript" src="WebColorFilter.js"></script>
 <script type="text/javascript" src="web-color.js"></script>
 </head>
 <body onload="init()">
@@ -20,10 +21,10 @@
                     <td width="30%"><input id="redSlider" type="range" min="0" max="255" step="1" value="0" onchange="valueChanged(this);"></td>
                     <td width="10%"><input id="redSpinner" type="number" min="0" max="255" value="0" oninput="valueChanged(this);"></td>
 
-                    <td width="20%" align="right"><label class="label-title" for="webColor" id="webColorLabel" title="Double click to filter WebColors"
-                        ondblclick="swapWebColorControl();">Web Color</label></td>
-                    <td width="30%" align="left"><select class="control" id="webColor" onchange="return changeWebColor()"></select> <input class="control"
-                        id="webColorFilter" style="display: none;" onchange="filterWebColors" /></td>
+                    <td width="20%" align="right"><label class="label-title" for="webColor" id="webColorLabel" title="Double click to filter WebColors">Web
+                            Color</label></td>
+                    <td width="30%" align="left"><select id="webColor" class="control" onchange="return changeWebColor()"></select> <input
+                        id="webColorFilter" class="control" style="display: none;" /></td>
                 </tr>
 
                 <tr id="greenRow">

@@ -12,7 +12,7 @@ function WebColor(_name, r, g, b, def) {
 	};
 }
 
-var WEB_COLORS = [ new WebColor("", 0, 0, 0, false, true),
+var WEB_COLORS = [ new WebColor("", 0, 0, 0, false),
 		new WebColor("ALICEBLUE", 240, 248, 255, true),
 		new WebColor("ANTIQUEWHITE", 250, 235, 215, true),
 		new WebColor("AQUA", 0, 255, 255, true),

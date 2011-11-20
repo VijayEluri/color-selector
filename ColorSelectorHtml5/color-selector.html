@@ -10,54 +10,45 @@
 <script type="text/javascript" src="web-color.js"></script>
 </head>
 <body onload="init()">
-    <div align="center">
+    <div id="principal" align="center">
+        <canvas id="canvas" ondblclick="randomColor();"></canvas>
         <table>
             <tbody>
-                <tr style="height: 50%">
-                    <td colspan="6">
-                        <canvas id="canvas" ondblclick="randomColor();" style="width: 100%; height: 100%;">
-                        </canvas>
-                    </td>
-                </tr>
                 <tr id="redRow">
-                    <td width="5%"><input type="checkbox" id="redSync" onclick="synchronizeValues(this);" tabindex="1" /></td>
+                    <td width="5%"><input type="checkbox" id="redSync" onclick="synchronizeValues(this);" autofocus="autofocus" /></td>
                     <td width="5%" class="label-color"><label id="redLabel" for="redSpinner">R</label></td>
-                    <td width="30%"><input id="redSlider" type="range" min="0" max="255" step="1" tabindex="2" value="0" oninput="valueChanged(this);"
-                        onchange="valueChanged(this);"></td>
-                    <td width="10%"><input id="redSpinner" type="number" min="0" max="255" tabindex="2" value="0" oninput="valueChanged(this);"></td>
+                    <td width="30%"><input id="redSlider" type="range" min="0" max="255" step="1" value="0" onchange="valueChanged(this);"></td>
+                    <td width="10%"><input id="redSpinner" type="number" min="0" max="255" value="0" oninput="valueChanged(this);"></td>
 
-                    <td width="20%" align="right"><label class="label-title" for="webColor" id="webColorLabel" ondblclick="swapWebColorControl();">Web
-                            Color</label></td>
+                    <td width="20%" align="right"><label class="label-title" for="webColor" id="webColorLabel" title="Double click to filter WebColors"
+                        ondblclick="swapWebColorControl();">Web Color</label></td>
                     <td width="30%" align="left"><select class="control" id="webColor" onchange="return changeWebColor()"></select> <input class="control"
                         id="webColorFilter" style="display: none;" onchange="filterWebColors" /></td>
                 </tr>
 
                 <tr id="greenRow">
-                    <td><input type="checkbox" id="greenSync" onclick="synchronizeValues(this);" tabindex="3" /></td>
+                    <td><input type="checkbox" id="greenSync" onclick="synchronizeValues(this);" /></td>
                     <td class="label-color"><label id="greenLabel" for="greenValue">G</label></td>
-                    <td><input id="greenSlider" type="range" min="0" max="255" step="1" tabindex="2" value="0" oninput="valueChanged(this);"
-                        onchange="valueChanged(this);"></td>
-                    <td><input id="greenSpinner" type="number" min="0" max="255" tabindex="4" value="0" oninput="valueChanged(this);"></td>
+                    <td><input id="greenSlider" type="range" min="0" max="255" step="1" value="0" onchange="valueChanged(this);"></td>
+                    <td><input id="greenSpinner" type="number" min="0" max="255" value="0" oninput="valueChanged(this);"></td>
 
                     <td align="right"><label for="colorValue" class="label-title">Color Value</label></td>
                     <td align="left"><input class="control" readonly="readonly" id="colorValue"></input></td>
                 </tr>
                 <tr id="blueRow">
-                    <td><input type="checkbox" id="blueSync" onclick="synchronizeValues(this);" tabindex="5" /></td>
+                    <td><input type="checkbox" id="blueSync" onclick="synchronizeValues(this);" /></td>
                     <td class="label-color"><label id="blueLabel" for="blueValue">B</label></td>
-                    <td><input id="blueSlider" type="range" min="0" max="255" step="1" tabindex="2" value="0" oninput="valueChanged(this);"
-                        onchange="valueChanged(this);"></td>
-                    <td><input id="blueSpinner" type="number" min="0" max="255" tabindex="6" value="0" oninput="valueChanged(this);"></td>
+                    <td><input id="blueSlider" type="range" min="0" max="255" step="1" value="0" oninput="valueChanged(this);"></td>
+                    <td><input id="blueSpinner" type="number" min="0" max="255" value="0" oninput="valueChanged(this);"></td>
 
                     <td align="right"><label for="formatType" class="label-title">Color Format</label></td>
                     <td align="left"><select class="control" id="formatType" onchange="formatValue();"></select></td>
                 </tr>
                 <tr id="alphaRow">
-                    <td><input type="checkbox" id="alphaSync" disabled="disabled" onclick="synchronizeValues(this);" tabindex="7" /></td>
+                    <td><input type="checkbox" id="alphaSync" disabled="disabled" onclick="synchronizeValues(this);" /></td>
                     <td class="label-color"><label id="alphaLabel" for="alphaValue">A</label></td>
-                    <td><input id="alphaSlider" type="range" min="0" max="255" step="1" tabindex="2" value="0" oninput="valueChanged(this);"
-                        onchange="valueChanged(this);" disabled="disabled"></td>
-                    <td><input id="alphaSpinner" type="number" min="0" max="255" tabindex="8" value="0" oninput="valueChanged(this);" disabled="disabled"></td>
+                    <td><input id="alphaSlider" type="range" min="0" max="255" step="1" value="0" oninput="valueChanged(this);" disabled></td>
+                    <td><input id="alphaSpinner" type="number" min="0" max="255" value="0" oninput="valueChanged(this);" disabled></td>
 
                     <td align="right"><label for="enableAlpha" class="label-title">Enable Alpha</label></td>
                     <td align="left"><input class="control" id="alphaEnabler" type="checkbox" onclick="enableAlpha(this)"></td>

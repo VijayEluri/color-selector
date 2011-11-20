@@ -161,36 +161,6 @@ function hasSynchronizeValues() {
 	return (synchronizedControls.length > 1);
 }
 
-//function synchronizeValueOld(selectId, synchronize) {
-//	var select = $(selectId);
-//	select.synchronized = synchronize;
-//	var i = -1;
-//
-//	if (select.synchronized) {
-//		synchronizedControls.push(select);
-//		if (hasSynchronizeValues()) {
-//			// Calcula o valor m�dio.
-//			var sum = 0;
-//			for (i = 0; i < synchronizedControls.length; i++) {
-//				sum += parseInt(synchronizedControls[i].valueAsNumber);
-//			}
-//
-//			var media = Math.round(sum / synchronizedControls.length);
-//
-//			for (i = 0; i < synchronizedControls.length; i++) {
-//				synchronizedControls[i].valueAsNumber = media;
-//			}
-//		}
-//	} else {
-//		for (i = 0; i < synchronizedControls.length; i++) {
-//			if (synchronizedControls[i].id == select.id) {
-//				synchronizedControls.splice(i, 1);
-//				break;
-//			}
-//		}
-//	}
-//}
-
 function synchronizeValues(source) {
 
 	function getSyncValue() {

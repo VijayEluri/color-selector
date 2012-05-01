@@ -3,17 +3,23 @@
  */
 package colorselector
 
+import colorselector.Max
+import colorselector.Min
+import colorselector.insets
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
-import javafx.beans.property.SimpleDoubleProperty
 import javafx.event.EventHandler
+import javafx.scene.input.ScrollEvent
 import javafx.scene.layout.Priority
-import scalafx.Includes._
+import scalafx.Includes.jfxBooleanProperty2sfx
+import scalafx.Includes.jfxDoubleProperty2sfx
+import scalafx.Includes.jfxStringProperty2sfx
+import scalafx.beans.property.DoubleProperty.sfxDoubleProperty2jfx
 import scalafx.beans.property.BooleanProperty
 import scalafx.beans.property.DoubleProperty
-import scalafx.geometry.Insets
-import scalafx.scene.control._
-import javafx.scene.input.ScrollEvent
+import scalafx.scene.control.CheckBox
+import scalafx.scene.control.Label
+import scalafx.scene.control.Slider
 import scalafx.scene.layout.HBox
 
 /**
@@ -82,5 +88,6 @@ class SliderControl(title: String) extends HBox {
         value = (value.get + multiplier * delta)
       }
     }
+    
   }
 }

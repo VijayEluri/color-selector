@@ -25,7 +25,7 @@ import scalafx.stage.Stage
 object SliderControlDemo extends JFXApp {
 
   import colorselector._
-  
+
   var initialized = false;
 
   val sliderControl = new SliderControl("X")
@@ -79,23 +79,15 @@ object SliderControlDemo extends JFXApp {
   GridPane.setHgrow(lblOutputValue, Priority.NEVER)
   GridPane.setValignment(lblOutputValue, VPos.BASELINE)
   GridPane.setVgrow(lblOutputValue, Priority.NEVER)
-  pnlControls.columnConstraints = List(
-    new ColumnConstraints {
-      halignment = HPos.RIGHT
-      hgrow = Priority.NEVER
-    },
-    new ColumnConstraints {
-      halignment = HPos.LEFT
-      hgrow = Priority.SOMETIMES
-    },
-    new ColumnConstraints {
-      halignment = HPos.RIGHT
-      hgrow = Priority.NEVER
-    },
-    new ColumnConstraints {
-      halignment = HPos.LEFT
-      hgrow = Priority.SOMETIMES
-    })
+  val ccOdd = new ColumnConstraints {
+    halignment = HPos.RIGHT
+    hgrow = Priority.NEVER
+  }
+  val ccEven = new ColumnConstraints {
+    halignment = HPos.LEFT
+    hgrow = Priority.SOMETIMES
+  }
+  pnlControls.columnConstraints = List(ccOdd, ccEven, ccOdd, ccEven)
 
   val box = new VBox(5.0) {
     content = List(sliderControl,

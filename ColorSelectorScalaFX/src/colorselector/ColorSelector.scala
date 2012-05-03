@@ -27,10 +27,53 @@ import scalafx.scene.shape.Rectangle
 import scalafx.scene.Scene
 import scalafx.stage.Stage
 import scalafx.scene.control.ComboBox
+import scalafx.beans.property.DoubleProperty
+import javafx.beans.property.SimpleDoubleProperty
+import scala.collection.mutable.ArrayBuffer
+import scalafx.collections.ObservableBuffer
+import scala.collection.Seq
+import scalafx.collections.ObservableBuffer._
 
 object ColorSelector extends JFXApp {
 
   val currentColor = new ObjectProperty[Paint](Color.WHITE, "Color")
+
+  val synchronizedValue = new DoubleProperty(new SimpleDoubleProperty)
+
+  val synchronizedControls = new ObservableBuffer[SliderControl]
+  synchronizedControls.onChange((buffer, changes) => syncronizeValues(buffer, changes))
+
+  def controlSelected(control: SliderControl) {
+    if (control.selectedControl.get) {
+      synchronizedControls.add(control)
+    } else {
+      synchronizedControls.remove(control)
+    }
+  }
+
+  private def changeColor {
+    val newColor = if (controlAlpha.disabled.get())
+      Color.rgb(controlRed.value.toInt, controlGreen.value.toInt, controlBlue.value.toInt)
+    else
+      Color.rgb(controlRed.value.toInt, controlGreen.value.toInt, controlBlue.value.toInt, (controlAlpha.value.toDouble / colorselector.Max))
+
+    this.currentColor.set(newColor)
+  }
+
+  private def syncronizeValues(buffer: ObservableBuffer[SliderControl], changes: Seq[Change]) {
+    println(buffer)
+    println(changes)
+    changes(0) match {
+      case Add(pos, added) => {
+        val media = buffer.map(_.value.get).sum / buffer.size
+        added.last.asInstanceOf[SliderControl].value <==> synchronizedValue
+        buffer.foreach(_.value = media)
+      }
+      case Remove(pos, removed) => {
+        removed.last.asInstanceOf[SliderControl].value unbind synchronizedValue
+      }
+    }
+  }
 
   val rectangle = new Rectangle {
     effect = new Reflection {
@@ -49,19 +92,36 @@ object ColorSelector extends JFXApp {
   //  rectangle.height <== rectangleAnchor.height
   //  rectangle.width <== rectangleAnchor.width
 
-  val controlRed = new SliderControl("R")
+  val controlRed = new SliderControl("R") {
+    value = 255
+  }
   controlRed.value.onChange(changeColor)
+  controlRed.selectedControl.onChange(controlSelected(controlRed))
 
-  val controlGreen = new SliderControl("G")
+  val controlGreen = new SliderControl("G") {
+    value = 255
+  }
   controlGreen.value.onChange(changeColor)
+  controlGreen.selectedControl.onChange(controlSelected(controlGreen))
 
-  val controlBlue = new SliderControl("B")
+  val controlBlue = new SliderControl("B") {
+    value = 255
+  }
   controlBlue.value.onChange(changeColor)
+  controlBlue.selectedControl.onChange(controlSelected(controlBlue))
 
   val controlAlpha = new SliderControl("A") {
     value = 255
   }
   controlAlpha.value.onChange(changeColor)
+  controlAlpha.selectedControl.onChange(controlSelected(controlAlpha))
+  controlAlpha.disable.onChange({
+    if (controlAlpha.selectedControl.get) {
+      if (controlAlpha.disable.get) synchronizedControls.remove(controlAlpha)
+      else synchronizedControls.add(controlAlpha)
+    }
+    changeColor
+  })
 
   val cmbWebColor = new ComboBox {
     promptText = "Web Color"
@@ -175,13 +235,6 @@ object ColorSelector extends JFXApp {
     scene = mainScene
   }
 
-  private def changeColor {
-    val newColor = if (controlAlpha.disabled.get())
-      Color.rgb(controlRed.value.toInt, controlGreen.value.toInt, controlBlue.value.toInt)
-    else
-      Color.rgb(controlRed.value.toInt, controlGreen.value.toInt, controlBlue.value.toInt, (controlAlpha.value.toDouble / colorselector.Max))
-
-    this.currentColor.set(newColor)
-  }
+  changeColor
 
 }

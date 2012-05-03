@@ -90,4 +90,6 @@ class SliderControl(title: String) extends HBox {
     }
     
   }
+  
+  override def toString = "%s[%s, %b]".format(title, lblValue.text.get, selectedControl.value)
 }

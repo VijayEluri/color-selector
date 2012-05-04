@@ -1,14 +1,27 @@
 package colorselector
 
+import scala.collection.Seq
 import colorselector.insets
+import javafx.beans.property.SimpleDoubleProperty
+import javafx.event.EventHandler
 import javafx.geometry.HPos
 import javafx.geometry.Pos
+import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Priority
 import javafx.scene.text.TextAlignment
 import scalafx.Includes.jfxBooleanProperty2sfx
 import scalafx.application.JFXApp
+import scalafx.beans.property.BooleanProperty.sfxBooleanProperty2jfx
+import scalafx.beans.property.DoubleProperty.sfxDoubleProperty2jfx
 import scalafx.beans.property.ObjectProperty.sfxObjectProperty2jfx
 import scalafx.beans.property.ObjectProperty
+import scalafx.beans.property.DoubleProperty
+import scalafx.collections.ObservableBuffer.Add
+import scalafx.collections.ObservableBuffer.Change
+import scalafx.collections.ObservableBuffer.Remove
+import scalafx.collections.ObservableBuffer.canBuildFrom
+import scalafx.collections.ObservableBuffer.observableBuffer2ObservableList
+import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.CheckBox.sfxCheckBox2jfx
 import scalafx.scene.control.Control.sfxControl2jfx
 import scalafx.scene.control.TextField.sfxTextField2jfx
@@ -27,14 +40,10 @@ import scalafx.scene.shape.Rectangle
 import scalafx.scene.Scene
 import scalafx.stage.Stage
 import scalafx.scene.control.ComboBox
-import scalafx.beans.property.DoubleProperty
-import javafx.beans.property.SimpleDoubleProperty
-import scala.collection.mutable.ArrayBuffer
-import scalafx.collections.ObservableBuffer
-import scala.collection.Seq
-import scalafx.collections.ObservableBuffer._
 
 object ColorSelector extends JFXApp {
+
+  lazy val allControls = List(controlRed, controlGreen, controlBlue, controlAlpha)
 
   val currentColor = new ObjectProperty[Paint](Color.WHITE, "Color")
 
@@ -52,17 +61,12 @@ object ColorSelector extends JFXApp {
   }
 
   private def changeColor {
-    val newColor = if (controlAlpha.disabled.get())
-      Color.rgb(controlRed.value.toInt, controlGreen.value.toInt, controlBlue.value.toInt)
-    else
-      Color.rgb(controlRed.value.toInt, controlGreen.value.toInt, controlBlue.value.toInt, (controlAlpha.value.toDouble / colorselector.Max))
+    val newAlphaValue = if (controlAlpha.disabled.get()) 1.0 else (controlAlpha.value.toDouble / colorselector.Max)
 
-    this.currentColor.set(newColor)
+    this.currentColor.set(Color.rgb(controlRed.value.toInt, controlGreen.value.toInt, controlBlue.value.toInt, newAlphaValue))
   }
 
   private def syncronizeValues(buffer: ObservableBuffer[SliderControl], changes: Seq[Change]) {
-    println(buffer)
-    println(changes)
     changes(0) match {
       case Add(pos, added) => {
         val media = buffer.map(_.value.get).sum / buffer.size
@@ -75,22 +79,38 @@ object ColorSelector extends JFXApp {
     }
   }
 
+  private def randomizeColors {
+    if (synchronizedControls.size > 0) {
+      this.synchronizedValue.set(math.random * colorselector.Max)
+    }
+    if (synchronizedControls.size < 4) {
+      this.allControls
+        .filterNot(_.selectedControl.get)
+        .filterNot(_.disabled.get)
+        .foreach(_.value.set(math.random * colorselector.Max))
+    }
+  }
+
   val rectangle = new Rectangle {
     effect = new Reflection {
       fraction = 0.43
     }
     height = 216.0
+    onMouseClicked = new EventHandler[MouseEvent] {
+      def handle(event: MouseEvent) {
+        if (event.getClickCount == 2) {
+          randomizeColors
+        }
+      }
+    }
     width = 599.0
   }
-  //  rectangle.fill = rectangleColor.get
   currentColor.onChange(rectangle.fill = currentColor.get())
 
   val rectangleAnchor = new AnchorPane {
     content = List(rectangle)
   }
   AnchorPane.setAnchors(rectangle, 0, 0, 0, 0)
-  //  rectangle.height <== rectangleAnchor.height
-  //  rectangle.width <== rectangleAnchor.width
 
   val controlRed = new SliderControl("R") {
     value = 255
@@ -156,6 +176,7 @@ object ColorSelector extends JFXApp {
   val column1Constraint = new ColumnConstraints {
     halignment = HPos.RIGHT
     hgrow = Priority.NEVER
+    minWidth = 80
     maxWidth = 100
   }
   val column2Constraint = new ColumnConstraints {

@@ -46,7 +46,7 @@ class SliderControl(title: String) extends HBox {
 
   val sldValue = new Slider {
     id = "sldValue"
-    blockIncrement = 5.0
+    blockIncrement = 1.0
     majorTickUnit = 50.0
     max = Max
     min = Min

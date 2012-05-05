@@ -14,7 +14,7 @@ object Formatter {
 
 abstract sealed case class Formatter(val description: String) {
 
-  private def doubleToInt(d: Double) = (colorselector.Max * d).toInt
+  import colorselector._
 
   protected def colorToRgbInt(c: Color): (Int, Int, Int) =
     (doubleToInt(c.red), doubleToInt(c.green), doubleToInt(c.blue))

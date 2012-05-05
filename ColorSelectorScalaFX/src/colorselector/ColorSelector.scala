@@ -1,21 +1,22 @@
 package colorselector
 
 import scala.collection.Seq
-import colorselector.insets
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.event.EventHandler
+import javafx.event.ActionEvent
 import javafx.geometry.HPos
 import javafx.geometry.Pos
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Priority
 import javafx.scene.text.TextAlignment
 import scalafx.Includes.jfxBooleanProperty2sfx
+import scalafx.Includes.jfxStringProperty2sfx
 import scalafx.application.JFXApp
 import scalafx.beans.property.BooleanProperty.sfxBooleanProperty2jfx
 import scalafx.beans.property.DoubleProperty.sfxDoubleProperty2jfx
 import scalafx.beans.property.ObjectProperty.sfxObjectProperty2jfx
-import scalafx.beans.property.DoubleProperty
 import scalafx.beans.property.ObjectProperty
+import scalafx.beans.property.DoubleProperty
 import scalafx.collections.ObservableBuffer.Add
 import scalafx.collections.ObservableBuffer.Change
 import scalafx.collections.ObservableBuffer.Remove
@@ -25,8 +26,8 @@ import scalafx.collections.ObservableBuffer
 import scalafx.scene.control.CheckBox.sfxCheckBox2jfx
 import scalafx.scene.control.Control.sfxControl2jfx
 import scalafx.scene.control.TextField.sfxTextField2jfx
-import scalafx.scene.control.CheckBox
 import scalafx.scene.control.ComboBox
+import scalafx.scene.control.CheckBox
 import scalafx.scene.control.Label
 import scalafx.scene.control.TextField
 import scalafx.scene.effect.Reflection
@@ -36,11 +37,10 @@ import scalafx.scene.layout.GridPane
 import scalafx.scene.layout.RowConstraints
 import scalafx.scene.paint.Paint.sfxPaint2jfx
 import scalafx.scene.paint.Color
-import scalafx.scene.paint.Paint
 import scalafx.scene.shape.Rectangle
 import scalafx.scene.Scene
 import scalafx.stage.Stage
-import javafx.event.ActionEvent
+import javafx.scene.input.MouseButton
 
 object ColorSelector extends JFXApp {
 
@@ -87,7 +87,7 @@ object ColorSelector extends JFXApp {
   }
 
   private def formatColor {
-    this.txfColorValue.text.set(this.cmbColorFormat.value.get.format(this.currentColor.get, this.chbEnableAlpha.selected.get))
+    this.txfColorValue.text() = this.cmbColorFormat.value.get.format(this.currentColor.get, !this.chbDisableAlpha.selected.get)
   }
 
   // METHODS - END
@@ -109,7 +109,7 @@ object ColorSelector extends JFXApp {
     height = 216.0
     onMouseClicked = new EventHandler[MouseEvent] {
       def handle(event: MouseEvent) {
-        if (event.getClickCount == 2) {
+        if ((event.getClickCount == 2) && (event.getButton() == MouseButton.PRIMARY)) {
           randomizeColors
         }
       }
@@ -177,7 +177,7 @@ object ColorSelector extends JFXApp {
     }
   }
 
-  val chbEnableAlpha = new CheckBox {
+  val chbDisableAlpha = new CheckBox {
     selected <==> controlAlpha.disable
   }
 
@@ -211,7 +211,7 @@ object ColorSelector extends JFXApp {
     rowConstraints = List(rectangleRowsConstraint, otherRowsConstraint, otherRowsConstraint,
       otherRowsConstraint, otherRowsConstraint)
     columnConstraints = List(column0Constraint, column1Constraint)
-    padding = insets
+    padding = colorselector.insets
 
     add(rectangleAnchor, 0, 0, 3, 1)
 
@@ -225,7 +225,7 @@ object ColorSelector extends JFXApp {
     }, 1, 1)
     add(cmbWebColor, 2, 1)
 
-    add(controlBlue, 0, 2)
+    add(controlGreen, 0, 2)
     add(new Label {
       alignment = Pos.TOP_RIGHT
       labelFor = txfColorValue
@@ -235,7 +235,7 @@ object ColorSelector extends JFXApp {
     }, 1, 2)
     add(txfColorValue, 2, 2)
 
-    add(controlGreen, 0, 3)
+    add(controlBlue, 0, 3)
     add(new Label {
       alignment = Pos.TOP_RIGHT
       labelFor = cmbColorFormat
@@ -248,12 +248,12 @@ object ColorSelector extends JFXApp {
     add(controlAlpha, 0, 4)
     add(new Label {
       alignment = Pos.TOP_RIGHT
-      labelFor = chbEnableAlpha
+      labelFor = chbDisableAlpha
       text = "Disable Alpha"
       textAlignment = TextAlignment.RIGHT
       wrapText = true
     }, 1, 4)
-    add(chbEnableAlpha, 2, 4)
+    add(chbDisableAlpha, 2, 4)
   }
 
   val pnlMain0 = new AnchorPane {
@@ -278,7 +278,7 @@ object ColorSelector extends JFXApp {
 
   // Initialization
   changeColor
-  chbEnableAlpha.selected = true
+  chbDisableAlpha.selected = true
   formatColor
 
 }

@@ -14,8 +14,8 @@ import scalafx.application.JFXApp
 import scalafx.beans.property.BooleanProperty.sfxBooleanProperty2jfx
 import scalafx.beans.property.DoubleProperty.sfxDoubleProperty2jfx
 import scalafx.beans.property.ObjectProperty.sfxObjectProperty2jfx
-import scalafx.beans.property.ObjectProperty
 import scalafx.beans.property.DoubleProperty
+import scalafx.beans.property.ObjectProperty
 import scalafx.collections.ObservableBuffer.Add
 import scalafx.collections.ObservableBuffer.Change
 import scalafx.collections.ObservableBuffer.Remove
@@ -26,6 +26,7 @@ import scalafx.scene.control.CheckBox.sfxCheckBox2jfx
 import scalafx.scene.control.Control.sfxControl2jfx
 import scalafx.scene.control.TextField.sfxTextField2jfx
 import scalafx.scene.control.CheckBox
+import scalafx.scene.control.ComboBox
 import scalafx.scene.control.Label
 import scalafx.scene.control.TextField
 import scalafx.scene.effect.Reflection
@@ -39,20 +40,13 @@ import scalafx.scene.paint.Paint
 import scalafx.scene.shape.Rectangle
 import scalafx.scene.Scene
 import scalafx.stage.Stage
-import scalafx.scene.control.ComboBox
+import javafx.event.ActionEvent
 
 object ColorSelector extends JFXApp {
 
-  lazy val allControls = List(controlRed, controlGreen, controlBlue, controlAlpha)
+  // METHODS - BEGIN
 
-  val currentColor = new ObjectProperty[Paint](Color.WHITE, "Color")
-
-  val synchronizedValue = new DoubleProperty(new SimpleDoubleProperty)
-
-  val synchronizedControls = new ObservableBuffer[SliderControl]
-  synchronizedControls.onChange((buffer, changes) => syncronizeValues(buffer, changes))
-
-  def controlSelected(control: SliderControl) {
+  private def controlSelected(control: SliderControl) {
     if (control.selectedControl.get) {
       synchronizedControls.add(control)
     } else {
@@ -63,7 +57,8 @@ object ColorSelector extends JFXApp {
   private def changeColor {
     val newAlphaValue = if (controlAlpha.disabled.get()) 1.0 else (controlAlpha.value.toDouble / colorselector.Max)
 
-    this.currentColor.set(Color.rgb(controlRed.value.toInt, controlGreen.value.toInt, controlBlue.value.toInt, newAlphaValue))
+    this.currentColor() = Color.rgb(controlRed.value.toInt, controlGreen.value.toInt,
+      controlBlue.value.toInt, newAlphaValue)
   }
 
   private def syncronizeValues(buffer: ObservableBuffer[SliderControl], changes: Seq[Change]) {
@@ -81,19 +76,35 @@ object ColorSelector extends JFXApp {
 
   private def randomizeColors {
     if (synchronizedControls.size > 0) {
-      this.synchronizedValue.set(math.random * colorselector.Max)
+      this.synchronizedValue() = math.random * colorselector.Max
     }
     if (synchronizedControls.size < 4) {
       this.allControls
         .filterNot(_.selectedControl.get)
         .filterNot(_.disabled.get)
-        .foreach(_.value.set(math.random * colorselector.Max))
+        .foreach(_.value() = math.random * colorselector.Max)
     }
   }
 
+  private def formatColor {
+    this.txfColorValue.text.set(this.cmbColorFormat.value.get.format(this.currentColor.get, this.chbEnableAlpha.selected.get))
+  }
+
+  // METHODS - END
+
+  lazy val allControls = List(controlRed, controlGreen, controlBlue, controlAlpha)
+
+  val currentColor = new ObjectProperty[Color](Color.WHITE, "Color")
+  currentColor.onChange(formatColor)
+
+  val synchronizedValue = new DoubleProperty(new SimpleDoubleProperty)
+
+  val synchronizedControls = new ObservableBuffer[SliderControl]
+  synchronizedControls.onChange((buffer, changes) => syncronizeValues(buffer, changes))
+
   val rectangle = new Rectangle {
     effect = new Reflection {
-      fraction = 0.43
+      fraction = 0.45
     }
     height = 216.0
     onMouseClicked = new EventHandler[MouseEvent] {
@@ -141,6 +152,7 @@ object ColorSelector extends JFXApp {
       else synchronizedControls.add(controlAlpha)
     }
     changeColor
+    formatColor
   })
 
   val cmbWebColor = new ComboBox {
@@ -151,10 +163,18 @@ object ColorSelector extends JFXApp {
     promptText = "Color Value"
     editable = false
     alignment = Pos.CENTER_LEFT
+    style = "-fx-font-family: Consolas;"
   }
 
-  val cmbColorFormat = new ComboBox {
+  val cmbColorFormat = new ComboBox[Formatter](Formatter.formatters) {
     promptText = "Color Format"
+    converter = Formatter.formatterConverter
+    value = RgbFormatter
+  }
+  cmbColorFormat.onAction = new EventHandler[ActionEvent] {
+    def handle(e: ActionEvent) {
+      formatColor
+    }
   }
 
   val chbEnableAlpha = new CheckBox {
@@ -229,7 +249,7 @@ object ColorSelector extends JFXApp {
     add(new Label {
       alignment = Pos.TOP_RIGHT
       labelFor = chbEnableAlpha
-      text = "Enable Alpha"
+      text = "Disable Alpha"
       textAlignment = TextAlignment.RIGHT
       wrapText = true
     }, 1, 4)
@@ -256,6 +276,9 @@ object ColorSelector extends JFXApp {
     scene = mainScene
   }
 
+  // Initialization
   changeColor
+  chbEnableAlpha.selected = true
+  formatColor
 
 }

@@ -6,6 +6,7 @@ package colorselector
 import colorselector.Max
 import colorselector.Min
 import colorselector.insets
+import colorselector.doubleToInt
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.event.EventHandler
@@ -21,6 +22,11 @@ import scalafx.scene.control.CheckBox
 import scalafx.scene.control.Label
 import scalafx.scene.control.Slider
 import scalafx.scene.layout.HBox
+import scalafx.beans.property.ObjectProperty
+import javafx.beans.property.SimpleObjectProperty
+import scalafx.beans.property.StringProperty
+import javafx.beans.property.SimpleStringProperty
+import scalafx.scene.paint.Color
 
 /**
  * @author Rafael
@@ -28,12 +34,26 @@ import scalafx.scene.layout.HBox
  */
 class SliderControl(title: String) extends HBox {
 
-  import colorselector._
+  private val strBackground = "-fx-background-color: rgb(%d, %d, %d);"
+  private val strForeground = "-fx-text-fill: rgb(%d, %d, %d);"
+
+  private val cssBackground = new StringProperty(new SimpleStringProperty)
+  private val cssForeground = new StringProperty(new SimpleStringProperty)
 
   val realValue = new DoubleProperty(new SimpleDoubleProperty)
+  def value = this.realValue
+  def value_=(d: Double) {
+    if (d < Min) {
+      value() = Min
+    } else if (d > Max) {
+      value() = Max
+    } else {
+      value() = d
+    }
+  }
 
   val selectedControl = new BooleanProperty(new SimpleBooleanProperty)
-  
+
   val chbSelected = new CheckBox {
     id = "chbSelected"
     selected <==> selectedControl
@@ -42,6 +62,7 @@ class SliderControl(title: String) extends HBox {
   val lblTitle = new Label {
     id = "lblTitle"
     text = title
+    style <== cssForeground
   }
 
   val sldValue = new Slider {
@@ -54,6 +75,7 @@ class SliderControl(title: String) extends HBox {
     showTickLabels = true
     showTickMarks = true
     hgrow = Priority.ALWAYS
+    style <== cssForeground
     value <==> realValue
   }
 
@@ -61,22 +83,14 @@ class SliderControl(title: String) extends HBox {
     id = "lblValue"
     text <== realValue.asString("%03.0f")
     hgrow = Priority.NEVER
-  }
-
-  def value = this.realValue
-  def value_=(d: Double) {
-    if (d < Min) {
-      value() = Min
-    } else if (d > Max) {
-      value() = Max
-    } else {
-      value() = d
-    }
+    style <== cssForeground
   }
 
   content = List(chbSelected, lblTitle, sldValue, lblValue)
 
   padding = insets
+
+  style <== cssBackground
 
   onScroll = new EventHandler[ScrollEvent] {
     def handle(event: ScrollEvent) {
@@ -88,8 +102,15 @@ class SliderControl(title: String) extends HBox {
         value = (value.get + multiplier * delta)
       }
     }
-    
+
   }
-  
+
+  def changeColor(backgroundColor: Color, foregroundColor: Color) {
+    this.cssBackground() = strBackground.format(doubleToInt(backgroundColor.red),
+      doubleToInt(backgroundColor.green), doubleToInt(backgroundColor.blue))
+    this.cssForeground() = strForeground.format(doubleToInt(foregroundColor.red),
+      doubleToInt(foregroundColor.green), doubleToInt(foregroundColor.blue))
+  }
+
   override def toString = "%s[%s, %b]".format(title, lblValue.text.get, selectedControl.value)
 }

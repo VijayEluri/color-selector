@@ -1,11 +1,15 @@
 package colorselector
 
 import scala.collection.Seq
+
+import colorselector.Max
+import colorselector.doubleToInt
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.event.EventHandler
 import javafx.event.ActionEvent
 import javafx.geometry.HPos
 import javafx.geometry.Pos
+import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Priority
 import javafx.scene.text.TextAlignment
@@ -40,9 +44,7 @@ import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
 import scalafx.scene.Scene
 import scalafx.stage.Stage
-import javafx.scene.input.MouseButton
 import scalafx.util.StringConverter
-import colorselector._
 
 object ColorSelector extends JFXApp {
 
@@ -97,6 +99,8 @@ object ColorSelector extends JFXApp {
     this.txfColorValue.text() = this.cmbColorFormat.value.get.format(this.currentColor.get, !this.chbDisableAlpha.selected.get)
   }
 
+  private def getForegroundColor(d: Double) = if (d > Max / 2) Color.BLACK else Color.WHITE
+
   private def verifyWebColor {
     cmbWebColor.value.set(WebColor.colors.find(_.sameColor(currentColor.get)).orNull)
   }
@@ -148,20 +152,32 @@ object ColorSelector extends JFXApp {
   val controlRed = new SliderControl("R") {
     value = 255
   }
-  controlRed.value.onChange(changeColor)
+  controlRed.value.onChange({
+    changeColor
+    controlRed.changeColor(Color.rgb(controlRed.value.get.toInt, 0, 0), getForegroundColor(controlRed.value.get))
+  })
   controlRed.selectedControl.onChange(controlSelected(controlRed))
+  controlRed.changeColor(Color.rgb(controlRed.value.get.toInt, 0, 0), getForegroundColor(controlRed.value.get))
 
   val controlGreen = new SliderControl("G") {
     value = 255
   }
-  controlGreen.value.onChange(changeColor)
+  controlGreen.value.onChange({
+    changeColor
+    controlGreen.changeColor(Color.rgb(0, controlGreen.value.get.toInt, 0), getForegroundColor(controlGreen.value.get))
+  })
   controlGreen.selectedControl.onChange(controlSelected(controlGreen))
+  controlGreen.changeColor(Color.rgb(0, controlGreen.value.get.toInt, 0), getForegroundColor(controlGreen.value.get))
 
   val controlBlue = new SliderControl("B") {
     value = 255
   }
-  controlBlue.value.onChange(changeColor)
+  controlBlue.value.onChange({
+    changeColor
+    controlBlue.changeColor(Color.rgb(0, 0, controlBlue.value.get.toInt), Color.WHITE)
+  })
   controlBlue.selectedControl.onChange(controlSelected(controlBlue))
+  controlBlue.changeColor(Color.rgb(0, 0, controlBlue.value.get.toInt), Color.WHITE)
 
   val controlAlpha = new SliderControl("A") {
     value = 255

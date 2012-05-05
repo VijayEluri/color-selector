@@ -41,6 +41,8 @@ import scalafx.scene.shape.Rectangle
 import scalafx.scene.Scene
 import scalafx.stage.Stage
 import javafx.scene.input.MouseButton
+import scalafx.util.StringConverter
+import colorselector._
 
 object ColorSelector extends JFXApp {
 
@@ -86,8 +88,28 @@ object ColorSelector extends JFXApp {
     }
   }
 
+  private def colorChanged {
+    formatColor
+    verifyWebColor
+  }
+
   private def formatColor {
     this.txfColorValue.text() = this.cmbColorFormat.value.get.format(this.currentColor.get, !this.chbDisableAlpha.selected.get)
+  }
+
+  private def verifyWebColor {
+    cmbWebColor.value.set(WebColor.colors.find(_.sameColor(currentColor.get)).orNull)
+  }
+
+  private def webColorSelected {
+    if (this.cmbWebColor.value.get != null) {
+      val color = this.cmbWebColor.value.get.color
+      val (r, g, b) = (doubleToInt(color.red), doubleToInt(color.green), doubleToInt(color.blue))
+
+      controlRed.value() = r
+      controlGreen.value() = g
+      controlBlue.value() = b
+    }
   }
 
   // METHODS - END
@@ -95,7 +117,7 @@ object ColorSelector extends JFXApp {
   lazy val allControls = List(controlRed, controlGreen, controlBlue, controlAlpha)
 
   val currentColor = new ObjectProperty[Color](Color.WHITE, "Color")
-  currentColor.onChange(formatColor)
+  currentColor.onChange(colorChanged)
 
   val synchronizedValue = new DoubleProperty(new SimpleDoubleProperty)
 
@@ -155,8 +177,14 @@ object ColorSelector extends JFXApp {
     formatColor
   })
 
-  val cmbWebColor = new ComboBox {
+  val cmbWebColor = new ComboBox[WebColor](WebColor.colors) {
     promptText = "Web Color"
+    converter = StringConverter.toStringConverter((wc: WebColor) => wc.name)
+  }
+  cmbWebColor.onAction = new EventHandler[ActionEvent] {
+    def handle(e: ActionEvent) {
+      webColorSelected
+    }
   }
 
   val txfColorValue = new TextField {
@@ -168,7 +196,7 @@ object ColorSelector extends JFXApp {
 
   val cmbColorFormat = new ComboBox[Formatter](Formatter.formatters) {
     promptText = "Color Format"
-    converter = Formatter.formatterConverter
+    converter = StringConverter.toStringConverter((f: Formatter) => f.description)
     value = RgbFormatter
   }
   cmbColorFormat.onAction = new EventHandler[ActionEvent] {
@@ -280,5 +308,6 @@ object ColorSelector extends JFXApp {
   changeColor
   chbDisableAlpha.selected = true
   formatColor
+  webColorSelected
 
 }

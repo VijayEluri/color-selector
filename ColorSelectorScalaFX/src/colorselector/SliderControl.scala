@@ -27,6 +27,8 @@ import javafx.beans.property.SimpleObjectProperty
 import scalafx.beans.property.StringProperty
 import javafx.beans.property.SimpleStringProperty
 import scalafx.scene.paint.Color
+import scalafx.scene.text.Font
+import javafx.scene.text.FontWeight
 
 /**
  * @author Rafael
@@ -64,6 +66,7 @@ class SliderControl(title: String) extends HBox {
     text = title
     style <== cssForeground
   }
+  lblTitle.font = Font.font(lblTitle.font.get().getFamily(), FontWeight.BOLD, lblTitle.font.get().getSize())
 
   val sldValue = new Slider {
     id = "sldValue"
@@ -85,6 +88,7 @@ class SliderControl(title: String) extends HBox {
     hgrow = Priority.NEVER
     style <== cssForeground
   }
+  lblValue.font = Font.font(lblValue.font.get().getFamily(), FontWeight.BOLD, lblValue.font.get().getSize())
 
   content = List(chbSelected, lblTitle, sldValue, lblValue)
 

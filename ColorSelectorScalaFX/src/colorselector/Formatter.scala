@@ -6,10 +6,6 @@ import scalafx.util.StringConverter
 object Formatter {
   val formatters = List(HexFormatter, RgbFormatter, PercentFormatter, HsbFormatter)
 
-  val formatterConverter = new StringConverter[Formatter] {
-    def fromString(string: String) = sys.error("")
-    def toString(f: Formatter): String = f.description
-  }
 }
 
 abstract sealed case class Formatter(val description: String) {

@@ -9,11 +9,13 @@ import javafx.event.EventHandler
 import javafx.event.ActionEvent
 import javafx.geometry.HPos
 import javafx.geometry.Pos
+import javafx.geometry.VPos
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
 import javafx.scene.layout.Priority
 import javafx.scene.text.TextAlignment
 import scalafx.Includes.jfxBooleanProperty2sfx
+import scalafx.Includes.jfxDoubleProperty2sfx
 import scalafx.Includes.jfxStringProperty2sfx
 import scalafx.application.JFXApp
 import scalafx.beans.property.BooleanProperty.sfxBooleanProperty2jfx
@@ -32,6 +34,7 @@ import scalafx.scene.control.Control.sfxControl2jfx
 import scalafx.scene.control.TextField.sfxTextField2jfx
 import scalafx.scene.control.ComboBox
 import scalafx.scene.control.CheckBox
+import scalafx.scene.control.Control
 import scalafx.scene.control.Label
 import scalafx.scene.control.TextField
 import scalafx.scene.effect.Reflection
@@ -47,6 +50,18 @@ import scalafx.stage.Stage
 import scalafx.util.StringConverter
 
 object ColorSelector extends JFXApp {
+  
+  // VAL'S DEFINITION - BEGIN
+
+  lazy val allControls = List(controlRed, controlGreen, controlBlue, controlAlpha)
+
+  val currentColor = new ObjectProperty[Color](Color.WHITE, "Color")
+  currentColor.onChange(colorChanged)
+
+  val synchronizedValue = new DoubleProperty(new SimpleDoubleProperty)
+
+  val synchronizedControls = new ObservableBuffer[SliderControl]
+  synchronizedControls.onChange((buffer, changes) => syncronizeValues(buffer, changes))
 
   // METHODS - BEGIN
 
@@ -108,25 +123,13 @@ object ColorSelector extends JFXApp {
   private def webColorSelected {
     if (this.cmbWebColor.value.get != null) {
       val color = this.cmbWebColor.value.get.color
-      val (r, g, b) = (doubleToInt(color.red), doubleToInt(color.green), doubleToInt(color.blue))
-
-      controlRed.value() = r
-      controlGreen.value() = g
-      controlBlue.value() = b
+      controlRed.value() = doubleToInt(color.red)
+      controlGreen.value() = doubleToInt(color.green)
+      controlBlue.value() = doubleToInt(color.blue)
     }
   }
 
   // METHODS - END
-
-  lazy val allControls = List(controlRed, controlGreen, controlBlue, controlAlpha)
-
-  val currentColor = new ObjectProperty[Color](Color.WHITE, "Color")
-  currentColor.onChange(colorChanged)
-
-  val synchronizedValue = new DoubleProperty(new SimpleDoubleProperty)
-
-  val synchronizedControls = new ObservableBuffer[SliderControl]
-  synchronizedControls.onChange((buffer, changes) => syncronizeValues(buffer, changes))
 
   val rectangle = new Rectangle {
     effect = new Reflection {
@@ -207,6 +210,7 @@ object ColorSelector extends JFXApp {
     promptText = "Color Value"
     editable = false
     alignment = Pos.CENTER_LEFT
+    hgrow = Priority.NEVER
     style = "-fx-font-family: Consolas;"
   }
 
@@ -227,9 +231,11 @@ object ColorSelector extends JFXApp {
 
   val rectangleRowsConstraint = new RowConstraints {
     vgrow = Priority.ALWAYS
+    prefHeight = Control.USE_COMPUTED_SIZE
   }
   val otherRowsConstraint = new RowConstraints {
     vgrow = Priority.NEVER
+    valignment = VPos.TOP
   }
   val column0Constraint = new ColumnConstraints {
     fillWidth = true
@@ -251,7 +257,6 @@ object ColorSelector extends JFXApp {
   val pnlMain = new GridPane {
     hgap = 5.0
     vgap = 5.0
-    gridLinesVisible = true
     rowConstraints = List(rectangleRowsConstraint, otherRowsConstraint, otherRowsConstraint,
       otherRowsConstraint, otherRowsConstraint)
     columnConstraints = List(column0Constraint, column1Constraint)
@@ -310,8 +315,8 @@ object ColorSelector extends JFXApp {
   val mainScene = new Scene {
     content = List(pnlMain0)
   }
-  pnlMain0.prefWidth <== mainScene.width
-  pnlMain0.prefHeight <== mainScene.height
+  pnlMain0.prefWidth <== (mainScene.width)
+  pnlMain0.prefHeight <== (mainScene.height)
 
   stage = new Stage {
     title = "Color Selector"

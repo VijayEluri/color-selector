@@ -7,6 +7,7 @@ import javafx.geometry.VPos
 import javafx.scene.layout.Priority
 import scalafx.Includes.eventClosureWrapper
 import scalafx.Includes.jfxBooleanProperty2sfx
+import scalafx.Includes.jfxDoubleProperty2sfx
 import scalafx.Includes.jfxStringProperty2sfx
 import scalafx.application.JFXApp
 import scalafx.beans.property.DoubleProperty.sfxDoubleProperty2jfx

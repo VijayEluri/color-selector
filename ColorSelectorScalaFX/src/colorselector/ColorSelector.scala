@@ -6,7 +6,6 @@ import colorselector.Max
 import colorselector.doubleToInt
 import javafx.beans.property.SimpleDoubleProperty
 import javafx.event.EventHandler
-import javafx.event.ActionEvent
 import javafx.geometry.HPos
 import javafx.geometry.Pos
 import javafx.geometry.VPos
@@ -16,6 +15,7 @@ import javafx.scene.layout.Priority
 import javafx.scene.text.TextAlignment
 import scalafx.Includes.jfxBooleanProperty2sfx
 import scalafx.Includes.jfxDoubleProperty2sfx
+import scalafx.Includes.jfxObjectProperty2sfx
 import scalafx.Includes.jfxStringProperty2sfx
 import scalafx.application.JFXApp
 import scalafx.beans.property.BooleanProperty.sfxBooleanProperty2jfx
@@ -29,6 +29,7 @@ import scalafx.collections.ObservableBuffer.Remove
 import scalafx.collections.ObservableBuffer.canBuildFrom
 import scalafx.collections.ObservableBuffer.observableBuffer2ObservableList
 import scalafx.collections.ObservableBuffer
+import scalafx.event.EventHandler.function2jfxEventHandler
 import scalafx.scene.control.CheckBox.sfxCheckBox2jfx
 import scalafx.scene.control.Control.sfxControl2jfx
 import scalafx.scene.control.TextField.sfxTextField2jfx
@@ -50,7 +51,7 @@ import scalafx.stage.Stage
 import scalafx.util.StringConverter
 
 object ColorSelector extends JFXApp {
-  
+
   // VAL'S DEFINITION - BEGIN
 
   lazy val allControls = List(controlRed, controlGreen, controlBlue, controlAlpha)
@@ -61,7 +62,7 @@ object ColorSelector extends JFXApp {
   val synchronizedValue = new DoubleProperty(new SimpleDoubleProperty)
 
   val synchronizedControls = new ObservableBuffer[SliderControl]
-  synchronizedControls.onChange((buffer, changes) => syncronizeValues(buffer, changes))
+  synchronizedControls.onChange((buffer, changes) => synchronizeValues(buffer, changes))
 
   // METHODS - BEGIN
 
@@ -80,7 +81,7 @@ object ColorSelector extends JFXApp {
       controlBlue.value.toInt, newAlphaValue)
   }
 
-  private def syncronizeValues(buffer: ObservableBuffer[SliderControl], changes: Seq[Change]) {
+  private def synchronizeValues(buffer: ObservableBuffer[SliderControl], changes: Seq[Change]) {
     changes(0) match {
       case Add(pos, added) => {
         val media = buffer.map(_.value.get).sum / buffer.size
@@ -117,7 +118,7 @@ object ColorSelector extends JFXApp {
   private def getForegroundColor(d: Double) = if (d > Max / 2) Color.BLACK else Color.WHITE
 
   private def verifyWebColor {
-    cmbWebColor.value.set(WebColor.colors.find(_.sameColor(currentColor.get)).orNull)
+    cmbWebColor.value() = WebColor.colors.find(_.sameColor(currentColor.get)).orNull
   }
 
   private def webColorSelected {
@@ -199,11 +200,7 @@ object ColorSelector extends JFXApp {
   val cmbWebColor = new ComboBox[WebColor](WebColor.colors) {
     promptText = "Web Color"
     converter = StringConverter.toStringConverter((wc: WebColor) => wc.name)
-  }
-  cmbWebColor.onAction = new EventHandler[ActionEvent] {
-    def handle(e: ActionEvent) {
-      webColorSelected
-    }
+    onAction = webColorSelected
   }
 
   val txfColorValue = new TextField {
@@ -218,11 +215,7 @@ object ColorSelector extends JFXApp {
     promptText = "Color Format"
     converter = StringConverter.toStringConverter((f: Formatter) => f.description)
     value = RgbFormatter
-  }
-  cmbColorFormat.onAction = new EventHandler[ActionEvent] {
-    def handle(e: ActionEvent) {
-      formatColor
-    }
+    onAction = formatColor
   }
 
   val chbDisableAlpha = new CheckBox {

@@ -11,7 +11,6 @@ import javafx.geometry.Pos
 import javafx.geometry.VPos
 import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
-import javafx.scene.layout.Priority
 import javafx.scene.text.TextAlignment
 import scalafx.Includes.jfxBooleanProperty2sfx
 import scalafx.Includes.jfxDoubleProperty2sfx
@@ -39,16 +38,14 @@ import scalafx.scene.control.Control
 import scalafx.scene.control.Label
 import scalafx.scene.control.TextField
 import scalafx.scene.effect.Reflection
-import scalafx.scene.layout.AnchorPane
-import scalafx.scene.layout.ColumnConstraints
-import scalafx.scene.layout.GridPane
-import scalafx.scene.layout.RowConstraints
 import scalafx.scene.paint.Paint.sfxPaint2jfx
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.Rectangle
 import scalafx.scene.Scene
 import scalafx.stage.Stage
 import scalafx.util.StringConverter
+import javafx.scene.layout.Priority
+import scalafx.scene.layout._
 
 object ColorSelector extends JFXApp {
 
@@ -132,11 +129,10 @@ object ColorSelector extends JFXApp {
 
   // METHODS - END
 
-  val rectangle = new Rectangle {
+  val rectangleRegion = new Region {
     effect = new Reflection {
       fraction = 0.45
     }
-    height = 216.0
     onMouseClicked = new EventHandler[MouseEvent] {
       def handle(event: MouseEvent) {
         if ((event.getClickCount == 2) && (event.getButton() == MouseButton.PRIMARY)) {
@@ -144,14 +140,9 @@ object ColorSelector extends JFXApp {
         }
       }
     }
-    width = 599.0
   }
-  currentColor.onChange(rectangle.fill = currentColor.get())
 
-  val rectangleAnchor = new AnchorPane {
-    content = List(rectangle)
-  }
-  AnchorPane.setAnchors(rectangle, 0, 0, 0, 0)
+  currentColor.onChange(rectangleRegion.setStyle("-fx-background-color: " + RgbFormatter.format(currentColor(), !this.chbDisableAlpha.selected.get)))
 
   val controlRed = new SliderControl("R") {
     value = 255
@@ -255,7 +246,7 @@ object ColorSelector extends JFXApp {
     columnConstraints = List(column0Constraint, column1Constraint)
     padding = colorselector.insets
 
-    add(rectangleAnchor, 0, 0, 3, 1)
+    add(rectangleRegion, 0, 0, 3, 1)
 
     add(controlRed, 0, 1)
     add(new Label {

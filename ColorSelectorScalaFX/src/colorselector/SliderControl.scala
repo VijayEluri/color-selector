@@ -77,6 +77,7 @@ class SliderControl(title: String) extends HBox {
     minorTickCount = 4
     showTickLabels = true
     showTickMarks = true
+//    style = ".slider .axis {-fx-tick-label-fill: green;}"
     hgrow = Priority.ALWAYS
     style <== cssForeground
     value <==> realValue
